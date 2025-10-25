@@ -1,0 +1,38 @@
+# Xcode
+*.xcuserstate
+*.xcuserdatad
+xcuserdata/
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.pbxuser
+!default.pbxuser
+*.xcworkspace
+!default.xcworkspace
+
+# macOS
+.DS_Store
+._*
+
+# Cursor/Editor
+.cursor/
+.windsurfrules
+
+# Build
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# CocoaPods
+Pods/
+
+# Temporary files
+*~
+.swp
+
