@@ -1511,27 +1511,28 @@ struct WateringSuccessView: View {
     @State private var showText = false
     
     var body: some View {
-        ZStack {
-            // Background blur
-            Color.black.opacity(0.3)
-                .ignoresSafeArea()
-                .opacity(cardOpacity)
-            
-            // Water droplet animations
-            if dropletsVisible {
-                ForEach(0..<15) { index in
-                    Text("💧")
-                        .font(.title)
-                        .offset(
-                            x: CGFloat.random(in: -150...150),
-                            y: -UIScreen.main.bounds.height / 2 + CGFloat(index) * 60
-                        )
-                        .animation(
-                            .linear(duration: 2.0).delay(Double(index) * 0.1),
-                            value: dropletsVisible
-                        )
+        GeometryReader { geometry in
+            ZStack {
+                // Background blur
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                    .opacity(cardOpacity)
+                
+                // Water droplet animations
+                if dropletsVisible {
+                    ForEach(0..<15) { index in
+                        Text("💧")
+                            .font(.title)
+                            .offset(
+                                x: CGFloat.random(in: -150...150),
+                                y: -geometry.size.height / 2 + CGFloat(index) * 60
+                            )
+                            .animation(
+                                .linear(duration: 2.0).delay(Double(index) * 0.1),
+                                value: dropletsVisible
+                            )
+                    }
                 }
-            }
             
             // Success card
             VStack(spacing: 20) {
@@ -1617,6 +1618,7 @@ struct WateringSuccessView: View {
                     onDismiss()
                 }
             }
+        }
         }
     }
 }
@@ -2050,8 +2052,6 @@ struct SeedDetailView: View {
                         canWater: seed.canWaterToday,
                         showAnimation: $showWateringAnimation,
                         onWater: {
-                            let milestone = seed.checkStreakMilestone()
-                            
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
                                 seed.water()
                                 showWateringAnimation = true
@@ -2200,27 +2200,28 @@ struct FullScreenImageView: View {
     @State private var cardScale: CGFloat = 0.9
     
     var body: some View {
-        ZStack {
-            // Dark dimmed background
-            Color.black.opacity(0.85)
-                .ignoresSafeArea()
-                .opacity(opacity)
-                .onTapGesture {
-                    dismiss()
-                }
-            
-            // Centered image card
-            VStack {
-                Spacer()
+        GeometryReader { geometry in
+            ZStack {
+                // Dark dimmed background
+                Color.black.opacity(0.85)
+                    .ignoresSafeArea()
+                    .opacity(opacity)
+                    .onTapGesture {
+                        dismiss()
+                    }
                 
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: UIScreen.main.bounds.width * 0.9)
-                    .frame(maxHeight: UIScreen.main.bounds.height * 0.7)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 10)
-                    .scaleEffect(scale * cardScale)
+                // Centered image card
+                VStack {
+                    Spacer()
+                    
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: geometry.size.width * 0.9)
+                        .frame(maxHeight: geometry.size.height * 0.7)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 10)
+                        .scaleEffect(scale * cardScale)
                     .gesture(
                         MagnificationGesture()
                             .onChanged { value in
@@ -2277,6 +2278,7 @@ struct FullScreenImageView: View {
                 opacity = 1.0
                 cardScale = 1.0
             }
+        }
         }
     }
 }
