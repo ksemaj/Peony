@@ -4,18 +4,17 @@ A mindful journaling app where your thoughts grow into beautiful flowers.
 
 ## Overview
 
-Peony transforms the journaling experience by gamifying personal growth. Each journal entry is a "seed" that grows over time, blooming into a flower after 90 days. Daily watering creates a habit loop that encourages consistent reflection.
+Peony transforms the journaling experience by gamifying personal growth. Each journal entry is a "seed" that grows over time, blooming into a flower after 45 days. Daily watering creates a habit loop that encourages consistent reflection and speeds up growth.
 
 ## Features
 
 ### Core Functionality
 - 🌱 **Plant Seeds** - Create journal entries with text and optional images
 - 💧 **Daily Watering** - Water your seeds to speed up growth (+1% per day)
-- 🌸 **Watch Them Bloom** - Seeds progress through 5 growth stages
-- 📊 **Track Progress** - Monitor growth percentage and milestones
-- 🔔 **Smart Notifications** - Growth milestones, watering reminders, and weekly check-ins
-- 📤 **Export Your Journey** - Export to JSON or PDF formats
-- ⚙️ **Customizable** - Adjust growth duration from 30-365 days
+- 🌸 **Watch Them Bloom** - Seeds progress through 5 growth stages over 45 days
+- 📊 **Track Progress** - Monitor growth percentage for each seed
+- ✏️ **Edit & Delete** - Modify or remove seeds at any time
+- 🎨 **Beautiful Garden** - Custom-drawn plants, trees, and decorative flora
 
 ### Growth Stages
 1. **Seed** (0-24%) - 🌱 Just planted
@@ -25,10 +24,11 @@ Peony transforms the journaling experience by gamifying personal growth. Each jo
 5. **Full Bloom** (100%) - 🌸 Journal entry revealed!
 
 ### Unique Mechanics
-- **Hidden Content** - Journal entries are hidden until seeds fully bloom
-- **Watering Bonus** - Each watering adds 1% growth (can reduce bloom time by ~50%)
-- **Beautiful Garden** - Custom-drawn plants, trees, and decorative flora
-- **Mindful Design** - Pastel colors and smooth animations create a calming experience
+- **Hidden Content** - Journal entries are hidden until seeds fully bloom at 100%
+- **Watering Bonus** - Daily watering adds +1% growth (can reduce 45-day bloom to ~22 days)
+- **Custom Art** - Hand-crafted plant illustrations and garden decorations
+- **Mindful Design** - Pastel colors, smooth animations, and calming garden atmosphere
+- **Delayed Gratification** - Encourages patience and reflection over immediate consumption
 
 ## Technical Details
 
@@ -37,38 +37,30 @@ Peony transforms the journaling experience by gamifying personal growth. Each jo
 - **Xcode:** 15.0+
 - **Swift:** 5.9+
 - **SwiftData** for data persistence
-- **UserNotifications** for reminders
 
 ### Architecture
 
 ```
 Peony/
 ├── PeonyApp.swift              # App entry point
-├── ContentView.swift           # Main garden view
+├── ContentView.swift           # Main garden view (all UI components)
 ├── OnboardingView.swift        # First-time user experience
 ├── Models/
 │   ├── JournalSeed.swift       # Core data model
 │   ├── GrowthStage.swift       # Growth stage enum
 │   ├── ColorExtensions.swift   # Design system colors
 │   └── Config.swift            # App configuration
-├── Views/
-│   └── Shared/
-│       └── SettingsView.swift  # User preferences
-├── Utilities/
-│   ├── NotificationManager.swift  # Push notification handling
-│   └── ExportManager.swift        # JSON/PDF export
-└── Components/                 # Custom UI components
-    ├── Flora/                  # (Ready for extraction)
-    ├── Plants/                 # (Ready for extraction)
-    └── UI/                     # (Ready for extraction)
+└── Components/                 # Custom UI components (in ContentView)
+    ├── Flora/                  # Decorative plants (trees, bushes, etc.)
+    ├── Plants/                 # Growth stage visualizations
+    └── UI/                     # Reusable UI elements
 ```
 
 ### Design Patterns
-- **MVVM Architecture** - Clear separation of concerns
-- **SwiftUI + SwiftData** - Modern Apple frameworks
-- **Singleton Managers** - NotificationManager, ExportManager
-- **Computed Properties** - For derived values (growth %, stage)
-- **Custom Components** - Reusable plant and flora views
+- **SwiftUI + SwiftData** - Modern Apple frameworks for UI and persistence
+- **Computed Properties** - For derived values (growth %, stage, watering eligibility)
+- **Custom Components** - Hand-drawn plant and flora views
+- **Single View Architecture** - All UI consolidated in ContentView for simplicity
 
 ## Setup Instructions
 
@@ -101,28 +93,34 @@ xcodebuild -scheme Peony -destination 'platform=iOS Simulator,name=iPhone 15'
 
 ## Development Phases
 
-### ✅ Phase 1: Core UX (Completed)
-- 90-day growth timeline
+### ✅ v1.0.0 - Core Experience (Completed)
+- Journal entries as growing seeds
+- 5-stage growth visualization
+- Daily watering mechanic
 - Edit & delete functionality
-- Watering mechanic
-- Search & filter system
-- Push notifications
-- Settings view
+- Beautiful garden layout
 
-### ✅ Phase 2: Technical Cleanup (Completed)
+### ✅ v1.1.0 - Technical Cleanup (Completed)
 - Extracted models to separate files
-- Created folder structure
-- Built ExportManager (JSON/PDF)
-- Centralized configuration (Config.swift)
-- Moved utilities to proper locations
+- Organized folder structure
+- Centralized configuration
+- Added export and settings features
 
-### 🚧 Phase 3: AI Integration (Planned)
-- AI-generated reflections & insights
-- Smart writing prompts
-- Mood detection
-- Pattern recognition
-- Personalized recommendations
-- Support for OpenAI, Claude, and Apple Core ML
+### ✅ v1.2.0 - Soft Reset (Current)
+**Back to core - removed complexity:**
+- Changed growth period: 90 days → 45 days
+- Removed search & filtering
+- Removed export system
+- Removed settings menu
+- Removed notifications
+- Focus on essential seed-planting experience
+
+### 🔮 Future Development
+See [ROADMAP.md](.docs/ROADMAP.md) for detailed future plans:
+- **v2.0** - Quick Notes (dual journaling modes)
+- **v2.5** - AI Assistant (prompts, insights, mood detection)
+- **v3.0** - Gamification & sharing
+- **v4.0** - Premium features & monetization
 
 ## Testing
 
@@ -135,86 +133,43 @@ xcodebuild test -scheme Peony -destination 'platform=iOS Simulator,name=iPhone 1
 ```
 
 ### Manual Testing Checklist
-- [ ] Plant a new seed
-- [ ] Water a seed
-- [ ] Edit an existing seed
-- [ ] Delete a seed
-- [ ] Search for seeds
-- [ ] Filter by growth stage
-- [ ] Export to JSON
-- [ ] Export to PDF
-- [ ] Adjust settings
 - [ ] Complete onboarding flow
-
-## Known Issues
-
-See [AUDIT_REPORT.md](AUDIT_REPORT.md) for comprehensive list.
-
-### High Priority (Before Release)
-- [ ] Replace `example.com` URLs in Config.swift with actual links
-- [ ] Clean up macOS resource fork files
-- [ ] Add error alerts for export failures
-- [ ] Implement input validation
-
-### Medium Priority
-- [ ] Improve database migration (add backup)
-- [ ] Reduce notification spam (one daily reminder instead of per-seed)
-- [ ] Add accessibility labels for VoiceOver
-
-### Low Priority
-- [ ] Extract components from ContentView.swift
-- [ ] Add comprehensive unit tests
-- [ ] Support Dynamic Type
+- [ ] Plant a new seed with title and content
+- [ ] Plant a seed with optional image
+- [ ] Water a seed (verify daily limit)
+- [ ] Edit an existing seed
+- [ ] Delete a seed (verify confirmation)
+- [ ] View garden with multiple seeds at different growth stages
+- [ ] Verify growth percentage calculations
+- [ ] Test full bloom at 100% (content reveal)
 
 ## Configuration
 
-### Growth Settings
-Adjust in `Config.swift`:
+Core app settings in `Config.swift`:
 ```swift
 enum AppConfig {
-    static let defaultGrowthDays = 90        // Default bloom time
-    static let minGrowthDays = 30            // Minimum allowed
-    static let maxGrowthDays = 365           // Maximum allowed
-    static let wateringBonus = 1.0           // Percentage per watering
+    static let defaultGrowthDays = 45           // Seeds bloom in 45 days
+    static let wateringBonus = 1.0              // +1% per watering
+    static let seedsPerBed = 9                  // Seeds per garden bed
 }
 ```
 
-### Notification Times
-```swift
-static let wateringReminderHour = 9          // 9 AM
-static let weeklyCheckinWeekday = 1          // Sunday
-static let weeklyCheckinHour = 10            // 10 AM
-```
+## Known Issues & Future Improvements
 
-## Export Formats
+### Before Next Release
+- [ ] Replace placeholder URLs in Config.swift
+- [ ] Add input validation for journal entries
+- [ ] Improve database migration handling
+- [ ] Add error handling for image loading
 
-### JSON Structure
-```json
-{
-  "version": "1.1.0",
-  "exportDate": "2025-10-25T12:00:00Z",
-  "seeds": [
-    {
-      "id": "UUID",
-      "title": "My First Seed",
-      "content": "Journal entry content...",
-      "plantedDate": "2025-01-01T00:00:00Z",
-      "growthPercentage": 50.0,
-      "growthStage": "Growing",
-      "timesWatered": 10,
-      "growthDurationDays": 90,
-      "hasImage": true
-    }
-  ]
-}
-```
-
-### PDF Format
-- One page per seed
-- Title, date, and growth info at top
-- Full content (if bloomed)
-- Embedded images
-- Page numbers
+### Future Enhancements
+See [ROADMAP.md](.docs/ROADMAP.md) for comprehensive future plans:
+- Quick Notes feature (fast journaling)
+- AI-powered writing prompts and insights
+- Notifications system (redesigned)
+- Export functionality (return)
+- Accessibility improvements (VoiceOver, Dynamic Type)
+- Dark mode support
 
 ## Contributing
 
@@ -222,28 +177,31 @@ This is a personal project currently in development. Feedback and suggestions ar
 
 ## Documentation
 
-- [PHASE_1_COMPLETE.md](PHASE_1_COMPLETE.md) - Phase 1 summary
-- [PHASE_2_COMPLETE.md](PHASE_2_COMPLETE.md) - Phase 2 summary
-- [PHASE_2_NEXT_STEPS.md](PHASE_2_NEXT_STEPS.md) - Setup instructions
-- [AUDIT_REPORT.md](AUDIT_REPORT.md) - Comprehensive code audit
+- [ROADMAP.md](.docs/ROADMAP.md) - Future development plans
+- [PHASE_1_COMPLETE.md](.docs/phases/PHASE_1_COMPLETE.md) - Phase 1 summary
+- [PHASE_2_COMPLETE.md](.docs/phases/PHASE_2_COMPLETE.md) - Phase 2 summary
+- [AUDIT_REPORT.md](.docs/audits/AUDIT_REPORT.md) - Comprehensive code audit
 
 ## Privacy & Security
 
-- **Local Storage** - All data stored locally using SwiftData
-- **No Analytics** - No tracking or telemetry
-- **Optional Notifications** - User can disable all notifications
-- **Export Control** - User owns their data (JSON/PDF export)
+- **Local-First** - All data stored locally using SwiftData
+- **No Analytics** - Zero tracking or telemetry
+- **No Ads** - Clean, distraction-free experience
+- **User Control** - Edit or delete your entries anytime
+- **Offline-First** - Works completely without internet
 
-### Phase 3 AI Considerations
+### Future AI Considerations
+When AI features are added (v2.5+):
 - All AI features will be opt-in
-- User consent required before sending data to AI services
-- On-device Core ML option for privacy-conscious users
-- API keys stored securely in Keychain (never in code)
+- Explicit user consent before sending data to cloud
+- On-device Core ML as default for privacy
+- API keys stored securely in Keychain
+- Option to disable AI completely
 
 ## Credits
 
 **Developer:** James Kinsey  
-**Version:** 1.1.0  
+**Version:** 1.2.0  
 **Platform:** iOS 17.0+  
 **Framework:** SwiftUI + SwiftData
 
