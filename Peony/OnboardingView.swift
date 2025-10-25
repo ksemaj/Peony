@@ -98,14 +98,26 @@ struct OnboardingView: View {
                         } else {
                             // Schedule notifications with user preferences
                             Task {
-                                if await notificationManager.requestAuthorization() {
+                                print("🔔 Requesting notification authorization...")
+                                let authorized = await notificationManager.requestAuthorization()
+                                print("🔔 Authorization result: \(authorized)")
+                                
+                                if authorized {
+                                    print("🔔 Scheduling daily watering reminder (enabled: \(wateringRemindersEnabled))")
                                     notificationManager.scheduleDailyWateringReminder(enabled: wateringRemindersEnabled)
+                                    
+                                    print("🔔 Scheduling weekly check-in (enabled: \(weeklyCheckinEnabled))")
                                     notificationManager.scheduleWeeklyCheckin(enabled: weeklyCheckinEnabled)
                                 }
-                            }
-                            
-                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                hasSeenOnboarding = true
+                                
+                                // Wait a bit to ensure notifications are scheduled
+                                try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+                                
+                                await MainActor.run {
+                                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                        hasSeenOnboarding = true
+                                    }
+                                }
                             }
                         }
                     }) {
