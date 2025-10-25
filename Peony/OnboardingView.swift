@@ -39,7 +39,7 @@ struct OnboardingView: View {
                     OnboardingPageView(
                         emoji: "🌱",
                         title: "Welcome to Peony",
-                        description: "A mindful space where your thoughts grow and bloom over time",
+                        description: "A mindful space where your thoughts grow and bloom over time. (Build: 4-pages)",
                         pageIndex: 0
                     )
                     .tag(0)
