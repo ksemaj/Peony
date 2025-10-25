@@ -46,26 +46,34 @@ struct OnboardingView: View {
                     
                     OnboardingPageView(
                         emoji: "🪴",
-                        title: "Plant Seeds, Watch Them Grow",
-                        description: "Each journal entry is a seed that grows into a beautiful flower over time. Water them daily to speed up growth!",
+                        title: "Seeds: Deep Reflection",
+                        description: "Plant journal entries as seeds that take 45 days to bloom. Your entry stays hidden until it fully grows—encouraging patience and delayed gratification. Water daily to speed up growth and build streaks!",
                         pageIndex: 1
                     )
                     .tag(1)
                     
-                    // NEW: Simple notification time selection page
+                    OnboardingPageView(
+                        emoji: "📝",
+                        title: "Quick Notes: Daily Capture",
+                        description: "Need to jot something down quickly? Use Quick Notes for instant journaling with immediate access. Perfect for daily thoughts, observations, and reflections.",
+                        pageIndex: 2
+                    )
+                    .tag(2)
+                    
+                    // Notification time selection page
                     SimpleNotificationTimePage(
                         wateringReminderHour: $wateringReminderHour,
                         wateringReminderMinute: $wateringReminderMinute
                     )
-                    .tag(2)
+                    .tag(3)
                     
                     OnboardingPageView(
                         emoji: "🌸",
                         title: "Begin Your Journey",
-                        description: "Start planting seeds and cultivate your personal garden of growth",
-                        pageIndex: 3
+                        description: "Two journaling modes, one beautiful garden. Start planting seeds and writing notes today!",
+                        pageIndex: 4
                     )
-                    .tag(3)
+                    .tag(4)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .always))
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
@@ -91,7 +99,7 @@ struct OnboardingView: View {
                     }
                     
                     Button(action: {
-                        if currentPage < 3 {
+                        if currentPage < 4 {
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                                 currentPage += 1
                             }
@@ -121,7 +129,7 @@ struct OnboardingView: View {
                             }
                         }
                     }) {
-                        Text(currentPage == 3 ? "Get Started" : "Next")
+                        Text(currentPage == 4 ? "Get Started" : "Next")
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -241,26 +249,34 @@ struct OnboardingTutorialView: View {
                     
                     OnboardingPageView(
                         emoji: "🪴",
-                        title: "Plant Seeds, Watch Them Grow",
-                        description: "Each journal entry is a seed that grows into a beautiful flower over time. Water them daily to speed up growth!",
+                        title: "Seeds: Deep Reflection",
+                        description: "Plant journal entries as seeds that take 45 days to bloom. Your entry stays hidden until it fully grows—encouraging patience and delayed gratification. Water daily to speed up growth and build streaks!",
                         pageIndex: 1
                     )
                     .tag(1)
                     
-                    // Simple notification time selection page
+                    OnboardingPageView(
+                        emoji: "📝",
+                        title: "Quick Notes: Daily Capture",
+                        description: "Need to jot something down quickly? Use Quick Notes for instant journaling with immediate access. Perfect for daily thoughts, observations, and reflections.",
+                        pageIndex: 2
+                    )
+                    .tag(2)
+                    
+                    // Notification time selection page
                     SimpleNotificationTimePage(
                         wateringReminderHour: $wateringReminderHour,
                         wateringReminderMinute: $wateringReminderMinute
                     )
-                    .tag(2)
+                    .tag(3)
                     
                     OnboardingPageView(
                         emoji: "🌸",
                         title: "Begin Your Journey",
-                        description: "Start planting seeds and cultivate your personal garden of growth",
-                        pageIndex: 3
+                        description: "Two journaling modes, one beautiful garden. Start planting seeds and writing notes today!",
+                        pageIndex: 4
                     )
-                    .tag(3)
+                    .tag(4)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .always))
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
@@ -286,7 +302,7 @@ struct OnboardingTutorialView: View {
                     }
                     
                     Button(action: {
-                        if currentPage < 3 {
+                        if currentPage < 4 {
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                                 currentPage += 1
                             }
@@ -294,7 +310,7 @@ struct OnboardingTutorialView: View {
                             isPresented = false
                         }
                     }) {
-                        Text(currentPage == 3 ? "Done" : "Next")
+                        Text(currentPage == 4 ? "Done" : "Next")
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
