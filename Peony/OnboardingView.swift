@@ -348,7 +348,7 @@ struct SimpleNotificationTimePage: View {
                         .foregroundColor(.black)
                         .multilineTextAlignment(.center)
                     
-                    Text("We'll send a gentle reminder to water")
+                    Text("We'll send a gentle reminder for you to water your seeds")
                         .font(.body)
                         .multilineTextAlignment(.center)
                         .foregroundColor(.gray)
