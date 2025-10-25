@@ -10,84 +10,71 @@ import SwiftData
 
 struct MainAppView: View {
     @State private var selectedTab = 0
+    @State private var previousTab = 0
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .bottom) {
-                // Content area with slide animation
-                TabView(selection: $selectedTab) {
-                    ContentView()
-                        .tag(0)
-                    
-                    NotesView()
-                        .tag(1)
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .ignoresSafeArea(edges: .bottom)
-                
-                // Custom tab bar overlay
-                HStack(spacing: 0) {
-                    TabBarButton(
-                        icon: "leaf.fill",
-                        title: "Garden",
-                        isSelected: selectedTab == 0
-                    ) {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                            selectedTab = 0
-                        }
-                    }
-                    
-                    TabBarButton(
-                        icon: "note.text",
-                        title: "Notes",
-                        isSelected: selectedTab == 1
-                    ) {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                            selectedTab = 1
-                        }
-                    }
-                }
-                .padding(.horizontal, 8)
-                .padding(.top, 8)
-                .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 4 : 8)
-                .background(.ultraThinMaterial)
-                .overlay(
-                    Rectangle()
-                        .frame(height: 0.33)
-                        .foregroundStyle(.separator),
-                    alignment: .top
-                )
+        TabView(selection: $selectedTab) {
+            // Garden Tab with animated wrapper
+            AnimatedTabContent(
+                selectedTab: selectedTab,
+                previousTab: previousTab,
+                currentTag: 0
+            ) {
+                ContentView()
             }
-            .ignoresSafeArea(edges: .bottom)
+            .tabItem {
+                Label("Garden", systemImage: "leaf.fill")
+            }
+            .tag(0)
+            
+            // Notes Tab with animated wrapper
+            AnimatedTabContent(
+                selectedTab: selectedTab,
+                previousTab: previousTab,
+                currentTag: 1
+            ) {
+                NotesView()
+            }
+            .tabItem {
+                Label("Notes", systemImage: "note.text")
+            }
+            .tag(1)
+        }
+        .tint(.green)
+        .onChange(of: selectedTab) { oldValue, newValue in
+            previousTab = oldValue
         }
     }
 }
 
-// MARK: - Tab Bar Button
+// MARK: - Animated Tab Content Wrapper
 
-struct TabBarButton: View {
-    let icon: String
-    let title: String
-    let isSelected: Bool
-    let action: () -> Void
+struct AnimatedTabContent<Content: View>: View {
+    let selectedTab: Int
+    let previousTab: Int
+    let currentTag: Int
+    @ViewBuilder let content: () -> Content
     
     var body: some View {
-        Button(action: action) {
-            VStack(spacing: 4) {
-                Image(systemName: icon)
-                    .font(.system(size: 24, weight: isSelected ? .semibold : .regular))
-                    .foregroundStyle(isSelected ? Color.green : Color.gray)
-                    .symbolEffect(.bounce, value: isSelected)
-                
-                Text(title)
-                    .font(.caption2)
-                    .fontWeight(isSelected ? .semibold : .regular)
-                    .foregroundColor(isSelected ? .green : .gray)
-            }
-            .frame(maxWidth: .infinity)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
+        content()
+            .transition(.asymmetric(
+                insertion: slideInsertion,
+                removal: slideRemoval
+            ))
+            .id("\(currentTag)-\(selectedTab)")
+            .animation(.spring(response: 0.45, dampingFraction: 0.75), value: selectedTab)
+    }
+    
+    private var slideInsertion: AnyTransition {
+        let isMovingForward = selectedTab > previousTab
+        return .move(edge: isMovingForward ? .trailing : .leading)
+            .combined(with: .opacity)
+    }
+    
+    private var slideRemoval: AnyTransition {
+        let isMovingForward = selectedTab > previousTab
+        return .move(edge: isMovingForward ? .leading : .trailing)
+            .combined(with: .opacity)
     }
 }
 
