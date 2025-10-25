@@ -6,15 +6,31 @@ A mindful journaling app where your thoughts grow into beautiful flowers.
 
 Peony transforms the journaling experience by gamifying personal growth. Each journal entry is a "seed" that grows over time, blooming into a flower after 45 days. Daily watering creates a habit loop that encourages consistent reflection and speeds up growth.
 
+**New in v2.0:** Quick Notes complement seeds by offering instant journaling for daily thoughts, observations, and reflections. Two modes, one garden.
+
 ## Features
 
 ### Core Functionality
+
+**Seeds (Deep Journaling):**
 - 🌱 **Plant Seeds** - Create journal entries with text and optional images
 - 💧 **Daily Watering** - Water your seeds to speed up growth (+1% per day)
 - 🌸 **Watch Them Bloom** - Seeds progress through 5 growth stages over 45 days
 - 📊 **Track Progress** - Monitor growth percentage for each seed
+- 🔥 **Watering Streaks** - Build daily habits with streak multipliers
 - ✏️ **Edit & Delete** - Modify or remove seeds at any time
+
+**Quick Notes (Daily Journaling) - NEW!**
+- 📝 **Quick Capture** - Write notes instantly, no growth cycle
+- 📅 **Chronological List** - All notes sorted by date
+- 🔍 **Preview & Search** - Browse with word count and previews
+- ✏️ **Full CRUD** - Create, read, update, delete instantly
+- 🎨 **Same Beautiful UI** - Consistent garden-themed design
+
+**Garden Experience:**
 - 🎨 **Beautiful Garden** - Custom-drawn plants, trees, and decorative flora
+- 🗂️ **Tab Navigation** - Switch between Garden (seeds) and Notes tabs
+- 🔔 **Smart Notifications** - Bloom alerts and optional reminders
 
 ### Growth Stages
 1. **Seed** (0-24%) - 🌱 Just planted
@@ -43,13 +59,28 @@ Peony transforms the journaling experience by gamifying personal growth. Each jo
 ```
 Peony/
 ├── PeonyApp.swift              # App entry point
-├── ContentView.swift           # Main garden view (all UI components)
+├── MainAppView.swift           # Tab navigation (Garden + Notes)
+├── ContentView.swift           # Garden view (seeds & watering)
 ├── OnboardingView.swift        # First-time user experience
 ├── Models/
-│   ├── JournalSeed.swift       # Core data model
+│   ├── JournalSeed.swift       # Seed data model
+│   ├── QuickNote.swift         # Note data model (v2.0)
+│   ├── WateringStreak.swift    # Streak tracking (v1.3.0)
 │   ├── GrowthStage.swift       # Growth stage enum
 │   ├── ColorExtensions.swift   # Design system colors
 │   └── Config.swift            # App configuration
+├── Views/
+│   ├── Garden/                 # Seed planting views
+│   ├── Notes/                  # Quick Notes views (v2.0)
+│   │   ├── NotesView.swift
+│   │   ├── CreateNoteView.swift
+│   │   ├── NoteDetailView.swift
+│   │   ├── EditNoteView.swift
+│   │   └── NoteRowView.swift
+│   └── Shared/                 # Shared components
+├── Utilities/
+│   ├── NotificationManager.swift  # Notification system
+│   └── ExportManager.swift        # Export utilities
 └── Components/                 # Custom UI components (in ContentView)
     ├── Flora/                  # Decorative plants (trees, bushes, etc.)
     ├── Plants/                 # Growth stage visualizations
@@ -124,7 +155,7 @@ xcodebuild -scheme Peony -destination 'platform=iOS Simulator,name=iPhone 15'
 - 🔔 Redesigned notification system (bloom alerts, daily reminders, weekly check-ins)
 - ⚙️ Notification settings view for user preferences
 
-### ✅ v1.3.1 - Onboarding Enhancement (Current)
+### ✅ v1.3.1 - Onboarding Enhancement (Completed)
 **Improved first-time user experience:**
 - 🔔 Integrated notification setup into onboarding flow
 - 📱 New notification setup page with clear UI (page 3 of 4)
@@ -132,9 +163,31 @@ xcodebuild -scheme Peony -destination 'platform=iOS Simulator,name=iPhone 15'
 - ✨ Better readability with proper text contrast throughout
 - 📈 Higher notification opt-in rates with contextual setup
 
+### ✅ v2.0.0 - Quick Notes (Current - Phase 2.1 Complete)
+**Dual journaling modes:**
+- 📝 Quick Notes feature for daily journaling
+- 🗂️ Tab navigation between Garden (seeds) and Notes
+- ✏️ Full CRUD operations (create, read, update, delete)
+- 📊 Word/character count and metadata
+- 🎨 Consistent garden-themed UI design
+- 🔮 Future-ready for AI mood detection
+
+**Phase 2.1 Complete (Foundation):**
+- ✅ QuickNote data model with SwiftData
+- ✅ MainAppView with tab navigation
+- ✅ NotesView with empty state and list
+- ✅ Create, edit, detail, and row views
+- ✅ Beautiful UI consistent with garden theme
+
+**Next Phases:**
+- Phase 2.2: Polish & animations
+- Phase 2.3: Search & organization
+- Phase 2.4: Statistics & insights
+
 ### 🔮 Future Development
-See [ROADMAP.md](.docs/ROADMAP.md) for detailed future plans:
-- **v2.0** - Quick Notes (dual journaling modes)
+See [QUICK_NOTES_PLAN.md](QUICK_NOTES_PLAN.md) for detailed Quick Notes roadmap.
+
+Longer-term plans:
 - **v2.5** - AI Assistant (prompts, insights, mood detection)
 - **v3.0** - Gamification & sharing
 - **v4.0** - Premium features & monetization
@@ -150,13 +203,31 @@ xcodebuild test -scheme Peony -destination 'platform=iOS Simulator,name=iPhone 1
 ```
 
 ### Manual Testing Checklist
-- [ ] Complete onboarding flow
+
+**Onboarding:**
+- [ ] Complete onboarding flow (4 pages)
+- [ ] Set notification time during onboarding
+
+**Seeds (Garden Tab):**
 - [ ] Plant a new seed with title and content
 - [ ] Plant a seed with optional image
 - [ ] Water a seed (verify daily limit)
+- [ ] Build a watering streak (3+ days)
 - [ ] Edit an existing seed
 - [ ] Delete a seed (verify confirmation)
 - [ ] View garden with multiple seeds at different growth stages
+
+**Quick Notes (Notes Tab):**
+- [ ] Create a new quick note
+- [ ] View note in list (preview, word count)
+- [ ] Open note detail view
+- [ ] Edit an existing note
+- [ ] Delete a note (verify confirmation)
+- [ ] View empty state when no notes exist
+
+**Navigation:**
+- [ ] Switch between Garden and Notes tabs
+- [ ] Verify tab bar icons and labels
 - [ ] Verify growth percentage calculations
 - [ ] Test full bloom at 100% (content reveal)
 
