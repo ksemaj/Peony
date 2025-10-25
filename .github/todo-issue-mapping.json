@@ -1,7 +1,6 @@
 {
   "comment": "Automatic mapping between Cursor TODO IDs and GitHub issue numbers",
   "mappings": {
-    "bug-notifications-not-working": 25
   },
   "completed": {
     "ux-growth-timeline": 12,
@@ -24,7 +23,8 @@
     "refactor-settings-to-onboarding": 21,
     "bug-test-notifications": 19,
     "onboarding-time-selection-slide": 23,
-    "test-notification-button": 24
+    "test-notification-button": 24,
+    "bug-notifications-not-working": 25
   },
   "deleted": {
     "cleanup-split-components": 10,
