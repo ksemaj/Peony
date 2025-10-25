@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct NoteDetailView: View {
     let note: QuickNote
