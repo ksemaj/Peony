@@ -13,6 +13,42 @@ struct NotesView: View {
     @Query(sort: \QuickNote.createdDate, order: .reverse) private var notes: [QuickNote]
     @State private var showingCreateNote = false
     @State private var animateEmptyState = false
+    @State private var searchText = ""
+    @State private var selectedFilter: TimeFilter = .all
+    
+    enum TimeFilter: String, CaseIterable {
+        case all = "All Time"
+        case thisWeek = "This Week"
+        case thisMonth = "This Month"
+    }
+    
+    var filteredNotes: [QuickNote] {
+        var result = notes
+        
+        // Apply search filter
+        if !searchText.isEmpty {
+            result = result.filter { note in
+                note.content.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+        
+        // Apply time filter
+        let calendar = Calendar.current
+        let now = Date()
+        
+        switch selectedFilter {
+        case .thisWeek:
+            let weekAgo = calendar.date(byAdding: .day, value: -7, to: now) ?? now
+            result = result.filter { $0.createdDate >= weekAgo }
+        case .thisMonth:
+            let monthAgo = calendar.date(byAdding: .month, value: -1, to: now) ?? now
+            result = result.filter { $0.createdDate >= monthAgo }
+        case .all:
+            break
+        }
+        
+        return result
+    }
     
     var body: some View {
         NavigationStack {
@@ -28,7 +64,22 @@ struct NotesView: View {
                 if notes.isEmpty {
                     emptyStateView
                 } else {
-                    notesListView
+                    VStack(spacing: 0) {
+                        // Filter chips
+                        filterChipsView
+                        
+                        // Search result count
+                        if !searchText.isEmpty || selectedFilter != .all {
+                            resultCountView
+                        }
+                        
+                        // Notes list
+                        if filteredNotes.isEmpty {
+                            noResultsView
+                        } else {
+                            notesListView
+                        }
+                    }
                 }
             }
             .navigationTitle("Notes")
@@ -49,6 +100,94 @@ struct NotesView: View {
             .sheet(isPresented: $showingCreateNote) {
                 CreateNoteView()
             }
+            .searchable(text: $searchText, prompt: "Search notes...")
+        }
+    }
+    
+    // MARK: - Filter Chips
+    
+    var filterChipsView: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 12) {
+                ForEach(TimeFilter.allCases, id: \.self) { filter in
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            selectedFilter = filter
+                        }
+                    } label: {
+                        Text(filter.rawValue)
+                            .font(.subheadline)
+                            .fontWeight(selectedFilter == filter ? .semibold : .regular)
+                            .foregroundColor(selectedFilter == filter ? .white : .green)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(
+                                selectedFilter == filter ?
+                                    Color.green : Color.white.opacity(0.8)
+                            )
+                            .cornerRadius(20)
+                            .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 12)
+        }
+        .background(Color.clear)
+    }
+    
+    // MARK: - Result Count
+    
+    var resultCountView: some View {
+        HStack {
+            Text("\(filteredNotes.count) \(filteredNotes.count == 1 ? "note" : "notes")")
+                .font(.caption)
+                .foregroundColor(.gray)
+            Spacer()
+        }
+        .padding(.horizontal)
+        .padding(.bottom, 8)
+    }
+    
+    // MARK: - No Results
+    
+    var noResultsView: some View {
+        VStack(spacing: 16) {
+            Spacer()
+            
+            Text("🔍")
+                .font(.system(size: 60))
+            
+            Text("No notes found")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .foregroundColor(.black)
+            
+            Text("Try adjusting your search or filter")
+                .font(.body)
+                .foregroundColor(.gray)
+            
+            if !searchText.isEmpty || selectedFilter != .all {
+                Button {
+                    withAnimation {
+                        searchText = ""
+                        selectedFilter = .all
+                    }
+                } label: {
+                    Text("Clear Filters")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(.green)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(Color.white.opacity(0.8))
+                        .cornerRadius(10)
+                }
+                .padding(.top, 8)
+            }
+            
+            Spacer()
+            Spacer()
         }
     }
     
@@ -118,7 +257,7 @@ struct NotesView: View {
     var notesListView: some View {
         ScrollView {
             LazyVStack(spacing: 12) {
-                ForEach(Array(notes.enumerated()), id: \.element.id) { index, note in
+                ForEach(Array(filteredNotes.enumerated()), id: \.element.id) { index, note in
                     NavigationLink {
                         NoteDetailView(note: note)
                     } label: {
@@ -133,7 +272,7 @@ struct NotesView: View {
             }
             .padding()
             .padding(.bottom, 20)
-            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: notes.count)
+            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: filteredNotes.count)
         }
     }
 }
