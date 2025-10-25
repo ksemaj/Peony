@@ -18,7 +18,9 @@ class NotificationManager: ObservableObject {
     
     private init() {
         Task {
+            print("🔔 NotificationManager: Initializing and checking authorization...")
             await checkAuthorization()
+            print("🔔 NotificationManager: Initial authorization status = \(isAuthorized)")
         }
     }
     
@@ -31,7 +33,9 @@ class NotificationManager: ObservableObject {
                 options: [.alert, .badge, .sound]
             )
             print("🔔 NotificationManager: Authorization granted = \(granted)")
-            isAuthorized = granted
+            await MainActor.run {
+                isAuthorized = granted
+            }
             return granted
         } catch {
             print("❌ NotificationManager: Error requesting notification authorization: \(error)")
@@ -41,7 +45,11 @@ class NotificationManager: ObservableObject {
     
     func checkAuthorization() async {
         let settings = await UNUserNotificationCenter.current().notificationSettings()
-        isAuthorized = settings.authorizationStatus == .authorized
+        let authorized = settings.authorizationStatus == .authorized
+        print("🔔 checkAuthorization: status = \(settings.authorizationStatus.rawValue), authorized = \(authorized)")
+        await MainActor.run {
+            isAuthorized = authorized
+        }
     }
     
     // MARK: - Bloom Notifications

@@ -192,7 +192,23 @@ struct ContentView: View {
                     HStack(spacing: 12) {
                         // Test notification button (for development)
                         Button {
-                            NotificationManager.shared.sendTestNotification(type: .watering)
+                            Task {
+                                print("🔔 Test button tapped - checking authorization...")
+                                
+                                // Request authorization if not already granted
+                                let authorized = await NotificationManager.shared.requestAuthorization()
+                                print("🔔 Test button - authorization result: \(authorized)")
+                                
+                                if authorized {
+                                    NotificationManager.shared.sendTestNotification(type: .watering)
+                                } else {
+                                    print("❌ Test button - authorization denied, opening settings")
+                                    // Open iOS Settings if authorization denied
+                                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                                        await UIApplication.shared.open(url)
+                                    }
+                                }
+                            }
                         } label: {
                             Image(systemName: "bell.badge.fill")
                                 .foregroundColor(.orange)
