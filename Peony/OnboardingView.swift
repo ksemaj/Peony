@@ -210,6 +210,10 @@ struct OnboardingTutorialView: View {
     @Binding var isPresented: Bool
     @State private var currentPage = 0
     
+    // Notification preferences (read from AppStorage)
+    @AppStorage("wateringReminderHour") private var wateringReminderHour = AppConfig.Notifications.defaultWateringReminderHour
+    @AppStorage("wateringReminderMinute") private var wateringReminderMinute = AppConfig.Notifications.defaultWateringReminderMinute
+    
     var body: some View {
         ZStack {
             // Garden background gradient
@@ -258,13 +262,20 @@ struct OnboardingTutorialView: View {
                     )
                     .tag(1)
                     
+                    // Simple notification time selection page
+                    SimpleNotificationTimePage(
+                        wateringReminderHour: $wateringReminderHour,
+                        wateringReminderMinute: $wateringReminderMinute
+                    )
+                    .tag(2)
+                    
                     OnboardingPageView(
                         emoji: "🌸",
                         title: "Begin Your Journey",
                         description: "Start planting seeds and cultivate your personal garden of growth",
-                        pageIndex: 2
+                        pageIndex: 3
                     )
-                    .tag(2)
+                    .tag(3)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .always))
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
@@ -290,7 +301,7 @@ struct OnboardingTutorialView: View {
                     }
                     
                     Button(action: {
-                        if currentPage < 2 {
+                        if currentPage < 3 {
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                                 currentPage += 1
                             }
@@ -298,7 +309,7 @@ struct OnboardingTutorialView: View {
                             isPresented = false
                         }
                     }) {
-                        Text(currentPage == 2 ? "Done" : "Next")
+                        Text(currentPage == 3 ? "Done" : "Next")
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
