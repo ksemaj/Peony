@@ -16,6 +16,7 @@ struct PeonyApp: App {
         let schema = Schema([
             JournalSeed.self,
             WateringStreak.self,
+            QuickNote.self, // v2.0 - Quick Notes feature
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -48,7 +49,7 @@ struct PeonyApp: App {
         WindowGroup {
             Group {
                 if hasSeenOnboarding {
-                    ContentView()
+                    MainAppView() // v2.0 - Tab navigation (Garden + Notes)
                         .id("main-content")
                 } else {
                     OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)

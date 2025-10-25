@@ -40,8 +40,15 @@ enum AppConfig {
         static let defaultWeeklyCheckinMinute = 0
     }
     
+    // Quick Notes Settings (v2.0)
+    enum QuickNotes {
+        static let minCharacters = 1
+        static let maxCharacters = 10000 // ~2000 words
+        static let enableMoodDetection = false // Enable in v2.5 with AI
+    }
+    
     // App Info
-    static let appVersion = "1.3.1"
+    static let appVersion = "2.0.0"
     // TODO: Replace with actual URLs before App Store submission
     static let privacyPolicyURL = "https://example.com/privacy"  // FIXME: Replace before release
     static let supportURL = "https://example.com/support"  // FIXME: Replace before release
