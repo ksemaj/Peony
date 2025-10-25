@@ -1,7 +1,6 @@
 {
   "comment": "Automatic mapping between Cursor TODO IDs and GitHub issue numbers",
   "mappings": {
-    "phase-1-5-onboarding": 16
   },
   "completed": {
     "ux-growth-timeline": 12,
@@ -18,7 +17,11 @@
     "phase-1-1-performance": 13,
     "phase-1-2-watering-streaks": 14,
     "phase-1-3-notifications": 15,
-    "bug-notification-manager-combine": 17
+    "bug-notification-manager-combine": 17,
+    "phase-1-5-onboarding-notifications": 16,
+    "ui-readability-fixes": 20,
+    "refactor-settings-to-onboarding": 21,
+    "bug-test-notifications": 19
   },
   "deleted": {
     "cleanup-split-components": 10,
