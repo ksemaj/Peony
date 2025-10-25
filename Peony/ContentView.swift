@@ -189,10 +189,22 @@ struct ContentView: View {
 //                }
                 
                 ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        showingPlantSheet = true
-                    } label: {
-                        Label("Plant Seed", systemImage: "plus.circle.fill")
+                    HStack(spacing: 12) {
+                        // Test notification button (for development)
+                        Button {
+                            NotificationManager.shared.sendTestNotification(type: .watering)
+                        } label: {
+                            Image(systemName: "bell.badge.fill")
+                                .foregroundColor(.orange)
+                        }
+                        
+                        // Plant seed button
+                        Button {
+                            showingPlantSheet = true
+                        } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundColor(.green)
+                        }
                     }
                 }
             }
