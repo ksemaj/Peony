@@ -12,6 +12,7 @@ struct NotesView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \QuickNote.createdDate, order: .reverse) private var notes: [QuickNote]
     @State private var showingCreateNote = false
+    @State private var animateEmptyState = false
     
     var body: some View {
         NavigationStack {
@@ -35,10 +36,13 @@ struct NotesView: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
                         showingCreateNote = true
                     } label: {
                         Image(systemName: "square.and.pencil")
                             .foregroundColor(.green)
+                            .symbolEffect(.bounce, value: showingCreateNote)
                     }
                 }
             }
@@ -56,6 +60,8 @@ struct NotesView: View {
             
             Text("📝")
                 .font(.system(size: 80))
+                .scaleEffect(animateEmptyState ? 1.0 : 0.5)
+                .opacity(animateEmptyState ? 1.0 : 0)
             
             VStack(spacing: 12) {
                 Text("No notes yet")
@@ -69,8 +75,12 @@ struct NotesView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
             }
+            .opacity(animateEmptyState ? 1.0 : 0)
+            .offset(y: animateEmptyState ? 0 : 20)
             
             Button {
+                let generator = UIImpactFeedbackGenerator(style: .light)
+                generator.impactOccurred()
                 showingCreateNote = true
             } label: {
                 Text("Write Your First Note")
@@ -89,11 +99,18 @@ struct NotesView: View {
                     .shadow(color: .green.opacity(0.3), radius: 5, x: 0, y: 2)
             }
             .padding(.top, 8)
+            .scaleEffect(animateEmptyState ? 1.0 : 0.8)
+            .opacity(animateEmptyState ? 1.0 : 0)
             
             Spacer()
             Spacer()
         }
         .padding()
+        .onAppear {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
+                animateEmptyState = true
+            }
+        }
     }
     
     // MARK: - Notes List
@@ -101,17 +118,22 @@ struct NotesView: View {
     var notesListView: some View {
         ScrollView {
             LazyVStack(spacing: 12) {
-                ForEach(notes) { note in
+                ForEach(Array(notes.enumerated()), id: \.element.id) { index, note in
                     NavigationLink {
                         NoteDetailView(note: note)
                     } label: {
                         NoteRowView(note: note)
                     }
                     .buttonStyle(.plain)
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .trailing).combined(with: .opacity),
+                        removal: .scale.combined(with: .opacity)
+                    ))
                 }
             }
             .padding()
             .padding(.bottom, 20)
+            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: notes.count)
         }
     }
 }

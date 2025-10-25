@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NoteRowView: View {
     let note: QuickNote
+    @State private var isPressed = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -43,7 +44,9 @@ struct NoteRowView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.white.opacity(0.8))
         .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 1)
+        .shadow(color: .black.opacity(isPressed ? 0.02 : 0.05), radius: isPressed ? 2 : 3, x: 0, y: 1)
+        .scaleEffect(isPressed ? 0.98 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
     }
     
     func moodEmoji(_ mood: String) -> String {

@@ -111,6 +111,8 @@ struct NoteDetailView: View {
         .alert("Delete Note", isPresented: $showingDeleteAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.warning)
                 modelContext.delete(note)
                 dismiss()
             }
