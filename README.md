@@ -106,7 +106,7 @@ xcodebuild -scheme Peony -destination 'platform=iOS Simulator,name=iPhone 15'
 - Centralized configuration
 - Added export and settings features
 
-### ✅ v1.2.0 - Soft Reset (Current)
+### ✅ v1.2.0 - Soft Reset (Completed)
 **Back to core - removed complexity:**
 - Changed growth period: 90 days → 45 days
 - Removed search & filtering
@@ -114,6 +114,23 @@ xcodebuild -scheme Peony -destination 'platform=iOS Simulator,name=iPhone 15'
 - Removed settings menu
 - Removed notifications
 - Focus on essential seed-planting experience
+
+### ✅ v1.3.0 - Core Refinement (Completed)
+**Performance & engagement improvements:**
+- 🎨 Animation optimizations for smooth 60fps experience
+- 🔥 Watering streak system with tiered multipliers (Day 1-6: +1.0%, Day 7-29: +1.5%, Day 30+: +2.0%)
+- 💧 Enhanced watering animations with visual feedback
+- 🎉 Celebration overlays for streaks and milestones
+- 🔔 Redesigned notification system (bloom alerts, daily reminders, weekly check-ins)
+- ⚙️ Notification settings view for user preferences
+
+### ✅ v1.3.1 - Onboarding Enhancement (Current)
+**Improved first-time user experience:**
+- 🔔 Integrated notification setup into onboarding flow
+- 📱 New notification setup page with clear UI (page 3 of 4)
+- 🗑️ Removed separate settings menu (will return with more options later)
+- ✨ Better readability with proper text contrast throughout
+- 📈 Higher notification opt-in rates with contextual setup
 
 ### 🔮 Future Development
 See [ROADMAP.md](.docs/ROADMAP.md) for detailed future plans:

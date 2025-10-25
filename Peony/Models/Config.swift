@@ -41,7 +41,7 @@ enum AppConfig {
     }
     
     // App Info
-    static let appVersion = "1.3.0"
+    static let appVersion = "1.3.1"
     // TODO: Replace with actual URLs before App Store submission
     static let privacyPolicyURL = "https://example.com/privacy"  // FIXME: Replace before release
     static let supportURL = "https://example.com/support"  // FIXME: Replace before release
