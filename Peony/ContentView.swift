@@ -8,7 +8,6 @@ struct ContentView: View {
     @Query(sort: \JournalSeed.plantedDate, order: .reverse) private var allSeeds: [JournalSeed]
     @State private var showingPlantSheet = false
     @State private var showingOnboarding = false
-    @State private var showingNotificationSettings = false
     
     var body: some View {
         NavigationStack {
@@ -172,20 +171,10 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Menu {
-                        Button {
-                            showingOnboarding = true
-                        } label: {
-                            Label("View Tutorial", systemImage: "questionmark.circle")
-                        }
-                        
-                        Button {
-                            showingNotificationSettings = true
-                        } label: {
-                            Label("Notification Settings", systemImage: "bell")
-                        }
+                    Button {
+                        showingOnboarding = true
                     } label: {
-                        Image(systemName: "ellipsis.circle")
+                        Image(systemName: "questionmark.circle")
                             .foregroundColor(.green)
                     }
                 }
@@ -209,9 +198,6 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showingPlantSheet) {
                 PlantSeedView()
-            }
-            .sheet(isPresented: $showingNotificationSettings) {
-                NotificationSettingsView()
             }
             .fullScreenCover(isPresented: $showingOnboarding) {
                 OnboardingTutorialView(isPresented: $showingOnboarding)
