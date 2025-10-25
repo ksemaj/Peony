@@ -39,7 +39,7 @@ struct OnboardingView: View {
                     OnboardingPageView(
                         emoji: "🌱",
                         title: "Welcome to Peony",
-                        description: "A mindful space where your thoughts grow and bloom over time. (Build: 4-pages)",
+                        description: "A mindful space where your thoughts grow and bloom over time",
                         pageIndex: 0
                     )
                     .tag(0)
@@ -351,7 +351,7 @@ struct SimpleNotificationTimePage: View {
                         .foregroundColor(.black)
                         .multilineTextAlignment(.center)
                     
-                    Text("We'll send you a gentle reminder to water your garden")
+                    Text("We'll send a gentle reminder to water")
                         .font(.body)
                         .multilineTextAlignment(.center)
                         .foregroundColor(.gray)
