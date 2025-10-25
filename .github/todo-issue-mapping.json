@@ -1,18 +1,6 @@
 {
   "comment": "Automatic mapping between Cursor TODO IDs and GitHub issue numbers",
-  "mappings": {
-    "cleanup-split-components": 10,
-    "cleanup-organize-views": 11,
-    "ai-architecture": 1,
-    "ai-providers": 2,
-    "ai-insights-model": 3,
-    "ai-insights-view": 4,
-    "ai-writing-prompts": 5,
-    "ai-autocompletion": 6,
-    "ai-mood-detection": 7,
-    "ai-settings": 8,
-    "ai-onboarding": 9
-  },
+  "mappings": {},
   "completed": {
     "ux-growth-timeline": 12,
     "ux-edit-delete": "not-created",
@@ -25,6 +13,18 @@
     "cleanup-config": "not-created",
     "cleanup-export": "not-created",
     "github-setup": "not-created"
+  },
+  "deleted": {
+    "cleanup-split-components": 10,
+    "cleanup-organize-views": 11,
+    "ai-architecture": 1,
+    "ai-providers": 2,
+    "ai-insights-model": 3,
+    "ai-insights-view": 4,
+    "ai-writing-prompts": 5,
+    "ai-autocompletion": 6,
+    "ai-mood-detection": 7,
+    "ai-settings": 8,
+    "ai-onboarding": 9
   }
 }
-
