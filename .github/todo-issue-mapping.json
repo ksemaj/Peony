@@ -1,6 +1,7 @@
 {
   "comment": "Automatic mapping between Cursor TODO IDs and GitHub issue numbers",
   "mappings": {
+    "bug-notifications-not-working": 25
   },
   "completed": {
     "ux-growth-timeline": 12,

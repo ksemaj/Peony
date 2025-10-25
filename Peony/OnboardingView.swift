@@ -52,29 +52,20 @@ struct OnboardingView: View {
                     )
                     .tag(1)
                     
-                    // NEW: Notification toggle page
-                    NotificationTogglePage(
-                        wateringRemindersEnabled: $wateringRemindersEnabled,
-                        weeklyCheckinEnabled: $weeklyCheckinEnabled
-                    )
-                    .tag(2)
-                    
-                    // NEW: Notification time selection page
-                    NotificationTimeSelectionPage(
-                        wateringRemindersEnabled: wateringRemindersEnabled,
-                        weeklyCheckinEnabled: weeklyCheckinEnabled,
+                    // NEW: Simple notification time selection page
+                    SimpleNotificationTimePage(
                         wateringReminderHour: $wateringReminderHour,
                         wateringReminderMinute: $wateringReminderMinute
                     )
-                    .tag(3)
+                    .tag(2)
                     
                     OnboardingPageView(
                         emoji: "🌸",
                         title: "Begin Your Journey",
                         description: "Start planting seeds and cultivate your personal garden of growth",
-                        pageIndex: 4
+                        pageIndex: 3
                     )
-                    .tag(4)
+                    .tag(3)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .always))
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
@@ -100,7 +91,7 @@ struct OnboardingView: View {
                     }
                     
                     Button(action: {
-                        if currentPage < 4 {
+                        if currentPage < 3 {
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                                 currentPage += 1
                             }
@@ -118,7 +109,7 @@ struct OnboardingView: View {
                             }
                         }
                     }) {
-                        Text(currentPage == 4 ? "Get Started" : "Next")
+                        Text(currentPage == 3 ? "Get Started" : "Next")
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -318,118 +309,8 @@ struct OnboardingTutorialView: View {
     }
 }
 
-// MARK: - Notification Toggle Page (Page 3)
-struct NotificationTogglePage: View {
-    @Binding var wateringRemindersEnabled: Bool
-    @Binding var weeklyCheckinEnabled: Bool
-    
-    @State private var emojiScale: CGFloat = 0.5
-    @State private var emojiOpacity: Double = 0
-    @State private var textOpacity: Double = 0
-    
-    var body: some View {
-        VStack(spacing: 32) {
-            Spacer()
-            
-            // Animated bell emoji
-            Text("🔔")
-                .font(.system(size: 120))
-                .scaleEffect(emojiScale)
-                .opacity(emojiOpacity)
-                .animation(.spring(response: 0.8, dampingFraction: 0.6), value: emojiScale)
-                .animation(.easeIn(duration: 0.5), value: emojiOpacity)
-            
-            // Content card
-            VStack(spacing: 24) {
-                VStack(spacing: 8) {
-                    Text("Stay Connected")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
-                    
-                    Text("Would you like gentle reminders to nurture your garden?")
-                        .font(.body)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.gray)
-                        .padding(.horizontal)
-                }
-                
-                Divider()
-                    .padding(.horizontal)
-                
-                // Watering reminder toggle
-                Toggle(isOn: $wateringRemindersEnabled) {
-                    HStack(spacing: 8) {
-                        Text("💧")
-                            .font(.title3)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Daily Watering Reminder")
-                                .font(.headline)
-                                .foregroundColor(.black)
-                            Text("Get reminded to water your seeds")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                }
-                .toggleStyle(SwitchToggleStyle(tint: .green))
-                .padding(.horizontal, 20)
-                
-                Divider()
-                    .padding(.horizontal)
-                
-                // Weekly check-in toggle
-                Toggle(isOn: $weeklyCheckinEnabled) {
-                    HStack(spacing: 8) {
-                        Text("🌿")
-                            .font(.title3)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Weekly Garden Check-in")
-                                .font(.headline)
-                                .foregroundColor(.black)
-                            Text("Stay connected to your growth")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                }
-                .toggleStyle(SwitchToggleStyle(tint: .green))
-                .padding(.horizontal, 20)
-                
-                Text("You can customize times on the next screen")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                    .padding(.top, 8)
-            }
-            .padding(.vertical, 28)
-            .frame(maxWidth: .infinity)
-            .background(Color.white.opacity(0.9))
-            .cornerRadius(20)
-            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
-            .padding(.horizontal, 32)
-            .opacity(textOpacity)
-            .animation(.easeIn(duration: 0.6).delay(0.2), value: textOpacity)
-            
-            Spacer()
-            Spacer()
-        }
-        .onAppear {
-            emojiScale = 1.0
-            emojiOpacity = 1.0
-            textOpacity = 1.0
-        }
-        .onDisappear {
-            emojiScale = 0.5
-            emojiOpacity = 0
-            textOpacity = 0
-        }
-    }
-}
-
-// MARK: - Notification Time Selection Page (Page 4)
-struct NotificationTimeSelectionPage: View {
-    let wateringRemindersEnabled: Bool
-    let weeklyCheckinEnabled: Bool
+// MARK: - Simple Notification Time Page (Page 3)
+struct SimpleNotificationTimePage: View {
     @Binding var wateringReminderHour: Int
     @Binding var wateringReminderMinute: Int
     
@@ -451,13 +332,14 @@ struct NotificationTimeSelectionPage: View {
             
             // Content card
             VStack(spacing: 24) {
-                VStack(spacing: 8) {
-                    Text("Pick Your Time")
+                VStack(spacing: 12) {
+                    Text("What time works for you?")
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.black)
+                        .multilineTextAlignment(.center)
                     
-                    Text("When would you like to be reminded?")
+                    Text("We'll send you a gentle reminder to water your garden")
                         .font(.body)
                         .multilineTextAlignment(.center)
                         .foregroundColor(.gray)
@@ -467,52 +349,30 @@ struct NotificationTimeSelectionPage: View {
                 Divider()
                     .padding(.horizontal)
                 
-                if wateringRemindersEnabled {
-                    VStack(alignment: .leading, spacing: 16) {
-                        HStack(spacing: 8) {
-                            Text("💧")
-                                .font(.title3)
-                            Text("Daily Watering Reminder")
-                                .font(.headline)
-                                .foregroundColor(.black)
+                // Large time picker
+                DatePicker(
+                    "Reminder Time",
+                    selection: Binding(
+                        get: {
+                            var components = DateComponents()
+                            components.hour = wateringReminderHour
+                            components.minute = wateringReminderMinute
+                            return Calendar.current.date(from: components) ?? Date()
+                        },
+                        set: { newDate in
+                            let components = Calendar.current.dateComponents([.hour, .minute], from: newDate)
+                            wateringReminderHour = components.hour ?? 9
+                            wateringReminderMinute = components.minute ?? 0
                         }
-                        
-                        DatePicker(
-                            "Reminder Time",
-                            selection: Binding(
-                                get: {
-                                    var components = DateComponents()
-                                    components.hour = wateringReminderHour
-                                    components.minute = wateringReminderMinute
-                                    return Calendar.current.date(from: components) ?? Date()
-                                },
-                                set: { newDate in
-                                    let components = Calendar.current.dateComponents([.hour, .minute], from: newDate)
-                                    wateringReminderHour = components.hour ?? 9
-                                    wateringReminderMinute = components.minute ?? 0
-                                }
-                            ),
-                            displayedComponents: .hourAndMinute
-                        )
-                        .datePickerStyle(.wheel)
-                        .labelsHidden()
-                        .frame(maxWidth: .infinity)
-                    }
-                    .padding(.horizontal, 20)
-                } else {
-                    VStack(spacing: 12) {
-                        Text("No reminders enabled")
-                            .font(.headline)
-                            .foregroundColor(.gray)
-                        
-                        Text("You can always enable them later")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.vertical, 32)
-                }
+                    ),
+                    displayedComponents: .hourAndMinute
+                )
+                .datePickerStyle(.wheel)
+                .labelsHidden()
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 20)
                 
-                Text("You can change this anytime")
+                Text("You can always change this later")
                     .font(.caption)
                     .foregroundColor(.gray)
                     .padding(.top, 8)
