@@ -229,21 +229,6 @@ struct OnboardingTutorialView: View {
             .ignoresSafeArea()
             
             VStack {
-                // Close button
-                HStack {
-                    Spacer()
-                    Button {
-                        isPresented = false
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.title2)
-                            .foregroundColor(Color(red: 0.5, green: 0.5, blue: 0.5))
-                            .padding()
-                    }
-                }
-                
-                Spacer()
-                
                 // Page content
                 TabView(selection: $currentPage) {
                     OnboardingPageView(
@@ -347,9 +332,10 @@ struct SimpleNotificationTimePage: View {
             
             // Animated clock emoji
             Text("⏰")
-                .font(.system(size: 120))
+                .font(.system(size: 100))
                 .scaleEffect(emojiScale)
                 .opacity(emojiOpacity)
+                .padding(.top, 20)
                 .animation(.spring(response: 0.8, dampingFraction: 0.6), value: emojiScale)
                 .animation(.easeIn(duration: 0.5), value: emojiOpacity)
             
