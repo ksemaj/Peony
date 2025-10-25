@@ -30,14 +30,17 @@ enum AppConfig {
     
     // App Info
     static let appVersion = "1.1.0"
-    static let privacyPolicyURL = "https://example.com/privacy"
-    static let supportURL = "https://example.com/support"
+    // TODO: Replace with actual URLs before App Store submission
+    static let privacyPolicyURL = "https://example.com/privacy"  // FIXME: Replace before release
+    static let supportURL = "https://example.com/support"  // FIXME: Replace before release
     
     // AI Settings (Phase 3)
     enum AI {
         static var provider: AIProvider = .none
-        static var openAIKey: String? = nil
-        static var claudeKey: String? = nil
+        // ⚠️ SECURITY WARNING: Never store API keys in UserDefaults or code!
+        // Use Keychain for sensitive data. See SecureStorage utility in Phase 3.
+        static var openAIKey: String? = nil  // TODO: Move to Keychain
+        static var claudeKey: String? = nil  // TODO: Move to Keychain
         static var useOnDeviceML = true
     }
 }

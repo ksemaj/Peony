@@ -39,7 +39,7 @@ struct OnboardingView: View {
                     OnboardingPageView(
                         emoji: "🪴",
                         title: "Plant Seeds, Watch Them Grow",
-                        description: "Each journal entry is a seed that grows into a beautiful flower over 365 days",
+                        description: "Each journal entry is a seed that grows into a beautiful flower over time. Water them daily to speed up growth!",
                         pageIndex: 1
                     )
                     .tag(1)
@@ -218,7 +218,7 @@ struct OnboardingTutorialView: View {
                     OnboardingPageView(
                         emoji: "🪴",
                         title: "Plant Seeds, Watch Them Grow",
-                        description: "Each journal entry is a seed that grows into a beautiful flower over 365 days",
+                        description: "Each journal entry is a seed that grows into a beautiful flower over time. Water them daily to speed up growth!",
                         pageIndex: 1
                     )
                     .tag(1)

@@ -1,38 +1,44 @@
 # Xcode
 *.xcuserstate
-*.xcuserdatad
+*.xcuserdatad/
 xcuserdata/
-*.mode1v3
-*.mode2v3
-*.perspectivev3
-*.pbxuser
-!default.pbxuser
-*.xcworkspace
-!default.xcworkspace
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
 
 # macOS
 .DS_Store
 ._*
 
-# Cursor/Editor
+# Editor/IDE
 .cursor/
 .windsurfrules
-
-# Build
-build/
-DerivedData/
-*.ipa
-*.dSYM.zip
-*.dSYM
 
 # Swift Package Manager
 .swiftpm/
 .build/
+Packages/
 
 # CocoaPods
 Pods/
 
-# Temporary files
-*~
-.swp
+# Carthage
+Carthage/Build/
 
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Code coverage
+*.gcov
+*.gcda
+*.gcno
+
+# Backup files
+*.backup
+*~
