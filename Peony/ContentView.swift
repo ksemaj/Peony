@@ -8,46 +8,6 @@ struct ContentView: View {
     @Query(sort: \JournalSeed.plantedDate, order: .reverse) private var allSeeds: [JournalSeed]
     @State private var showingPlantSheet = false
     @State private var showingOnboarding = false
-    @State private var showingSettings = false
-    @State private var searchText = ""
-    @State private var selectedFilter: GrowthStageFilter = .all
-    
-    enum GrowthStageFilter: String, CaseIterable {
-        case all = "All"
-        case seed = "Seed"
-        case sprout = "Sprout"
-        case stem = "Growing"
-        case bud = "Budding"
-        case flower = "Bloomed"
-    }
-    
-    var filteredSeeds: [JournalSeed] {
-        var seeds = allSeeds
-        
-        // Apply search filter
-        if !searchText.isEmpty {
-            seeds = seeds.filter { seed in
-                seed.title.localizedCaseInsensitiveContains(searchText) ||
-                seed.content.localizedCaseInsensitiveContains(searchText)
-            }
-        }
-        
-        // Apply growth stage filter
-        if selectedFilter != .all {
-            seeds = seeds.filter { seed in
-                switch selectedFilter {
-                case .all: return true
-                case .seed: return seed.growthStage == .seed
-                case .sprout: return seed.growthStage == .sprout
-                case .stem: return seed.growthStage == .stem
-                case .bud: return seed.growthStage == .bud
-                case .flower: return seed.growthStage == .flower
-                }
-            }
-        }
-        
-        return seeds
-    }
     
     var body: some View {
         NavigationStack {
@@ -205,73 +165,16 @@ struct ContentView: View {
                         .frame(maxWidth: .infinity)
                     }
                 } else {
-                    VStack(spacing: 0) {
-                        // Filter picker
-                        if !allSeeds.isEmpty {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 12) {
-                                    ForEach(GrowthStageFilter.allCases, id: \.self) { filter in
-                                        Button {
-                                            selectedFilter = filter
-                                        } label: {
-                                            Text(filter.rawValue)
-                                                .font(.subheadline)
-                                                .fontWeight(selectedFilter == filter ? .semibold : .regular)
-                                                .foregroundColor(selectedFilter == filter ? .white : .green)
-                                                .padding(.horizontal, 16)
-                                                .padding(.vertical, 8)
-                                                .background(
-                                                    Capsule()
-                                                        .fill(selectedFilter == filter ? Color.green : Color.white.opacity(0.5))
-                                                )
-                                        }
-                                        .buttonStyle(.plain)
-                                    }
-                                }
-                                .padding(.horizontal)
-                            }
-                            .padding(.vertical, 12)
-                            .background(Color.clear)
-                        }
-                        
-                        if filteredSeeds.isEmpty {
-                            VStack(spacing: 16) {
-                                Image(systemName: "magnifyingglass")
-                                    .font(.system(size: 48))
-                                    .foregroundColor(.secondary)
-                                Text("No seeds found")
-                                    .font(.title3)
-                                    .fontWeight(.semibold)
-                                Text("Try adjusting your search or filter")
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        } else {
-                            GardenWithBedsView(seeds: filteredSeeds)
-                        }
-                    }
+                    GardenWithBedsView(seeds: allSeeds)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "Search your garden...")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Menu {
-                        Button {
-                            showingOnboarding = true
-                        } label: {
-                            Label("View Tutorial", systemImage: "questionmark.circle")
-                        }
-                        
-                        Button {
-                            showingSettings = true
-                        } label: {
-                            Label("Settings", systemImage: "gear")
-                        }
+                    Button {
+                        showingOnboarding = true
                     } label: {
-                        Image(systemName: "ellipsis.circle")
+                        Image(systemName: "questionmark.circle")
                             .foregroundColor(.green)
                     }
                 }
@@ -295,9 +198,6 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showingPlantSheet) {
                 PlantSeedView()
-            }
-            .sheet(isPresented: $showingSettings) {
-                SettingsView()
             }
             .fullScreenCover(isPresented: $showingOnboarding) {
                 OnboardingTutorialView(isPresented: $showingOnboarding)
@@ -1416,26 +1316,10 @@ struct PlantSeedView: View {
     }
     
     private func plantSeed() {
-        // Get default growth days from settings
-        let growthDays = UserDefaults.standard.integer(forKey: "defaultGrowthDays")
-        let actualGrowthDays = growthDays > 0 ? growthDays : 90
-        
-        let newSeed = JournalSeed(content: content, title: title, imageData: selectedImageData, growthDurationDays: actualGrowthDays)
+        let newSeed = JournalSeed(content: content, title: title, imageData: selectedImageData)
         modelContext.insert(newSeed)
         plantedSeed = newSeed
         showingSuccess = true
-        
-        // Request notification permission and schedule notifications
-        Task {
-            let notificationManager = NotificationManager.shared
-            if !notificationManager.isAuthorized {
-                _ = await notificationManager.requestAuthorization()
-            }
-            
-            if notificationManager.isAuthorized {
-                notificationManager.scheduleNotifications(for: newSeed)
-            }
-        }
     }
 }
 
@@ -2041,9 +1925,6 @@ struct SeedDetailView: View {
         .alert("Delete Entry", isPresented: $showingDeleteAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
-                // Cancel notifications for this seed
-                NotificationManager.shared.cancelNotifications(for: seed)
-                
                 modelContext.delete(seed)
                 dismiss()
             }

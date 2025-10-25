@@ -62,7 +62,7 @@ class JournalSeed {
         lastWateredDate = Date()
     }
     
-    init(content: String, title: String, imageData: Data? = nil, growthDurationDays: Int = 90) {
+    init(content: String, title: String, imageData: Data? = nil, growthDurationDays: Int = 45) {
         self.id = UUID()
         self.content = content
         self.plantedDate = Date()
