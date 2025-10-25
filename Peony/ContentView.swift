@@ -8,6 +8,7 @@ struct ContentView: View {
     @Query(sort: \JournalSeed.plantedDate, order: .reverse) private var allSeeds: [JournalSeed]
     @State private var showingPlantSheet = false
     @State private var showingOnboarding = false
+    @State private var showingNotificationSettings = false
     
     var body: some View {
         NavigationStack {
@@ -171,10 +172,20 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        showingOnboarding = true
+                    Menu {
+                        Button {
+                            showingOnboarding = true
+                        } label: {
+                            Label("View Tutorial", systemImage: "questionmark.circle")
+                        }
+                        
+                        Button {
+                            showingNotificationSettings = true
+                        } label: {
+                            Label("Notification Settings", systemImage: "bell")
+                        }
                     } label: {
-                        Image(systemName: "questionmark.circle")
+                        Image(systemName: "ellipsis.circle")
                             .foregroundColor(.green)
                     }
                 }
@@ -199,6 +210,9 @@ struct ContentView: View {
             .sheet(isPresented: $showingPlantSheet) {
                 PlantSeedView()
             }
+            .sheet(isPresented: $showingNotificationSettings) {
+                NotificationSettingsView()
+            }
             .fullScreenCover(isPresented: $showingOnboarding) {
                 OnboardingTutorialView(isPresented: $showingOnboarding)
             }
@@ -214,7 +228,7 @@ struct CustomTreeView: View {
     @State private var scale: CGFloat = 1.0
     
     var body: some View {
-                ZStack {
+        ZStack {
             // Tree trunk
             RoundedRectangle(cornerRadius: size * 0.08)
                 .fill(
@@ -271,23 +285,15 @@ struct CustomTreeView: View {
         .frame(width: size, height: size)
         .rotationEffect(.degrees(swayOffset))
         .scaleEffect(scale)
+        .drawingGroup() // Performance: Render as single layer
         .onAppear {
-            // Gentle sway animation
+            // Gentle sway animation (simplified for performance)
             withAnimation(
-                .easeInOut(duration: 3.0)
+                .easeInOut(duration: 4.0)
                 .repeatForever(autoreverses: true)
                 .delay(delay)
             ) {
-                swayOffset = 2.0
-            }
-            
-            // Leaf rustle animation
-            withAnimation(
-                .easeInOut(duration: 2.0)
-                .repeatForever(autoreverses: true)
-                .delay(delay + 0.5)
-            ) {
-                scale = 1.05
+                swayOffset = 1.5
             }
         }
     }
@@ -551,8 +557,9 @@ struct CustomFlowerView: View {
         }
         .frame(width: size, height: size)
         .shadow(color: .black.opacity(0.2), radius: size * 0.1, x: 0, y: size * 0.05)
+        .drawingGroup() // Performance: Render as single layer
         .onAppear {
-            withAnimation(.linear(duration: 20).repeatForever(autoreverses: false)) {
+            withAnimation(.linear(duration: 30).repeatForever(autoreverses: false)) {
                 petalRotation = 360
             }
         }
@@ -1320,6 +1327,29 @@ struct PlantSeedView: View {
         modelContext.insert(newSeed)
         plantedSeed = newSeed
         showingSuccess = true
+        
+        // Request notification permission and schedule notifications
+        Task {
+            let notificationManager = NotificationManager.shared
+            if !notificationManager.isAuthorized {
+                let granted = await notificationManager.requestAuthorization()
+                if granted {
+                    // Schedule bloom notification
+                    notificationManager.scheduleBloomNotification(for: newSeed)
+                    
+                    // Schedule watering reminder if enabled
+                    let wateringEnabled = UserDefaults.standard.bool(forKey: "wateringRemindersEnabled")
+                    notificationManager.scheduleDailyWateringReminder(enabled: wateringEnabled)
+                    
+                    // Schedule weekly check-in if enabled
+                    let weeklyEnabled = UserDefaults.standard.bool(forKey: "weeklyCheckinEnabled")
+                    notificationManager.scheduleWeeklyCheckin(enabled: weeklyEnabled)
+                }
+            } else {
+                // Already authorized, just schedule
+                notificationManager.scheduleBloomNotification(for: newSeed)
+            }
+        }
     }
 }
 
@@ -1453,8 +1483,133 @@ struct PlantingSuccessView: View {
     }
 }
 
+// MARK: - Watering Success View
+struct WateringSuccessView: View {
+    let seed: JournalSeed
+    let streakCount: Int
+    let multiplier: Double
+    let milestone: Int?
+    let onDismiss: () -> Void
+    
+    @State private var cardScale: CGFloat = 0.8
+    @State private var cardOpacity: Double = 0
+    @State private var dropletsVisible = false
+    @State private var showText = false
+    
+    var body: some View {
+        ZStack {
+            // Background blur
+            Color.black.opacity(0.3)
+                .ignoresSafeArea()
+                .opacity(cardOpacity)
+            
+            // Water droplet animations
+            if dropletsVisible {
+                ForEach(0..<15) { index in
+                    Text("💧")
+                        .font(.title)
+                        .offset(
+                            x: CGFloat.random(in: -150...150),
+                            y: -UIScreen.main.bounds.height / 2 + CGFloat(index) * 60
+                        )
+                        .animation(
+                            .linear(duration: 2.0).delay(Double(index) * 0.1),
+                            value: dropletsVisible
+                        )
+                }
+            }
+            
+            // Success card
+            VStack(spacing: 20) {
+                // Water droplet icon
+                Text("💧")
+                    .font(.system(size: 60))
+                
+                // Success message
+                VStack(spacing: 8) {
+                    Text("Watered!")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                    
+                    Text("+\(String(format: "%.1f", multiplier))% growth")
+                        .font(.headline)
+                        .foregroundColor(.blue)
+                    
+                    // Streak display
+                    if streakCount > 0 {
+                        HStack(spacing: 4) {
+                            Text("🔥")
+                            Text("\(streakCount) day streak!")
+                                .font(.subheadline)
+                                .foregroundColor(.orange)
+                        }
+                        .padding(.top, 4)
+                    }
+                    
+                    // Milestone celebration
+                    if let milestone = milestone {
+                        Text("🎉 \(milestone)-Day Milestone! 🎉")
+                            .font(.headline)
+                            .foregroundColor(.purple)
+                            .padding(.top, 8)
+                    }
+                }
+                .opacity(showText ? 1 : 0)
+            }
+            .padding(32)
+            .background(
+                RoundedRectangle(cornerRadius: 24)
+                    .fill(Color.white)
+                    .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
+            )
+            .frame(maxWidth: 320)
+            .scaleEffect(cardScale)
+            .opacity(cardOpacity)
+        }
+        .onAppear {
+            // Card animation
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+                cardScale = 1.0
+                cardOpacity = 1.0
+            }
+            
+            // Droplets
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                withAnimation {
+                    dropletsVisible = true
+                }
+            }
+            
+            // Text appears
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                withAnimation(.easeIn(duration: 0.3)) {
+                    showText = true
+                }
+            }
+            
+            // Haptic feedback
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            
+            // Auto-dismiss
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                    cardScale = 0.8
+                    cardOpacity = 0
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    onDismiss()
+                }
+            }
+        }
+    }
+}
+
 // MARK: - Watering Button
 struct WateringButton: View {
+    let seed: JournalSeed
     let canWater: Bool
     @Binding var showAnimation: Bool
     let onWater: () -> Void
@@ -1491,12 +1646,38 @@ struct WateringButton: View {
     
     var buttonLabel: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(canWater ? "Water Your Seed" : "Already Watered Today")
-                .font(.headline)
-                .foregroundColor(.black)
-            Text(canWater ? "Tap to give +1% growth" : "Come back tomorrow!")
-                .font(.caption)
-                .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
+            HStack(spacing: 8) {
+                Text(canWater ? "Water Your Seed" : "Already Watered Today")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                
+                // Show streak if active
+                if seed.currentStreakCount > 0 {
+                    HStack(spacing: 2) {
+                        Text("🔥")
+                            .font(.caption)
+                        Text("\(seed.currentStreakCount)")
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.orange)
+                    }
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(Color.orange.opacity(0.1))
+                    .cornerRadius(8)
+                }
+            }
+            
+            if canWater {
+                let multiplier = seed.wateringStreak?.streakMultiplier ?? 1.0
+                Text("Tap to give +\(String(format: "%.1f", multiplier))% growth")
+                    .font(.caption)
+                    .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
+            } else {
+                Text("Come back tomorrow!")
+                    .font(.caption)
+                    .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
+            }
         }
     }
     
@@ -1746,6 +1927,7 @@ struct SeedDetailView: View {
     @State private var showingEditSheet = false
     @State private var showingDeleteAlert = false
     @State private var showWateringAnimation = false
+    @State private var showWateringSuccess = false
     @State private var wateringScale: CGFloat = 1.0
     
     var body: some View {
@@ -1805,6 +1987,43 @@ struct SeedDetailView: View {
                         Text("\(seed.timesWatered)")
                             .foregroundColor(.black)
                     }
+                    
+                    // Streak information
+                    if seed.currentStreakCount > 0 {
+                        Divider()
+                        
+                        HStack {
+                            HStack(spacing: 4) {
+                                Text("🔥")
+                                Text("Current streak:")
+                            }
+                            .foregroundColor(.black)
+                            Spacer()
+                            Text("\(seed.currentStreakCount) days")
+                                .foregroundColor(.orange)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        HStack {
+                            Text("Streak bonus:")
+                                .foregroundColor(.black)
+                            Spacer()
+                            let multiplier = seed.wateringStreak?.streakMultiplier ?? 1.0
+                            Text("+\(String(format: "%.1f", multiplier))% per watering")
+                                .foregroundColor(.blue)
+                                .fontWeight(.semibold)
+                        }
+                    }
+                    
+                    if seed.longestStreakCount > 0 {
+                        HStack {
+                            Text("Longest streak:")
+                                .foregroundColor(.black)
+                            Spacer()
+                            Text("\(seed.longestStreakCount) days")
+                                .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
+                        }
+                    }
                 }
                 .padding()
                 .background(Color.white.opacity(0.8))
@@ -1813,12 +2032,20 @@ struct SeedDetailView: View {
                 // Watering mechanic
                 if seed.growthPercentage < 100 {
                     WateringButton(
+                        seed: seed,
                         canWater: seed.canWaterToday,
                         showAnimation: $showWateringAnimation,
                         onWater: {
+                            let milestone = seed.checkStreakMilestone()
+                            
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
                                 seed.water()
                                 showWateringAnimation = true
+                            }
+                            
+                            // Show success view
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                showWateringSuccess = true
                             }
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -1892,6 +2119,18 @@ struct SeedDetailView: View {
             )
             .ignoresSafeArea()
         )
+        .overlay {
+            if showWateringSuccess {
+                WateringSuccessView(
+                    seed: seed,
+                    streakCount: seed.currentStreakCount,
+                    multiplier: seed.wateringStreak?.streakMultiplier ?? 1.0,
+                    milestone: seed.checkStreakMilestone()
+                ) {
+                    showWateringSuccess = false
+                }
+            }
+        }
         .navigationTitle(seed.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -1925,6 +2164,9 @@ struct SeedDetailView: View {
         .alert("Delete Entry", isPresented: $showingDeleteAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
+                // Cancel notifications for this seed
+                NotificationManager.shared.cancelNotifications(for: seed)
+                
                 modelContext.delete(seed)
                 dismiss()
             }

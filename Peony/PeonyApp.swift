@@ -15,6 +15,7 @@ struct PeonyApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             JournalSeed.self,
+            WateringStreak.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

@@ -20,18 +20,22 @@ class JournalSeed {
     var growthDurationDays: Int
     var timesWatered: Int
     
+    // Relationship to watering streak
+    var wateringStreak: WateringStreak?
+    
     // Growth stages: 0-25% = seed, 26-50% = sprout, 51-75% = stem, 76-99% = bud, 100% = flower
     var growthPercentage: Double {
         let daysPassed = Calendar.current.dateComponents([.day], from: plantedDate, to: Date()).day ?? 0
         
-        // Base growth: 1% per day based on configured duration
+        // Base growth: natural growth based on days passed
         let baseGrowth = (Double(daysPassed) / Double(growthDurationDays)) * 100.0
         
-        // Watering bonus: each watering adds 1% extra growth
-        let wateringBonus = Double(timesWatered) * 1.0
+        // Watering bonus with streak multiplier
+        let multiplier = wateringStreak?.streakMultiplier ?? 1.0
+        let wateringBonus = Double(timesWatered) * AppConfig.wateringBonus * multiplier
         
         let totalGrowth = baseGrowth + wateringBonus
-        return min(totalGrowth, 100.0)
+        return min(totalGrowth, AppConfig.maxGrowthPercentage)
     }
     
     var canWaterToday: Bool {
@@ -58,8 +62,37 @@ class JournalSeed {
     
     func water() {
         guard canWaterToday else { return }
+        
+        // Initialize streak if needed
+        if wateringStreak == nil {
+            wateringStreak = WateringStreak(seedId: id)
+        }
+        
+        // Record the watering in the streak
+        wateringStreak?.recordWatering()
+        
+        // Update seed watering stats
         timesWatered += 1
         lastWateredDate = Date()
+    }
+    
+    // Get current streak count for UI display
+    var currentStreakCount: Int {
+        wateringStreak?.currentStreak ?? 0
+    }
+    
+    // Get longest streak for UI display
+    var longestStreakCount: Int {
+        wateringStreak?.longestStreak ?? 0
+    }
+    
+    // Check if we just hit a milestone
+    func checkStreakMilestone() -> Int? {
+        guard let streak = wateringStreak else { return nil }
+        if AppConfig.Streak.milestones.contains(streak.currentStreak) {
+            return streak.currentStreak
+        }
+        return nil
     }
     
     init(content: String, title: String, imageData: Data? = nil, growthDurationDays: Int = 45) {

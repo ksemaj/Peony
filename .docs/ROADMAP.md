@@ -1,54 +1,84 @@
 # Peony Roadmap 🌸
 
-**Version:** 1.2.0  
+**Version:** 1.3.0  
 **Last Updated:** October 25, 2025  
-**Status:** Core Focused - Post Soft Reset
+**Status:** Core Refined - Streaks & Notifications Active
 
 ---
 
-## Current State (v1.2.0)
+## Current State (v1.3.0)
 
-After the soft reset, Peony is back to its essential core:
+Phase 1 Core Refinement is complete!
 
 ### ✅ Core Features (Active)
 - **Plant Seeds** - Create journal entries with text and optional images
-- **Watering System** - Daily watering adds +1% growth
+- **Watering Streaks** - Build consecutive day streaks for bonus multipliers
+  - Days 1-6: +1.0% per watering
+  - Days 7-29: +1.5% per watering
+  - Day 30+: +2.0% per watering
 - **Growth Stages** - 5 stages from seed to full bloom (🌱→🌸)
-- **45-Day Growth Cycle** - Default bloom time (can be reduced to ~22 days with daily watering)
+- **45-Day Growth Cycle** - Default bloom time (can be reduced to ~15 days with perfect watering + streaks)
 - **Hidden Content** - Journal entries revealed only when fully bloomed
-- **Garden View** - Beautiful visual garden with custom-drawn plants
+- **Garden View** - Beautiful visual garden with optimized animations
 - **Edit & Delete** - Modify or remove seeds
 - **Onboarding** - First-time user tutorial
-
-### ❌ Removed (For Later)
-- Search & filtering
-- Export functionality (JSON/PDF)
-- Settings menu
-- Notifications system
+- **Notifications** - Bloom alerts, optional watering reminders, weekly check-ins
+- **Notification Settings** - Minimal settings for notification preferences
 
 ---
 
-## Phase 1: Core Refinement
-**Target:** v1.3.0  
-**Timeline:** 2-3 weeks  
-**Focus:** Polish the existing experience
+## Phase 1.5: Onboarding Enhancement
+**Target:** v1.3.1  
+**Timeline:** 1 week  
+**Focus:** Better first-time experience
 
-### Goals
-- [ ] Iterate on watering mechanic
-  - Explore watering rewards/feedback
-  - Consider watering streaks
-  - Visual watering effects
+### Goal
+Improve onboarding flow to set notification preferences upfront instead of requiring users to dig into settings.
 
-- [ ] Redesign notification system
-  - Minimal, mindful notifications
-  - Only essential reminders
-  - Smart timing based on user behavior
-  - Types: Bloom notifications, optional watering reminders, weekly garden check-ins
+### Implementation
+- [ ] **Add Notification Setup Card to Onboarding**
+  - New onboarding step after tutorial/garden intro
+  - Request notification permission
+  - Let users set preferred watering reminder time
+  - Option to enable/disable weekly check-in
+  - Default: Enable both with smart defaults (9 AM watering, Sunday 10 AM check-in)
+  - Can always change later in settings
 
-- [ ] Performance optimization
-  - Smooth animations
-  - Efficient SwiftData queries
-  - Memory management for images
+### Benefits
+- Users set preferences when context is fresh
+- Higher notification opt-in rate
+- Better engagement from day 1
+- Reduces friction of finding settings later
+- Users understand notification value upfront
+
+### UI Flow
+```
+Onboarding Flow:
+1. Welcome screen
+2. Tutorial (how seeds work)
+3. ✨ NEW: Notification Setup
+   - "Stay Connected to Your Garden"
+   - Request permission
+   - Time picker for watering reminder
+   - Toggle for weekly check-in
+   - Skip option for users who prefer not to
+4. Plant first seed
+```
+
+---
+
+## Phase 1: Core Refinement ✅ COMPLETED
+**Version:** v1.3.0  
+**Completed:** October 25, 2025
+
+### Achievements
+- ✅ Watering streak system with 3-tier multipliers
+- ✅ Visual watering celebrations with milestone tracking
+- ✅ Performance optimizations (.drawingGroup(), simplified animations)
+- ✅ Complete notification system (bloom, watering, weekly)
+- ✅ NotificationSettingsView for user preferences
+- ✅ Streak UI (badges, stats, celebrations)
+- ✅ Premium hooks documented in Config.swift
 
 ---
 
