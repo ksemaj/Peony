@@ -22,7 +22,6 @@ struct ContentView: View {
     @Query(sort: \JournalSeed.plantedDate, order: .reverse) private var allSeeds: [JournalSeed]
     @State private var showingPlantSheet = false
     @State private var showingOnboarding = false
-    @State private var showingPaywall = false
     
     var body: some View {
         NavigationStack {
@@ -43,8 +42,7 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     GardenToolbarButtons(
-                        showingOnboarding: $showingOnboarding,
-                        showingPaywall: $showingPaywall
+                        showingOnboarding: $showingOnboarding
                     )
                 }
                 
@@ -67,9 +65,6 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showingOnboarding) {
                 OnboardingTutorialView(isPresented: $showingOnboarding)
-            }
-            .sheet(isPresented: $showingPaywall) {
-                PaywallView()
             }
         }
     }

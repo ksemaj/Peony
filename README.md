@@ -69,8 +69,8 @@ Peony/
 ├── Views/
 │   ├── Garden/ (10 files) - Seed management & layout
 │   ├── Notes/ (7 files) - Quick notes & journal
-│   ├── Premium/ - Paywall & monetization
-│   └── Shared/ - Reusable utilities
+│   ├── Onboarding/ (5 files) - First-time experience
+│   └── Shared/ (3 files) - Reusable utilities
 ├── Models/ (7 files) - SwiftData models & extensions
 └── Utilities/
     ├── AI/ - Mood, prompts, themes, suggestions
@@ -147,7 +147,6 @@ open Peony.xcodeproj
 - `NotesView` - Journal entry list
 - `NoteDetailView` - View/edit notes
 - `OnboardingView` - First-time setup
-- `PaywallView` - Premium features (planned)
 
 ---
 
@@ -204,7 +203,6 @@ open Peony.xcodeproj
 **Toolbar Buttons** (visible in Garden tab):
 - `?` - Help/Onboarding
 - 🔔 - Test notifications
-- 👑 - Paywall preview
 - `+` - Plant new seed
 
 ### Debug Mode
@@ -286,16 +284,16 @@ Previous documentation in [`.archive/`](./.archive/) - Not actively maintained
 - ✅ Code architecture refactor
 
 ### In Progress 🚧
-- Premium features (paywall implemented, features TBD)
+- Data export/backup functionality
 - iCloud sync preparation
 - Additional plant varieties
 
 ### Planned 📅
 - Garden customization
 - Advanced AI insights
-- Export/backup functionality
 - Social features (optional)
 - Widget support
+- Premium features (future consideration)
 
 ---
 

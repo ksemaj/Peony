@@ -49,16 +49,12 @@ enum AppConfig {
     
     // App Info
     static let appVersion = "2.6.0"
-    // TODO: Replace with actual URLs before App Store submission
-    static let privacyPolicyURL = "https://example.com/privacy"  // FIXME: Replace before release
-    static let supportURL = "https://example.com/support"  // FIXME: Replace before release
     
-    // Premium Features (v4.0 - Future Implementation)
-    enum Premium {
-        static let freeWateringsPerDay = 1
-        static let premiumWateringsPerDay = 3
-        static let premiumStreakBoost = 1.25 // 25% extra streak bonus
-    }
+    // Privacy & Support URLs
+    // TODO: Create actual privacy policy and support pages before App Store submission
+    // Uncomment and update these when ready:
+    // static let privacyPolicyURL = "https://yourdomain.com/privacy"
+    // static let supportURL = "https://yourdomain.com/support"
     
     // AI Settings (v2.5 - On-Device Implementation)
     // Note: AI settings now managed by AppSettings utility

@@ -7,28 +7,17 @@
 
 import SwiftUI
 
-/// Garden view leading toolbar buttons (help and paywall only)
+/// Garden view leading toolbar buttons (help/tutorial)
 struct GardenToolbarButtons: View {
     @Binding var showingOnboarding: Bool
-    @Binding var showingPaywall: Bool
     
     var body: some View {
-        HStack(spacing: 12) {
-            // Help button
-            Button {
-                showingOnboarding = true
-            } label: {
-                Image(systemName: "questionmark.circle")
-                    .foregroundColor(.green)
-            }
-            
-            // Paywall button (for testing premium features)
-            Button {
-                showingPaywall = true
-            } label: {
-                Image(systemName: "crown.fill")
-                    .foregroundColor(.yellow)
-            }
+        // Help button
+        Button {
+            showingOnboarding = true
+        } label: {
+            Image(systemName: "questionmark.circle")
+                .foregroundColor(.green)
         }
     }
 }
@@ -76,8 +65,7 @@ struct NotificationTestButton: View {
 
 #Preview {
     GardenToolbarButtons(
-        showingOnboarding: .constant(false),
-        showingPaywall: .constant(false)
+        showingOnboarding: .constant(false)
     )
     .padding()
 }
