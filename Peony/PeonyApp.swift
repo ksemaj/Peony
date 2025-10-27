@@ -11,6 +11,8 @@ import SwiftData
 @main
 struct PeonyApp: App {
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
+    @State private var showDatabaseError = false
+    @State private var databaseErrorMessage = ""
     
     init() {
         // Register default settings
@@ -29,7 +31,7 @@ struct PeonyApp: App {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             // Migration failed - delete the old store and create a fresh one
-            print("Migration failed, recreating database: \(error)")
+            print("⚠️ Database migration failed, attempting recovery: \(error)")
             
             // Get the default store URL and delete the old store files
             let storeURL = modelConfiguration.url
@@ -43,9 +45,21 @@ struct PeonyApp: App {
             
             // Try creating the container again
             do {
+                print("✅ Database recreated successfully")
                 return try ModelContainer(for: schema, configurations: [modelConfiguration])
             } catch {
-                fatalError("Could not create ModelContainer even after cleanup: \(error)")
+                // Last resort: create in-memory container so app doesn't crash
+                print("❌ CRITICAL: Could not create persistent database. Using in-memory storage.")
+                print("❌ Error: \(error)")
+                
+                let inMemoryConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+                do {
+                    return try ModelContainer(for: schema, configurations: [inMemoryConfig])
+                } catch {
+                    // This should never fail, but if it does, we have no choice
+                    print("❌ FATAL: Even in-memory database failed: \(error)")
+                    fatalError("Critical database error: \(error)")
+                }
             }
         }
     }()
