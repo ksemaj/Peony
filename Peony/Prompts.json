@@ -1,0 +1,363 @@
+[
+  {
+    "id": "gratitude-01",
+    "text": "What made you smile today?",
+    "category": "Gratitude",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "gratitude-02",
+    "text": "List three things you're grateful for right now.",
+    "category": "Gratitude",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "gratitude-03",
+    "text": "Who made your day better, and how?",
+    "category": "Gratitude",
+    "timeOfDay": ["evening"]
+  },
+  {
+    "id": "gratitude-04",
+    "text": "What small comfort are you thankful for today?",
+    "category": "Gratitude",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "gratitude-05",
+    "text": "What's something beautiful you noticed today?",
+    "category": "Gratitude",
+    "timeOfDay": ["evening"]
+  },
+  {
+    "id": "reflection-01",
+    "text": "What did you learn about yourself this week?",
+    "category": "Reflection",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "reflection-02",
+    "text": "How do you feel right now, and why?",
+    "category": "Reflection",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "reflection-03",
+    "text": "What's been on your mind lately?",
+    "category": "Reflection",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "reflection-04",
+    "text": "Describe a moment from today in detail.",
+    "category": "Reflection",
+    "timeOfDay": ["evening"]
+  },
+  {
+    "id": "reflection-05",
+    "text": "What made today unique?",
+    "category": "Reflection",
+    "timeOfDay": ["evening"]
+  },
+  {
+    "id": "reflection-06",
+    "text": "What surprised you recently?",
+    "category": "Reflection",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "reflection-07",
+    "text": "How are you different than you were a year ago?",
+    "category": "Reflection",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "reflection-08",
+    "text": "What do you need more of in your life?",
+    "category": "Reflection",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "goals-01",
+    "text": "What are you looking forward to this week?",
+    "category": "Goals",
+    "timeOfDay": ["morning", "anytime"]
+  },
+  {
+    "id": "goals-02",
+    "text": "What's one thing you want to accomplish today?",
+    "category": "Goals",
+    "timeOfDay": ["morning"]
+  },
+  {
+    "id": "goals-03",
+    "text": "What are you working toward right now?",
+    "category": "Goals",
+    "timeOfDay": ["morning", "afternoon"]
+  },
+  {
+    "id": "goals-04",
+    "text": "What would make this week feel successful?",
+    "category": "Goals",
+    "timeOfDay": ["morning"]
+  },
+  {
+    "id": "goals-05",
+    "text": "What's one step you can take toward your goals?",
+    "category": "Goals",
+    "timeOfDay": ["morning", "afternoon"]
+  },
+  {
+    "id": "goals-06",
+    "text": "What do you want to focus on this month?",
+    "category": "Goals",
+    "timeOfDay": ["morning", "anytime"]
+  },
+  {
+    "id": "goals-07",
+    "text": "What habit would you like to build?",
+    "category": "Goals",
+    "timeOfDay": ["morning", "anytime"]
+  },
+  {
+    "id": "memories-01",
+    "text": "Describe a favorite moment from today.",
+    "category": "Memories",
+    "timeOfDay": ["evening"]
+  },
+  {
+    "id": "memories-02",
+    "text": "What's a memory that makes you happy?",
+    "category": "Memories",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "memories-03",
+    "text": "Write about a place that feels like home.",
+    "category": "Memories",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "memories-04",
+    "text": "What's a conversation you want to remember?",
+    "category": "Memories",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "memories-05",
+    "text": "Describe a perfect day you've experienced.",
+    "category": "Memories",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "memories-06",
+    "text": "What's something you never want to forget?",
+    "category": "Memories",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "memories-07",
+    "text": "Write about a time you felt proud.",
+    "category": "Memories",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "feelings-01",
+    "text": "What emotion are you sitting with right now?",
+    "category": "Feelings",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "feelings-02",
+    "text": "What's making you feel energized or drained?",
+    "category": "Feelings",
+    "timeOfDay": ["afternoon", "evening"]
+  },
+  {
+    "id": "feelings-03",
+    "text": "How are you really feeling today?",
+    "category": "Feelings",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "feelings-04",
+    "text": "What do you need to let go of?",
+    "category": "Feelings",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "feelings-05",
+    "text": "What brings you peace?",
+    "category": "Feelings",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "feelings-06",
+    "text": "What's weighing on your heart?",
+    "category": "Feelings",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "feelings-07",
+    "text": "What makes you feel alive?",
+    "category": "Feelings",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "feelings-08",
+    "text": "What are you afraid of right now?",
+    "category": "Feelings",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "feelings-09",
+    "text": "What fills your cup?",
+    "category": "Feelings",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "growth-01",
+    "text": "What challenged you recently, and how did you handle it?",
+    "category": "Growth",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "growth-02",
+    "text": "What's something you're getting better at?",
+    "category": "Growth",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "growth-03",
+    "text": "What mistake taught you something valuable?",
+    "category": "Growth",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "growth-04",
+    "text": "What comfort zone are you ready to step out of?",
+    "category": "Growth",
+    "timeOfDay": ["morning", "anytime"]
+  },
+  {
+    "id": "growth-05",
+    "text": "What strength did you discover in yourself?",
+    "category": "Growth",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "growth-06",
+    "text": "How have you surprised yourself lately?",
+    "category": "Growth",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "growth-07",
+    "text": "What lesson keeps showing up for you?",
+    "category": "Growth",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "growth-08",
+    "text": "What are you learning to accept?",
+    "category": "Growth",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "gratitude-06",
+    "text": "What opportunity are you grateful for?",
+    "category": "Gratitude",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "gratitude-07",
+    "text": "Who has supported you recently?",
+    "category": "Gratitude",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "gratitude-08",
+    "text": "What simple pleasure did you enjoy today?",
+    "category": "Gratitude",
+    "timeOfDay": ["evening"]
+  },
+  {
+    "id": "reflection-09",
+    "text": "What would you tell your past self?",
+    "category": "Reflection",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "reflection-10",
+    "text": "What pattern do you notice in your life?",
+    "category": "Reflection",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "goals-08",
+    "text": "What dream feels possible right now?",
+    "category": "Goals",
+    "timeOfDay": ["morning", "anytime"]
+  },
+  {
+    "id": "goals-09",
+    "text": "What's your intention for today?",
+    "category": "Goals",
+    "timeOfDay": ["morning"]
+  },
+  {
+    "id": "memories-08",
+    "text": "What's a lesson someone taught you?",
+    "category": "Memories",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "memories-09",
+    "text": "Describe a moment when you felt truly yourself.",
+    "category": "Memories",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "feelings-10",
+    "text": "What do you appreciate about yourself?",
+    "category": "Feelings",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "feelings-11",
+    "text": "What's something you're looking forward to?",
+    "category": "Feelings",
+    "timeOfDay": ["morning", "anytime"]
+  },
+  {
+    "id": "growth-09",
+    "text": "What risk paid off for you?",
+    "category": "Growth",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "growth-10",
+    "text": "What boundary have you set for yourself?",
+    "category": "Growth",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "reflection-11",
+    "text": "What brings you joy lately?",
+    "category": "Reflection",
+    "timeOfDay": ["anytime"]
+  },
+  {
+    "id": "reflection-12",
+    "text": "What do you want to remember about this season of life?",
+    "category": "Reflection",
+    "timeOfDay": ["evening", "anytime"]
+  },
+  {
+    "id": "goals-10",
+    "text": "What would make you proud of yourself?",
+    "category": "Goals",
+    "timeOfDay": ["morning", "afternoon"]
+  }
+]
+

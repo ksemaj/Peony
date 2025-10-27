@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NoteRowView: View {
-    let note: QuickNote
+    let note: JournalEntry
     @State private var isPressed = false
     
     var body: some View {
@@ -33,10 +33,26 @@ struct NoteRowView: View {
                 
                 Spacer()
                 
-                // Show mood emoji if detected (future AI feature)
+                // Show mood emoji if detected (v2.5 Week 1)
                 if let mood = note.detectedMood {
                     Text(moodEmoji(mood))
                         .font(.caption)
+                }
+                
+                // Seed suggestion badge (v2.5 Week 4)
+                let shouldSuggest = SeedSuggestionEngine.shouldSuggestAsSeed(note)
+                if shouldSuggest {
+                    HStack(spacing: 4) {
+                        Text("🌱")
+                            .font(.caption2)
+                        Text("Plant as Seed")
+                            .font(.caption2)
+                            .fontWeight(.medium)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.green.opacity(0.15))
+                    .cornerRadius(8)
                 }
             }
         }
@@ -62,7 +78,7 @@ struct NoteRowView: View {
 }
 
 #Preview {
-    NoteRowView(note: QuickNote(content: "This is a sample note with some content to preview how it looks in the list view. It should show the first few lines."))
+    NoteRowView(note: JournalEntry(content: "This is a sample note with some content to preview how it looks in the list view. It should show the first few lines."))
         .padding()
 }
 

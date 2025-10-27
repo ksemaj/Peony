@@ -20,12 +20,13 @@ Peony transforms the journaling experience by gamifying personal growth. Each jo
 - 🔥 **Watering Streaks** - Build daily habits with streak multipliers
 - ✏️ **Edit & Delete** - Modify or remove seeds at any time
 
-**Quick Notes (Daily Journaling) - NEW!**
+**Quick Notes (Daily Journaling):**
 - 📝 **Quick Capture** - Write notes instantly, no growth cycle
 - 📅 **Chronological List** - All notes sorted by date
 - 🔍 **Preview & Search** - Browse with word count and previews
 - ✏️ **Full CRUD** - Create, read, update, delete instantly
 - 🎨 **Same Beautiful UI** - Consistent garden-themed design
+- 🤖 **AI Features (v2.5)** - Mood detection & writing prompts
 
 **Garden Experience:**
 - 🎨 **Beautiful Garden** - Custom-drawn plants, trees, and decorative flora
@@ -64,7 +65,8 @@ Peony/
 ├── OnboardingView.swift        # First-time user experience
 ├── Models/
 │   ├── JournalSeed.swift       # Seed data model
-│   ├── QuickNote.swift         # Note data model (v2.0)
+│   ├── JournalEntry.swift      # Journal entry model (v2.0, renamed from QuickNote in v2.6)
+│   ├── WritingPrompt.swift     # Writing prompt model (v2.5)
 │   ├── WateringStreak.swift    # Streak tracking (v1.3.0)
 │   ├── GrowthStage.swift       # Growth stage enum
 │   ├── ColorExtensions.swift   # Design system colors
@@ -80,7 +82,10 @@ Peony/
 │   └── Shared/                 # Shared components
 ├── Utilities/
 │   ├── NotificationManager.swift  # Notification system
-│   └── ExportManager.swift        # Export utilities
+│   ├── ExportManager.swift        # Export utilities
+│   └── AI/                        # AI features (v2.5)
+│       ├── MoodDetector.swift     # Sentiment analysis
+│       └── PromptGenerator.swift  # Writing prompts
 └── Components/                 # Custom UI components (in ContentView)
     ├── Flora/                  # Decorative plants (trees, bushes, etc.)
     ├── Plants/                 # Growth stage visualizations
@@ -163,33 +168,72 @@ xcodebuild -scheme Peony -destination 'platform=iOS Simulator,name=iPhone 15'
 - ✨ Better readability with proper text contrast throughout
 - 📈 Higher notification opt-in rates with contextual setup
 
-### ✅ v2.0.0 - Quick Notes (Current - Phase 2.1 Complete)
+### ✅ v2.0.0 - Quick Notes (COMPLETE)
 **Dual journaling modes:**
 - 📝 Quick Notes feature for daily journaling
 - 🗂️ Tab navigation between Garden (seeds) and Notes
 - ✏️ Full CRUD operations (create, read, update, delete)
-- 📊 Word/character count and metadata
+- 🔍 Search functionality with time filters
+- 📊 Statistics view with writing insights
 - 🎨 Consistent garden-themed UI design
+- ✨ Smooth animations and haptic feedback
 - 🔮 Future-ready for AI mood detection
 
-**Phase 2.1 Complete (Foundation):**
-- ✅ QuickNote data model with SwiftData
-- ✅ MainAppView with tab navigation
-- ✅ NotesView with empty state and list
-- ✅ Create, edit, detail, and row views
-- ✅ Beautiful UI consistent with garden theme
+**All Phases Complete:**
+- ✅ Phase 2.1: QuickNote data model, tab navigation, CRUD views
+- ✅ Phase 2.2: Animations, transitions, haptic feedback
+- ✅ Phase 2.3: Search by content, time filters (All/Week/Month)
+- ✅ Phase 2.4: Statistics view (total notes, word counts, trends)
 
-**Next Phases:**
-- Phase 2.2: Polish & animations
-- Phase 2.3: Search & organization
-- Phase 2.4: Statistics & insights
+### ✅ v2.5.1 - On-Device AI Features (COMPLETE)
+**Intelligent journaling with complete privacy:**
+- ✅ **Week 1: Mood Detection** - Auto-detect mood using NaturalLanguage framework
+  - Sentiment analysis on all notes
+  - Mood filter chips (joyful, grateful, reflective, thoughtful, peaceful)
+  - Works completely offline, 100% private
+- ✅ **Week 2: Writing Prompts** - Daily inspiration to write
+  - 60 curated prompts across 6 categories
+  - Smart rotation (time-aware, no repeats)
+  - One-tap note creation from prompts
+  - Skip functionality for new prompt
+- ✅ **Week 3: Pattern Recognition** - Extract recurring themes
+  - Simple keyword frequency analysis
+  - Top 10 themes displayed in collapsible card
+  - Themes shown in statistics view with visual bars
+  - Filters common stop words automatically
+- ✅ **Week 4: Smart Suggestions** - Suggest planting notes as seeds
+  - AI suggests meaningful notes (150+ words, reflective mood)
+  - "Plant as Seed" badges on qualifying notes
+  - One-tap conversion from note to seed
+  - AI settings integrated into onboarding flow
+
+**Technical:**
+- Zero ongoing costs ($0/month)
+- Apple NaturalLanguage framework
+- All processing on-device
+- No API keys or servers needed
+- Works completely offline
+
+### ✅ v2.6 - Journal Refactor (COMPLETE)
+**Simplified and refocused journaling experience:**
+- ✅ Renamed "Quick Notes" → "Journal" throughout app
+- ✅ Renamed `QuickNote` model → `JournalEntry`
+- ✅ Two clear writing paths: Free Write or Prompted Writing
+- ✅ Removed mood filtering from main UI (kept in stats)
+- ✅ Simplified UX with focus on reflection over categorization
+- ✅ Seed suggestions integrated for meaningful entries (150+ words)
+- ✅ Updated all documentation and code comments
 
 ### 🔮 Future Development
-See [QUICK_NOTES_PLAN.md](QUICK_NOTES_PLAN.md) for detailed Quick Notes roadmap.
 
 Longer-term plans:
-- **v2.5** - AI Assistant (prompts, insights, mood detection)
-- **v3.0** - Gamification & sharing
+- **v2.7** - Cloud AI (optional premium features)
+- **v3.0** - Mind Mapping & Thought Connections
+  - See [MIND_MAP_IDEAS.md](.docs/MIND_MAP_IDEAS.md) for detailed concepts
+  - Visual connections between entries
+  - Branching thought threads
+  - Discover patterns in reflections
+- **v3.5** - Gamification & sharing
 - **v4.0** - Premium features & monetization
 
 ## Testing
@@ -288,9 +332,9 @@ When AI features are added (v2.5+):
 
 ## Credits
 
-**Developer:** James Kinsey  
-**Version:** 1.2.0  
-**Platform:** iOS 17.0+  
+**Developer:** James Kinsey
+**Version:** 2.6.0
+**Platform:** iOS 17.0+
 **Framework:** SwiftUI + SwiftData
 
 ## License

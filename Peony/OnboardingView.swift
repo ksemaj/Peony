@@ -13,6 +13,12 @@ struct OnboardingView: View {
     @State private var currentPage = 0
     @StateObject private var notificationManager = NotificationManager.shared
     
+    // AI preferences (v2.5)
+    @AppStorage("aiMoodDetectionEnabled") private var moodDetectionEnabled = true
+    @AppStorage("aiPromptFrequency") private var promptFrequency = "daily"
+    @AppStorage("aiThemeAnalysisEnabled") private var themeAnalysisEnabled = true
+    @AppStorage("aiSeedSuggestionsEnabled") private var seedSuggestionsEnabled = true
+    
     // Notification preferences
     @AppStorage("wateringRemindersEnabled") private var wateringRemindersEnabled = true
     @AppStorage("wateringReminderHour") private var wateringReminderHour = AppConfig.Notifications.defaultWateringReminderHour
@@ -54,26 +60,35 @@ struct OnboardingView: View {
                     
                     OnboardingPageView(
                         emoji: "📝",
-                        title: "Quick Notes: Daily Capture",
-                        description: "Need to jot something down quickly? Use Quick Notes for instant journaling with immediate access. Perfect for daily thoughts, observations, and reflections.",
+                        title: "Journal: Daily Capture",
+                        description: "Need to jot something down quickly? Use the Journal for instant writing with immediate access. Perfect for daily thoughts, observations, and reflections.",
                         pageIndex: 2
                     )
                     .tag(2)
+                    
+                    // AI Features page (v2.5)
+                    AIFeaturesPage(
+                        moodDetectionEnabled: $moodDetectionEnabled,
+                        promptFrequency: $promptFrequency,
+                        themeAnalysisEnabled: $themeAnalysisEnabled,
+                        seedSuggestionsEnabled: $seedSuggestionsEnabled
+                    )
+                    .tag(3)
                     
                     // Notification time selection page
                     SimpleNotificationTimePage(
                         wateringReminderHour: $wateringReminderHour,
                         wateringReminderMinute: $wateringReminderMinute
                     )
-                    .tag(3)
+                    .tag(4)
                     
                     OnboardingPageView(
                         emoji: "🌸",
                         title: "Begin Your Journey",
-                        description: "Two journaling modes, one beautiful garden. Start planting seeds and writing notes today!",
-                        pageIndex: 4
+                        description: "Two journaling modes, one beautiful garden. Start planting seeds and writing in your journal today!",
+                        pageIndex: 5
                     )
-                    .tag(4)
+                    .tag(5)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .always))
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
@@ -99,7 +114,7 @@ struct OnboardingView: View {
                     }
                     
                     Button(action: {
-                        if currentPage < 4 {
+                        if currentPage < 5 {
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                                 currentPage += 1
                             }
@@ -129,7 +144,7 @@ struct OnboardingView: View {
                             }
                         }
                     }) {
-                        Text(currentPage == 4 ? "Get Started" : "Next")
+                        Text(currentPage == 5 ? "Get Started" : "Next")
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -257,8 +272,8 @@ struct OnboardingTutorialView: View {
                     
                     OnboardingPageView(
                         emoji: "📝",
-                        title: "Quick Notes: Daily Capture",
-                        description: "Need to jot something down quickly? Use Quick Notes for instant journaling with immediate access. Perfect for daily thoughts, observations, and reflections.",
+                        title: "Journal: Daily Capture",
+                        description: "Need to jot something down quickly? Use the Journal for instant writing with immediate access. Perfect for daily thoughts, observations, and reflections.",
                         pageIndex: 2
                     )
                     .tag(2)
@@ -273,7 +288,7 @@ struct OnboardingTutorialView: View {
                     OnboardingPageView(
                         emoji: "🌸",
                         title: "Begin Your Journey",
-                        description: "Two journaling modes, one beautiful garden. Start planting seeds and writing notes today!",
+                        description: "Two journaling modes, one beautiful garden. Start planting seeds and writing in your journal today!",
                         pageIndex: 4
                     )
                     .tag(4)
@@ -410,6 +425,149 @@ struct SimpleNotificationTimePage: View {
             .padding(.horizontal, 32)
             .opacity(textOpacity)
             .animation(.easeIn(duration: 0.6).delay(0.2), value: textOpacity)
+            
+            Spacer()
+            Spacer()
+        }
+        .onAppear {
+            emojiScale = 1.0
+            emojiOpacity = 1.0
+            textOpacity = 1.0
+        }
+        .onDisappear {
+            emojiScale = 0.5
+            emojiOpacity = 0
+            textOpacity = 0
+        }
+    }
+}
+
+// MARK: - AI Features Page (Page 3)
+
+struct AIFeaturesPage: View {
+    @Binding var moodDetectionEnabled: Bool
+    @Binding var promptFrequency: String
+    @Binding var themeAnalysisEnabled: Bool
+    @Binding var seedSuggestionsEnabled: Bool
+    
+    @State private var emojiScale: CGFloat = 0.5
+    @State private var emojiOpacity: Double = 0
+    @State private var textOpacity: Double = 0
+    
+    var body: some View {
+        VStack(spacing: 30) {
+            Spacer()
+            
+            // Emoji header with animation
+            Text("🤖")
+                .font(.system(size: 80))
+                .scaleEffect(emojiScale)
+                .opacity(emojiOpacity)
+                .animation(.spring(response: 0.6, dampingFraction: 0.7), value: emojiScale)
+                .animation(.easeIn(duration: 0.5), value: emojiOpacity)
+            
+            // Title and description
+            VStack(spacing: 12) {
+                Text("AI Features")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(.black)
+                
+                Text("Enhance your journaling with on-device intelligence")
+                    .font(.body)
+                    .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+            }
+            .opacity(textOpacity)
+            
+            // Settings card
+            VStack(alignment: .leading, spacing: 20) {
+                // Mood Detection
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Mood Detection")
+                            .font(.headline)
+                            .foregroundColor(.black)
+                        Text("Automatically detect the mood of your journal entries")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                    Spacer()
+                    Toggle("", isOn: $moodDetectionEnabled)
+                        .labelsHidden()
+                }
+                
+                Divider()
+                
+                // Writing Prompts
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Writing Prompts")
+                        .font(.headline)
+                        .foregroundColor(.black)
+                    Text("Get daily inspiration to write")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    
+                    Picker("Frequency", selection: $promptFrequency) {
+                        Text("Daily").tag("daily")
+                        Text("Weekly").tag("weekly")
+                        Text("Off").tag("off")
+                    }
+                    .pickerStyle(.segmented)
+                }
+                
+                Divider()
+                
+                // Theme Analysis
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Theme Analysis")
+                            .font(.headline)
+                            .foregroundColor(.black)
+                        Text("Discover recurring themes in your writing")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                    Spacer()
+                    Toggle("", isOn: $themeAnalysisEnabled)
+                        .labelsHidden()
+                }
+                
+                Divider()
+                
+                // Seed Suggestions
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Seed Suggestions")
+                            .font(.headline)
+                            .foregroundColor(.black)
+                        Text("Get suggestions to plant meaningful entries as seeds")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                    Spacer()
+                    Toggle("", isOn: $seedSuggestionsEnabled)
+                        .labelsHidden()
+                }
+            }
+            .padding(20)
+            .background(Color.white.opacity(0.9))
+            .cornerRadius(16)
+            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
+            .padding(.horizontal, 32)
+            .opacity(textOpacity)
+            
+            // Privacy note
+            HStack(spacing: 8) {
+                Text("🔒")
+                    .font(.caption)
+                Text("All AI processing happens on your device. Your data never leaves your iPhone.")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.horizontal, 40)
+            .opacity(textOpacity)
             
             Spacer()
             Spacer()

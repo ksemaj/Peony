@@ -12,11 +12,16 @@ import SwiftData
 struct PeonyApp: App {
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     
+    init() {
+        // Register default settings (v2.5 AI features)
+        AppConfig.AI.registerDefaults()
+    }
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             JournalSeed.self,
             WateringStreak.self,
-            QuickNote.self, // v2.0 - Quick Notes feature
+            JournalEntry.self, // v2.0 - Journal feature (renamed from QuickNote in v2.6)
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -49,7 +54,7 @@ struct PeonyApp: App {
         WindowGroup {
             Group {
                 if hasSeenOnboarding {
-                    MainAppView() // v2.0 - Tab navigation (Garden + Notes)
+                    MainAppView() // v2.0 - Tab navigation (Garden + Journal)
                         .id("main-content")
                 } else {
                     OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)

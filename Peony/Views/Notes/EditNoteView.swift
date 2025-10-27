@@ -9,12 +9,12 @@ import SwiftUI
 import SwiftData
 
 struct EditNoteView: View {
-    let note: QuickNote
+    let note: JournalEntry
     @Environment(\.dismiss) private var dismiss
     @State private var content: String
     @FocusState private var isFocused: Bool
     
-    init(note: QuickNote) {
+    init(note: JournalEntry) {
         self.note = note
         _content = State(initialValue: note.content)
     }
@@ -34,7 +34,7 @@ struct EditNoteView: View {
                         .font(.system(size: 60))
                         .padding(.top, 20)
                     
-                    Text("Edit Note")
+                    Text("Edit Entry")
                         .font(.title2)
                         .fontWeight(.semibold)
                         .foregroundColor(.black)
@@ -66,7 +66,7 @@ struct EditNoteView: View {
                     Spacer()
                 }
             }
-            .navigationTitle("Edit Note")
+            .navigationTitle("Edit Entry")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -94,6 +94,9 @@ struct EditNoteView: View {
     func saveChanges() {
         note.content = content
         
+        // Re-detect mood after editing (v2.5)
+        note.detectAndSetMood()
+        
         // Haptic feedback
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
@@ -103,7 +106,7 @@ struct EditNoteView: View {
 }
 
 #Preview {
-    EditNoteView(note: QuickNote(content: "Sample note content"))
-        .modelContainer(for: QuickNote.self, inMemory: true)
+    EditNoteView(note: JournalEntry(content: "Sample note content"))
+        .modelContainer(for: JournalEntry.self, inMemory: true)
 }
 

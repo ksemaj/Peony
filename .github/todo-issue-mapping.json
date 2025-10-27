@@ -26,7 +26,8 @@
     "test-notification-button": 24,
     "bug-notifications-not-working": 25,
     "phase-2-1-quick-notes-foundation": 26,
-    "phase-2-2-quick-notes-animations": 27
+    "phase-2-2-quick-notes-animations": 27,
+    "phase-2-4-statistics-view": 28
   },
   "deleted": {
     "cleanup-split-components": 10,

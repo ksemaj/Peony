@@ -2,7 +2,7 @@
 //  NotesView.swift
 //  Peony
 //
-//  Created for version 2.0
+//  Created for version 2.0 (redesigned in v2.6)
 //
 
 import SwiftUI
@@ -10,46 +10,13 @@ import SwiftData
 
 struct NotesView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \QuickNote.createdDate, order: .reverse) private var notes: [QuickNote]
+    @Query(sort: \JournalEntry.createdDate, order: .reverse) private var notes: [JournalEntry]
     @State private var showingCreateNote = false
     @State private var animateEmptyState = false
-    @State private var searchText = ""
-    @State private var selectedFilter: TimeFilter = .all
-    
-    enum TimeFilter: String, CaseIterable {
-        case all = "All Time"
-        case thisWeek = "This Week"
-        case thisMonth = "This Month"
-    }
-    
-    var filteredNotes: [QuickNote] {
-        var result = notes
-        
-        // Apply search filter
-        if !searchText.isEmpty {
-            result = result.filter { note in
-                note.content.localizedCaseInsensitiveContains(searchText)
-            }
-        }
-        
-        // Apply time filter
-        let calendar = Calendar.current
-        let now = Date()
-        
-        switch selectedFilter {
-        case .thisWeek:
-            let weekAgo = calendar.date(byAdding: .day, value: -7, to: now) ?? now
-            result = result.filter { $0.createdDate >= weekAgo }
-        case .thisMonth:
-            let monthAgo = calendar.date(byAdding: .month, value: -1, to: now) ?? now
-            result = result.filter { $0.createdDate >= monthAgo }
-        case .all:
-            break
-        }
-        
-        return result
-    }
-    
+    @State private var showingStats = false
+    @State private var dailyPrompt: WritingPrompt?
+    @State private var promptTextToUse: String?
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -60,155 +27,180 @@ struct NotesView: View {
                     endPoint: .bottom
                 )
                 .ignoresSafeArea()
-                
+
                 if notes.isEmpty {
                     emptyStateView
                 } else {
-                    VStack(spacing: 0) {
-                        // Filter chips
-                        filterChipsView
-                        
-                        // Search result count
-                        if !searchText.isEmpty || selectedFilter != .all {
-                            resultCountView
+                    ScrollView {
+                        VStack(spacing: 16) {
+                            // Two writing paths
+                            writingPathsView
+
+                            // Recent entries header
+                            HStack {
+                                Text("Recent Entries")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .padding(.top, 8)
+
+                            // Notes list
+                            LazyVStack(spacing: 12) {
+                                ForEach(notes) { note in
+                                    NavigationLink {
+                                        NoteDetailView(note: note)
+                                    } label: {
+                                        NoteRowView(note: note)
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 20)
                         }
-                        
-                        // Notes list
-                        if filteredNotes.isEmpty {
-                            noResultsView
-                        } else {
-                            notesListView
-                        }
+                        .padding(.top, 12)
                     }
                 }
             }
-            .navigationTitle("Notes")
+            .navigationTitle("Journal")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        let generator = UIImpactFeedbackGenerator(style: .light)
-                        generator.impactOccurred()
-                        showingCreateNote = true
+                        showingStats = true
                     } label: {
-                        Image(systemName: "square.and.pencil")
+                        Image(systemName: "chart.bar")
                             .foregroundColor(.green)
-                            .symbolEffect(.bounce, value: showingCreateNote)
                     }
                 }
             }
             .sheet(isPresented: $showingCreateNote) {
-                CreateNoteView()
+                CreateNoteView(promptText: promptTextToUse)
             }
-            .searchable(text: $searchText, prompt: "Search notes...")
-        }
-    }
-    
-    // MARK: - Filter Chips
-    
-    var filterChipsView: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 12) {
-                ForEach(TimeFilter.allCases, id: \.self) { filter in
-                    Button {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                            selectedFilter = filter
-                        }
-                    } label: {
-                        Text(filter.rawValue)
-                            .font(.subheadline)
-                            .fontWeight(selectedFilter == filter ? .semibold : .regular)
-                            .foregroundColor(selectedFilter == filter ? .white : .green)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .background(
-                                selectedFilter == filter ?
-                                    Color.green : Color.white.opacity(0.8)
-                            )
-                            .cornerRadius(20)
-                            .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
-                    }
+            .onChange(of: showingCreateNote) { _, isShowing in
+                // Clear prompt text when sheet is dismissed
+                if !isShowing {
+                    promptTextToUse = nil
                 }
             }
-            .padding(.horizontal)
-            .padding(.vertical, 12)
+            .sheet(isPresented: $showingStats) {
+                NotesStatsView()
+            }
+            .onAppear {
+                loadDailyPrompt()
+            }
         }
-        .background(Color.clear)
     }
-    
-    // MARK: - Result Count
-    
-    var resultCountView: some View {
-        HStack {
-            Text("\(filteredNotes.count) \(filteredNotes.count == 1 ? "note" : "notes")")
-                .font(.caption)
-                .foregroundColor(.gray)
-            Spacer()
+
+    // MARK: - Writing Paths
+
+    var writingPathsView: some View {
+        VStack(spacing: 12) {
+            // Free Write Card
+            Button {
+                let generator = UIImpactFeedbackGenerator(style: .light)
+                generator.impactOccurred()
+                promptTextToUse = nil
+                showingCreateNote = true
+            } label: {
+                HStack {
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack(spacing: 8) {
+                            Text("✍️")
+                                .font(.title2)
+                            Text("Free Write")
+                                .font(.headline)
+                                .foregroundColor(.black)
+                        }
+
+                        Text("Express your thoughts freely")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+
+                    Spacer()
+
+                    Image(systemName: "arrow.right")
+                        .foregroundColor(.green)
+                }
+                .padding()
+                .background(Color.white.opacity(0.9))
+                .cornerRadius(16)
+                .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
+            }
+
+            // Prompt Card
+            if let prompt = dailyPrompt,
+               UserDefaults.standard.string(forKey: AppConfig.AI.promptFrequencyKey) != "off" {
+                Button {
+                    let generator = UIImpactFeedbackGenerator(style: .light)
+                    generator.impactOccurred()
+                    promptTextToUse = prompt.text
+                    showingCreateNote = true
+                } label: {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 6) {
+                            HStack(spacing: 8) {
+                                Text("💭")
+                                    .font(.title2)
+                                Text("Today's Prompt")
+                                    .font(.headline)
+                                    .foregroundColor(.black)
+                            }
+
+                            Text(prompt.text)
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                                .lineLimit(2)
+                        }
+
+                        Spacer()
+
+                        VStack {
+                            Image(systemName: "arrow.right")
+                                .foregroundColor(.purple)
+
+                            Spacer()
+
+                            Button {
+                                skipPrompt()
+                            } label: {
+                                Text("Skip")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    }
+                    .padding()
+                    .background(Color.white.opacity(0.9))
+                    .cornerRadius(16)
+                    .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
+                }
+            }
         }
         .padding(.horizontal)
-        .padding(.bottom, 8)
     }
-    
-    // MARK: - No Results
-    
-    var noResultsView: some View {
-        VStack(spacing: 16) {
-            Spacer()
-            
-            Text("🔍")
-                .font(.system(size: 60))
-            
-            Text("No notes found")
-                .font(.title3)
-                .fontWeight(.semibold)
-                .foregroundColor(.black)
-            
-            Text("Try adjusting your search or filter")
-                .font(.body)
-                .foregroundColor(.gray)
-            
-            if !searchText.isEmpty || selectedFilter != .all {
-                Button {
-                    withAnimation {
-                        searchText = ""
-                        selectedFilter = .all
-                    }
-                } label: {
-                    Text("Clear Filters")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundColor(.green)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
-                        .background(Color.white.opacity(0.8))
-                        .cornerRadius(10)
-                }
-                .padding(.top, 8)
-            }
-            
-            Spacer()
-            Spacer()
-        }
-    }
-    
+
     // MARK: - Empty State
-    
+
     var emptyStateView: some View {
         VStack(spacing: 24) {
             Spacer()
-            
+
             Text("📝")
                 .font(.system(size: 80))
                 .scaleEffect(animateEmptyState ? 1.0 : 0.5)
                 .opacity(animateEmptyState ? 1.0 : 0)
-            
+
             VStack(spacing: 12) {
-                Text("No notes yet")
+                Text("Start Your Journal")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.black)
-                
-                Text("Quick notes are perfect for\ndaily reflections and thoughts")
+
+                Text("Choose free writing or a guided prompt\nto begin your reflection")
                     .font(.body)
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
@@ -216,31 +208,54 @@ struct NotesView: View {
             }
             .opacity(animateEmptyState ? 1.0 : 0)
             .offset(y: animateEmptyState ? 0 : 20)
-            
-            Button {
-                let generator = UIImpactFeedbackGenerator(style: .light)
-                generator.impactOccurred()
-                showingCreateNote = true
-            } label: {
-                Text("Write Your First Note")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 32)
-                    .padding(.vertical, 16)
-                    .background(
-                        LinearGradient(
-                            colors: [Color.green, Color.green.opacity(0.8)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .cornerRadius(12)
-                    .shadow(color: .green.opacity(0.3), radius: 5, x: 0, y: 2)
+
+            // Writing paths in empty state
+            VStack(spacing: 12) {
+                Button {
+                    let generator = UIImpactFeedbackGenerator(style: .light)
+                    generator.impactOccurred()
+                    promptTextToUse = nil
+                    showingCreateNote = true
+                } label: {
+                    Text("✍️ Free Write")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.green)
+                        .cornerRadius(12)
+                        .shadow(color: .green.opacity(0.3), radius: 5, x: 0, y: 2)
+                }
+
+                if let prompt = dailyPrompt,
+                   UserDefaults.standard.string(forKey: AppConfig.AI.promptFrequencyKey) != "off" {
+                    Button {
+                        let generator = UIImpactFeedbackGenerator(style: .light)
+                        generator.impactOccurred()
+                        promptTextToUse = prompt.text
+                        showingCreateNote = true
+                    } label: {
+                        VStack(spacing: 4) {
+                            Text("💭 Use Today's Prompt")
+                                .font(.headline)
+                            Text("\"\(prompt.text)\"")
+                                .font(.caption)
+                                .lineLimit(1)
+                        }
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.purple)
+                        .cornerRadius(12)
+                        .shadow(color: .purple.opacity(0.3), radius: 5, x: 0, y: 2)
+                    }
+                }
             }
+            .padding(.horizontal, 32)
             .padding(.top, 8)
             .scaleEffect(animateEmptyState ? 1.0 : 0.8)
             .opacity(animateEmptyState ? 1.0 : 0)
-            
+
             Spacer()
             Spacer()
         }
@@ -251,34 +266,21 @@ struct NotesView: View {
             }
         }
     }
-    
-    // MARK: - Notes List
-    
-    var notesListView: some View {
-        ScrollView {
-            LazyVStack(spacing: 12) {
-                ForEach(Array(filteredNotes.enumerated()), id: \.element.id) { index, note in
-                    NavigationLink {
-                        NoteDetailView(note: note)
-                    } label: {
-                        NoteRowView(note: note)
-                    }
-                    .buttonStyle(.plain)
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .trailing).combined(with: .opacity),
-                        removal: .scale.combined(with: .opacity)
-                    ))
-                }
-            }
-            .padding()
-            .padding(.bottom, 20)
-            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: filteredNotes.count)
-        }
+
+    // MARK: - Helper Methods
+
+    /// Load daily prompt on appear
+    private func loadDailyPrompt() {
+        dailyPrompt = PromptGenerator.shared.getTodaysPrompt()
+    }
+
+    /// Skip to next prompt
+    private func skipPrompt() {
+        dailyPrompt = PromptGenerator.shared.getNewPrompt()
     }
 }
 
 #Preview {
     NotesView()
-        .modelContainer(for: QuickNote.self, inMemory: true)
+        .modelContainer(for: JournalEntry.self, inMemory: true)
 }
-

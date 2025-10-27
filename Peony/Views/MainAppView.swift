@@ -27,7 +27,7 @@ struct MainAppView: View {
             }
             .tag(0)
             
-            // Notes Tab with animated wrapper
+            // Journal Tab with animated wrapper (renamed from Notes in v2.6)
             AnimatedTabContent(
                 selectedTab: selectedTab,
                 previousTab: previousTab,
@@ -36,7 +36,7 @@ struct MainAppView: View {
                 NotesView()
             }
             .tabItem {
-                Label("Notes", systemImage: "note.text")
+                Label("Journal", systemImage: "book.fill")
             }
             .tag(1)
         }
