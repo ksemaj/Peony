@@ -3,9 +3,10 @@
 A beautiful iOS journaling app that combines mindfulness with gamification. Write journal entries that grow into flowers through consistent care and reflection.
 
 **Status:** ✅ Active Development  
-**Latest:** v2.6 - October 2024 Major Refactor Complete  
+**Latest:** v2.6.0 - October 2024 (Sky System & Visual Enhancements)  
 **Platform:** iOS 16.0+  
-**Language:** Swift 5.9 / SwiftUI
+**Language:** Swift 5.9 / SwiftUI  
+**Health Score:** 9.0/10
 
 ---
 
@@ -44,11 +45,12 @@ Peony transforms journaling into a garden-growing experience:
 
 ### User Experience
 - 🎨 Beautiful pastel design with custom serif typography
-- 🌅 Time-based sky backgrounds (dawn/day/dusk/night)
-- 🌸 Custom plant animations
+- 🌅 Dynamic time-aware sky (real sun/moon positions, seasonal colors)
+- 🌸 Custom plant animations with realistic growth stages
 - 📱 Native iOS with SwiftUI
 - 🔔 Smart notifications (bloom reminders, daily check-ins)
 - 📸 Attach images to entries
+- 🦋 Time-aware fauna (butterflies during day, fireflies at night)
 
 ---
 
@@ -65,16 +67,17 @@ Peony/
 ├── Components/
 │   ├── Plants/ (6 files) - Growth stage visualizations
 │   ├── Flora/ (7 files) - Decorative elements  
-│   └── UI/ (12 files) - Backgrounds, effects, buttons
+│   └── UI/ (15 files) - Backgrounds, effects, buttons, overlays
 ├── Views/
 │   ├── Garden/ (10 files) - Seed management & layout
-│   ├── Notes/ (7 files) - Quick notes & journal
+│   ├── Notes/ (9 files) - Quick notes & journal
 │   ├── Onboarding/ (5 files) - First-time experience
 │   └── Shared/ (3 files) - Reusable utilities
 ├── Models/ (7 files) - SwiftData models & extensions
 └── Utilities/
-    ├── AI/ - Mood, prompts, themes, suggestions
-    └── MoodHelpers.swift - Shared mood utilities
+    ├── AI/ (4 files) - Mood, prompts, themes, suggestions
+    ├── TimeManager.swift - Real-time day/night and seasonal calculations
+    └── AmbientLighting.swift - Dynamic lighting based on time
 ```
 
 ### Tech Stack
@@ -225,6 +228,15 @@ print("📝 PromptGenerator: ...")
 ---
 
 ## 📊 Version History
+
+### v2.6.0 - October 2024 ✅ (Latest)
+- **Visual Quality Overhaul**: Eliminated all frosted/white effects
+- **Time-Aware Sky System**: Real sun/moon positions, seasonal colors
+- **New Utilities**: TimeManager and AmbientLighting systems
+- **Enhanced Components**: 14 files updated for dynamic behavior
+- **Pure Colors**: No white tinting, rich atmospheric visuals
+- **Repository Organization**: Clean structure with organized docs
+- Health Score: 9.0/10
 
 ### v2.6 - October 2024 ✅
 - **Major Refactor**: 37 components extracted
