@@ -2,50 +2,75 @@
 //  SkyBackgroundView.swift
 //  Peony
 //
-//  Extracted from ContentView.swift - Phase 2 Refactor
+//  Enhanced with seasonal variations and 6-period gradient system
 //
 
 import SwiftUI
 
-/// Time-based sky background that changes color throughout the day
+/// Time-based sky background that changes color throughout the day with seasonal variations
 struct SkyBackgroundView: View {
-    @State private var currentHour: Int = Calendar.current.component(.hour, from: Date())
+    @State private var timeManager = TimeManager.shared
     
+    /// Get sky colors based on current time of day and season
     var skyColors: [Color] {
-        let hour = currentHour
+        let season = timeManager.currentSeason
+        let timeOfDay = timeManager.timeOfDay
         
-        // Dawn (5-7 AM) - Warm pastel sunrise
-        if hour >= 5 && hour < 7 {
-            return [
-                Color(red: 0.95, green: 0.85, blue: 0.75),  // Soft peach
-                Color(red: 0.95, green: 0.90, blue: 0.85),  // Pale cream
-                Color(red: 0.90, green: 0.95, blue: 0.92)   // Mint sky
-            ]
+        // Get the appropriate color palette tuple
+        let palette: [(r: Double, g: Double, b: Double)]
+        
+        switch (season, timeOfDay) {
+        // Spring palettes
+        case (.spring, .preDawn):
+            palette = AppConfig.Environment.SeasonalPalettes.springPreDawn
+        case (.spring, .dawn):
+            palette = AppConfig.Environment.SeasonalPalettes.springDawn
+        case (.spring, .morning), (.spring, .afternoon):
+            palette = AppConfig.Environment.SeasonalPalettes.springDay
+        case (.spring, .dusk):
+            palette = AppConfig.Environment.SeasonalPalettes.springDusk
+        case (.spring, .night):
+            palette = AppConfig.Environment.SeasonalPalettes.springNight
+            
+        // Summer palettes
+        case (.summer, .preDawn):
+            palette = AppConfig.Environment.SeasonalPalettes.summerPreDawn
+        case (.summer, .dawn):
+            palette = AppConfig.Environment.SeasonalPalettes.summerDawn
+        case (.summer, .morning), (.summer, .afternoon):
+            palette = AppConfig.Environment.SeasonalPalettes.summerDay
+        case (.summer, .dusk):
+            palette = AppConfig.Environment.SeasonalPalettes.summerDusk
+        case (.summer, .night):
+            palette = AppConfig.Environment.SeasonalPalettes.summerNight
+            
+        // Fall palettes
+        case (.fall, .preDawn):
+            palette = AppConfig.Environment.SeasonalPalettes.fallPreDawn
+        case (.fall, .dawn):
+            palette = AppConfig.Environment.SeasonalPalettes.fallDawn
+        case (.fall, .morning), (.fall, .afternoon):
+            palette = AppConfig.Environment.SeasonalPalettes.fallDay
+        case (.fall, .dusk):
+            palette = AppConfig.Environment.SeasonalPalettes.fallDusk
+        case (.fall, .night):
+            palette = AppConfig.Environment.SeasonalPalettes.fallNight
+            
+        // Winter palettes
+        case (.winter, .preDawn):
+            palette = AppConfig.Environment.SeasonalPalettes.winterPreDawn
+        case (.winter, .dawn):
+            palette = AppConfig.Environment.SeasonalPalettes.winterDawn
+        case (.winter, .morning), (.winter, .afternoon):
+            palette = AppConfig.Environment.SeasonalPalettes.winterDay
+        case (.winter, .dusk):
+            palette = AppConfig.Environment.SeasonalPalettes.winterDusk
+        case (.winter, .night):
+            palette = AppConfig.Environment.SeasonalPalettes.winterNight
         }
-        // Day (7 AM - 5 PM) - Bright pastel blue
-        else if hour >= 7 && hour < 17 {
-            return [
-                Color(red: 0.85, green: 0.92, blue: 0.96),  // Soft sky blue
-                Color(red: 0.92, green: 0.96, blue: 0.97),  // Pale blue
-                Color(red: 0.95, green: 0.97, blue: 0.96)   // Almost white blue
-            ]
-        }
-        // Dusk (5-8 PM) - Warm pastel sunset
-        else if hour >= 17 && hour < 20 {
-            return [
-                Color(red: 0.92, green: 0.85, blue: 0.90),  // Lavender pink
-                Color(red: 0.95, green: 0.88, blue: 0.80),  // Peach glow
-                Color(red: 0.95, green: 0.92, blue: 0.88)   // Warm cream
-            ]
-        }
-        // Evening/Night (8 PM - 5 AM) - Soft evening pastels
-        else {
-            return [
-                Color(red: 0.88, green: 0.90, blue: 0.95),  // Soft periwinkle
-                Color(red: 0.92, green: 0.92, blue: 0.96),  // Pale lavender
-                Color(red: 0.94, green: 0.94, blue: 0.96)   // Almost white purple
-            ]
-        }
+        
+        // Convert tuples to Color objects
+        return palette.map { Color(red: $0.r, green: $0.g, blue: $0.b) }
     }
     
     var body: some View {
@@ -55,16 +80,23 @@ struct SkyBackgroundView: View {
             endPoint: .bottom
         )
         .ignoresSafeArea()
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
-                currentHour = Calendar.current.component(.hour, from: Date())
-            }
-        }
+        .animation(.easeInOut(duration: 2.0), value: timeManager.timeOfDay)
+        .animation(.easeInOut(duration: 5.0), value: timeManager.currentSeason)
     }
 }
 
-#Preview {
+#Preview("Spring Day") {
     SkyBackgroundView()
 }
 
+#Preview("Summer Dusk") {
+    SkyBackgroundView()
+}
 
+#Preview("Fall Dawn") {
+    SkyBackgroundView()
+}
+
+#Preview("Winter Night") {
+    SkyBackgroundView()
+}

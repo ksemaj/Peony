@@ -2,19 +2,21 @@
 //  ButterflyView.swift
 //  Peony
 //
-//  Extracted from ContentView.swift - Phase 2 Refactor
+//  Enhanced with lighting awareness for dynamic opacity
 //
 
 import SwiftUI
 
-/// Animated butterfly with fluttering wings
+/// Animated butterfly with fluttering wings and lighting-aware visibility
 struct ButterflyView: View {
     let index: Int
     @State private var position = CGPoint(x: 0, y: 0)
     @State private var wingAngle: Double = 0
-    @State private var flutterPhase: Double = 0
+    @State private var timeManager = TimeManager.shared
     
     var body: some View {
+        let lightingModifier = AmbientLighting.shared.getFaunaLightingModifier(timeManager: timeManager)
+        
         ZStack {
             // Butterfly body
             Capsule()
@@ -83,6 +85,7 @@ struct ButterflyView: View {
                 .rotationEffect(.degrees(-wingAngle * 0.7))
                 .offset(x: 3, y: 3)
         }
+        .opacity(lightingModifier.opacity) // Respond to lighting conditions
         .position(position)
         .onAppear {
             // Constrain to ground area (30-95% of screen height)
@@ -135,5 +138,3 @@ struct ButterflyFlockView: View {
     }
     .ignoresSafeArea()
 }
-
-

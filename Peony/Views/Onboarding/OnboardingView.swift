@@ -13,7 +13,6 @@ struct OnboardingView: View {
     @Binding var hasSeenOnboarding: Bool
     @State private var currentPage = 0
     @StateObject private var notificationManager = NotificationManager.shared
-    
     // AI preferences (v2.5)
     @AppStorage("aiMoodDetectionEnabled") private var moodDetectionEnabled = true
     @AppStorage("aiPromptFrequency") private var promptFrequency = "daily"
@@ -28,7 +27,7 @@ struct OnboardingView: View {
     
     var body: some View {
         ZStack {
-            // Pastel background gradient
+            // Pastel background gradient (static for onboarding)
             LinearGradient(
                 colors: [Color.ivoryLight, Color.pastelGreenLight, Color.ivoryMid],
                 startPoint: .top,

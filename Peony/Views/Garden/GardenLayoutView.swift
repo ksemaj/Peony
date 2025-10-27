@@ -25,27 +25,26 @@ struct GardenLayoutView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Add spacer to push content down more
-                    Spacer()
-                        .frame(height: max(80, (geometry.size.height - 300) / 2))
+            VStack(spacing: 20) {
+                // Add spacer to push content down more
+                Spacer()
+                    .frame(height: max(80, (geometry.size.height - 300) / 2))
+                
+                ForEach(0..<numberOfBeds, id: \.self) { bedIndex in
+                    GardenBedView(seeds: seedsForBed(bedIndex), bedIndex: bedIndex)
                     
-                    ForEach(0..<numberOfBeds, id: \.self) { bedIndex in
-                        GardenBedView(seeds: seedsForBed(bedIndex), bedIndex: bedIndex)
-                        
-                        if bedIndex < numberOfBeds - 1 {
-                            GardenPathView()
-                                .padding(.vertical, 10)
-                        }
+                    if bedIndex < numberOfBeds - 1 {
+                        GardenPathView()
+                            .padding(.vertical, 10)
                     }
-                    
-                    // Bottom padding
-                    Spacer()
-                        .frame(height: 40)
                 }
-                .frame(maxWidth: .infinity)
+                
+                // Bottom padding
+                Spacer()
+                    .frame(height: 40)
             }
+            .frame(maxWidth: .infinity)
+            .fixedSize(horizontal: false, vertical: true) // Prevent initial shifting
         }
     }
 }

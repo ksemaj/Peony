@@ -2,25 +2,31 @@
 //  GardenBackgroundView.swift
 //  Peony
 //
-//  Extracted from ContentView.swift - Phase 2 Refactor
+//  Integrated garden background with all atmospheric layers
 //
 
 import SwiftUI
 
-/// Fixed garden background with sky and celestial elements
+/// Complete garden background with sky, celestial, clouds, stars, and lighting
 struct GardenBackgroundView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Sky background
+                // Layer 1: Sky background (seasonal gradients)
                 SkyBackgroundView()
                 
-                // Sky area (top 30%)
+                // Layer 2: Star field (night only, behind celestial bodies)
+                StarField()
+                
+                // Layer 3: Clouds (parallax layers)
+                CloudLayer()
+                
+                // Layer 4: Sky area with celestial body (top 30%)
                 VStack(spacing: 0) {
                     ZStack {
                         Color.clear
                         
-                        // Sun or Moon
+                        // Sun or Moon with smooth transitions
                         CelestialView()
                             .offset(y: -50)
                     }
@@ -28,15 +34,24 @@ struct GardenBackgroundView: View {
                     
                     Spacer()
                 }
-                
-                // All decorative elements hidden for redesign
             }
         }
-        .ignoresSafeArea(.all, edges: .bottom)
+        .ignoresSafeArea()
     }
 }
 
-#Preview {
+#Preview("Spring Day") {
     GardenBackgroundView()
 }
 
+#Preview("Summer Dusk") {
+    GardenBackgroundView()
+}
+
+#Preview("Fall Night") {
+    GardenBackgroundView()
+}
+
+#Preview("Winter Dawn") {
+    GardenBackgroundView()
+}

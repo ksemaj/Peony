@@ -2,31 +2,41 @@
 //  CelestialView.swift
 //  Peony
 //
-//  Extracted from ContentView.swift - Phase 2 Refactor
+//  Enhanced with smooth crossfade transitions during twilight hours
 //
 
 import SwiftUI
 
-/// Time-based view that shows sun during day, moon at night
+/// Time-based view that shows sun during day, moon at night, with twilight crossfades
 struct CelestialView: View {
-    @State private var currentHour: Int = Calendar.current.component(.hour, from: Date())
-    
-    var isDaytime: Bool {
-        currentHour >= 6 && currentHour < 18 // 6 AM to 6 PM
-    }
+    @State private var timeManager = TimeManager.shared
     
     var body: some View {
-        Group {
-            if isDaytime {
-                SunView()
+        ZStack {
+            if timeManager.isTwilight {
+                // During twilight, show both with crossfade
+                if timeManager.timeOfDay == .dawn {
+                    // Dawn: Moon fading out, Sun fading in
+                    MoonView()
+                        .opacity(1.0 - timeManager.twilightOpacity)
+                    
+                    SunView()
+                        .opacity(timeManager.twilightOpacity)
+                } else {
+                    // Dusk: Sun fading out, Moon fading in
+                    SunView()
+                        .opacity(timeManager.twilightOpacity)
+                    
+                    MoonView()
+                        .opacity(1.0 - timeManager.twilightOpacity)
+                }
             } else {
-                MoonView()
-            }
-        }
-        .onAppear {
-            // Update every minute
-            Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
-                currentHour = Calendar.current.component(.hour, from: Date())
+                // Outside twilight, show only one
+                if timeManager.isDaytime {
+                    SunView()
+                } else {
+                    MoonView()
+                }
             }
         }
     }
@@ -40,4 +50,10 @@ struct CelestialView: View {
     .ignoresSafeArea()
 }
 
-
+#Preview("Night") {
+    ZStack {
+        Color.black.opacity(0.8)
+        CelestialView()
+    }
+    .ignoresSafeArea()
+}

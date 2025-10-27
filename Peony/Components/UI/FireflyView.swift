@@ -2,27 +2,30 @@
 //  FireflyView.swift
 //  Peony
 //
-//  Extracted from ContentView.swift - Phase 2 Refactor
+//  Enhanced with lighting awareness for dynamic glow intensity
 //
 
 import SwiftUI
 
-/// Animated firefly particle that glows and moves randomly
+/// Animated firefly particle that glows and moves randomly with lighting-aware visibility
 struct FireflyView: View {
     let index: Int
     @State private var position = CGPoint(x: 0, y: 0)
     @State private var glowIntensity: Double = 0.3
     @State private var trajectory: Double = 0
+    @State private var timeManager = TimeManager.shared
     
     var body: some View {
+        let lightingModifier = AmbientLighting.shared.getFaunaLightingModifier(timeManager: timeManager)
+        
         ZStack {
-            // Glow halo
+            // Glow halo (enhanced in darkness)
             Circle()
                 .fill(
                     RadialGradient(
                         colors: [
-                            Color(red: 1.0, green: 0.95, blue: 0.7).opacity(glowIntensity),
-                            Color(red: 0.9, green: 0.85, blue: 0.5).opacity(glowIntensity * 0.6),
+                            Color(red: 1.0, green: 0.95, blue: 0.7).opacity(glowIntensity * lightingModifier.glow),
+                            Color(red: 0.9, green: 0.85, blue: 0.5).opacity(glowIntensity * lightingModifier.glow * 0.6),
                             Color.clear
                         ],
                         center: .center,
@@ -47,6 +50,7 @@ struct FireflyView: View {
                 )
                 .frame(width: 8, height: 8)
         }
+        .opacity(lightingModifier.opacity) // Respond to lighting conditions
         .position(position)
         .blur(radius: 0.5) // Soft glow effect
         .onAppear {
@@ -102,5 +106,3 @@ struct FireflyFieldView: View {
     }
     .ignoresSafeArea()
 }
-
-

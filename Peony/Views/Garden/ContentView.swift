@@ -29,14 +29,32 @@ struct ContentView: View {
                 // Fixed garden background with sky and celestial elements
                 GardenBackgroundView()
                 
-                // Scrollable content layer
+                // Title overlay at top-center (fixed position, no animations)
+                VStack {
+                    HStack(spacing: 4) {
+                        Text("my")
+                            .font(.serifDisplay(24, weight: .medium))
+                            .foregroundColor(.white)
+                        Text("garden")
+                            .font(.serifDisplay(24, weight: .semibold))
+                            .italic()
+                            .foregroundColor(Color(red: 0.7, green: 0.9, blue: 0.7))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 60)
+                    
+                    Spacer()
+                }
+                .zIndex(100)
+                .allowsHitTesting(false)
+                
+                // Content layer
                 if allSeeds.isEmpty {
                     emptyGardenView
                 } else {
                     GardenLayoutView(seeds: allSeeds)
                 }
             }
-            .navigationTitle("My Garden")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.visible, for: .navigationBar)
             .toolbar {

@@ -2,32 +2,24 @@
 //  FaunaView.swift
 //  Peony
 //
-//  Extracted from ContentView.swift - Phase 2 Refactor
+//  Enhanced with TimeManager integration and lighting awareness
 //
 
 import SwiftUI
 
 /// Time-based view that shows butterflies during day, fireflies at night
 struct FaunaView: View {
-    @State private var currentHour: Int = Calendar.current.component(.hour, from: Date())
-    
-    var isDaytime: Bool {
-        currentHour >= 6 && currentHour < 18
-    }
+    @State private var timeManager = TimeManager.shared
     
     var body: some View {
         Group {
-            if isDaytime {
+            if timeManager.isDaytime {
                 ButterflyFlockView()
             } else {
                 FireflyFieldView()
             }
         }
-        .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
-                currentHour = Calendar.current.component(.hour, from: Date())
-            }
-        }
+        .animation(.easeInOut(duration: 2.0), value: timeManager.isDaytime)
     }
 }
 
@@ -39,4 +31,10 @@ struct FaunaView: View {
     .ignoresSafeArea()
 }
 
-
+#Preview("Night") {
+    ZStack {
+        Color.black.opacity(0.8)
+        FaunaView()
+    }
+    .ignoresSafeArea()
+}

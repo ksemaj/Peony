@@ -41,6 +41,34 @@ struct MainAppView: View {
             .tag(1)
         }
         .tint(.green)
+        .onAppear {
+            // Aggressively remove ALL tab bar backgrounds
+            UITabBar.appearance().isTranslucent = true
+            UITabBar.appearance().barTintColor = .clear
+            UITabBar.appearance().backgroundColor = .clear
+            UITabBar.appearance().backgroundImage = UIImage()
+            UITabBar.appearance().shadowImage = UIImage()
+            
+            let appearance = UITabBarAppearance()
+            appearance.configureWithTransparentBackground()
+            appearance.backgroundColor = .clear
+            appearance.shadowColor = .clear
+            appearance.shadowImage = UIImage()
+            appearance.backgroundImage = UIImage()
+            appearance.backgroundEffect = nil // Remove blur effect
+            
+            // Make tab items visible
+            appearance.stackedLayoutAppearance.normal.iconColor = .white
+            appearance.stackedLayoutAppearance.selected.iconColor = .systemGreen
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemGreen]
+            
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
+            if #available(iOS 15.0, *) {
+                UITabBar.appearance().scrollEdgeAppearance = appearance
+            }
+        }
         .onChange(of: selectedTab) { oldValue, newValue in
             previousTab = oldValue
         }

@@ -28,23 +28,28 @@ struct GardenBedView: View {
     
     var body: some View {
         ZStack {
-            // Garden bed background - Pastel green
+            // Garden bed background - Semi-transparent to show sky
             RoundedRectangle(cornerRadius: 20)
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color.pastelGreenLight,
-                            Color.pastelGreenMid
+                            Color.pastelGreenLight.opacity(0.4),
+                            Color.pastelGreenMid.opacity(0.5)
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
+                .background(
+                    // Subtle blur effect for glass morphism
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(.ultraThinMaterial)
+                )
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.green.opacity(0.3), lineWidth: 3)
+                        .stroke(Color.green.opacity(0.4), lineWidth: 3)
                 )
-                .frame(width: 340, height: 260)
+                .frame(width: 320, height: 320)
             
             // Seeds placed organically
             ForEach(Array(seeds.enumerated()), id: \.element.id) { index, seed in
@@ -54,13 +59,13 @@ struct GardenBedView: View {
                     }
                     .buttonStyle(.plain)
                     .position(
-                        x: 170 + organicPositions[index].x,
-                        y: 130 + organicPositions[index].y
+                        x: 160 + organicPositions[index].x,
+                        y: 160 + organicPositions[index].y
                     )
                 }
             }
         }
-        .frame(width: 340, height: 260)
+        .frame(width: 320, height: 320)
     }
 }
 

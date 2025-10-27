@@ -17,6 +17,44 @@ struct PeonyApp: App {
     init() {
         // Register default settings
         AppSettings.registerDefaults()
+        
+        // COMPLETELY remove tab bar background - AGGRESSIVE MODE
+        let appearance = UITabBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .clear
+        appearance.shadowColor = .clear
+        appearance.shadowImage = UIImage()
+        appearance.backgroundImage = UIImage()
+        appearance.backgroundEffect = nil // CRITICAL: Remove blur/vibrancy effect
+        
+        // Make all tab bar items transparent too
+        appearance.stackedLayoutAppearance.normal.iconColor = .white
+        appearance.stackedLayoutAppearance.selected.iconColor = .systemGreen
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemGreen]
+        
+        appearance.inlineLayoutAppearance.normal.iconColor = .white
+        appearance.inlineLayoutAppearance.selected.iconColor = .systemGreen
+        appearance.compactInlineLayoutAppearance.normal.iconColor = .white
+        appearance.compactInlineLayoutAppearance.selected.iconColor = .systemGreen
+        
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+        UITabBar.appearance().isTranslucent = true
+        UITabBar.appearance().barTintColor = .clear
+        UITabBar.appearance().backgroundColor = .clear
+        UITabBar.appearance().backgroundImage = UIImage()
+        UITabBar.appearance().shadowImage = UIImage()
+        
+        // Make navigation bars completely transparent
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithTransparentBackground()
+        navAppearance.backgroundColor = .clear
+        navAppearance.shadowColor = .clear
+        UINavigationBar.appearance().standardAppearance = navAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
+        UINavigationBar.appearance().compactAppearance = navAppearance
+        UINavigationBar.appearance().isTranslucent = true
     }
     
     var sharedModelContainer: ModelContainer = {
