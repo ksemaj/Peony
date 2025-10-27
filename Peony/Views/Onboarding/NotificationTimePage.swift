@@ -75,7 +75,7 @@ struct NotificationTimePage: View {
             }
             .padding(.horizontal, 24)
             .padding(.vertical, 24)
-            .frame(maxWidth: 320)
+            .frame(maxWidth: 400)
             .background(Color.cardLight)
             .cornerRadius(16)
             .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
