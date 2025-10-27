@@ -11,6 +11,11 @@ struct NoteRowView: View {
     let note: JournalEntry
     @State private var isPressed = false
     
+    // Computed once instead of on every render (performance optimization)
+    private var shouldSuggestAsSeed: Bool {
+        SeedSuggestionEngine.shouldSuggestAsSeed(note)
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             // Date
@@ -40,8 +45,7 @@ struct NoteRowView: View {
                 }
                 
                 // Seed suggestion badge (v2.5 Week 4)
-                let shouldSuggest = SeedSuggestionEngine.shouldSuggestAsSeed(note)
-                if shouldSuggest {
+                if shouldSuggestAsSeed {
                     HStack(spacing: 4) {
                         Text("🌱")
                             .font(.caption2)
@@ -66,14 +70,7 @@ struct NoteRowView: View {
     }
     
     func moodEmoji(_ mood: String) -> String {
-        switch mood {
-        case "joyful": return "😊"
-        case "reflective": return "🤔"
-        case "grateful": return "🙏"
-        case "peaceful": return "😌"
-        case "thoughtful": return "💭"
-        default: return "✨"
-        }
+        MoodHelpers.emoji(for: mood)
     }
 }
 

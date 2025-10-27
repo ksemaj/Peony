@@ -222,6 +222,55 @@ class NotificationManager: ObservableObject {
     // MARK: - Testing
     
     /// Send a test notification immediately
+    /// Send test notification with user feedback
+    /// - Parameter completion: Returns success message or error
+    func sendTestNotificationWithFeedback(completion: @escaping (Result<String, Error>) -> Void) {
+        Task {
+            print("🔔 sendTestNotificationWithFeedback called")
+            
+            // Check authorization
+            let authorized = await requestAuthorization()
+            
+            guard authorized else {
+                await MainActor.run {
+                    completion(.failure(NSError(
+                        domain: "NotificationManager",
+                        code: 1,
+                        userInfo: [NSLocalizedDescriptionKey: "Notifications are not enabled.\n\nWould you like to open Settings?"]
+                    )))
+                }
+                return
+            }
+            
+            // Create test notification
+            let content = UNMutableNotificationContent()
+            content.title = "💧 Peony Watering Reminder"
+            content.body = "Time to water your seeds! 🌱"
+            content.sound = .default
+            
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+            let request = UNNotificationRequest(
+                identifier: "test-notification-\(UUID().uuidString)",
+                content: content,
+                trigger: trigger
+            )
+            
+            do {
+                try await UNUserNotificationCenter.current().add(request)
+                print("✅ Test notification scheduled for 5 seconds from now")
+                
+                await MainActor.run {
+                    completion(.success("✅ Test notification scheduled!\n\nMinimize the app to see it arrive in 5 seconds."))
+                }
+            } catch {
+                print("❌ Error scheduling test notification: \(error)")
+                await MainActor.run {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
     func sendTestNotification(type: NotificationType) {
         print("🔔 sendTestNotification called - type: \(type), isAuthorized: \(isAuthorized)")
         

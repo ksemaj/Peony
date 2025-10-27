@@ -29,13 +29,13 @@ struct EditNoteView: View {
                 )
                 .ignoresSafeArea()
                 
-                VStack(spacing: 20) {
+                VStack(spacing: 16) {
                     Text("📝")
-                        .font(.system(size: 60))
-                        .padding(.top, 20)
+                        .font(.system(size: 44))
+                        .padding(.top, 16)
                     
                     Text("Edit Entry")
-                        .font(.title2)
+                        .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.black)
                     

@@ -186,15 +186,15 @@ struct NotesView: View {
     // MARK: - Empty State
 
     var emptyStateView: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 20) {
             Spacer()
 
             Text("📝")
-                .font(.system(size: 80))
+                .font(.system(size: 48))
                 .scaleEffect(animateEmptyState ? 1.0 : 0.5)
                 .opacity(animateEmptyState ? 1.0 : 0)
 
-            VStack(spacing: 12) {
+            VStack(spacing: 10) {
                 Text("Start Your Journal")
                     .font(.title2)
                     .fontWeight(.semibold)

@@ -51,13 +51,13 @@ struct NotesStatsView: View {
                 VStack(spacing: 20) {
                     // Header emoji
                     Text("📊")
-                        .font(.system(size: 60))
-                        .padding(.top, 20)
+                        .font(.system(size: 44))
+                        .padding(.top, 16)
                     
                     // Overall stats card
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Writing Overview")
-                            .font(.headline)
+                            .font(.serifSubheadline)
                             .foregroundColor(.black)
                         
                         Divider()
@@ -75,7 +75,7 @@ struct NotesStatsView: View {
                     // Recent activity card
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Recent Activity")
-                            .font(.headline)
+                            .font(.serifSubheadline)
                             .foregroundColor(.black)
                         
                         Divider()
@@ -93,7 +93,7 @@ struct NotesStatsView: View {
                     if !monthlyThemes.isEmpty && UserDefaults.standard.bool(forKey: AppConfig.AI.themeAnalysisEnabledKey) {
                         VStack(alignment: .leading, spacing: 16) {
                             Text("Common Themes This Month")
-                                .font(.headline)
+                                .font(.serifSubheadline)
                                 .foregroundColor(.black)
                             
                             Divider()
@@ -133,7 +133,7 @@ struct NotesStatsView: View {
                     if totalNotes == 0 {
                         VStack(spacing: 12) {
                             Text("✨")
-                                .font(.system(size: 40))
+                                .font(.system(size: 32))
                             Text("Start writing to see your statistics!")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
@@ -146,7 +146,7 @@ struct NotesStatsView: View {
                     } else {
                         VStack(spacing: 12) {
                             Text("🌱")
-                                .font(.system(size: 40))
+                                .font(.system(size: 32))
                             Text("Keep writing! Your thoughts are growing.")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)

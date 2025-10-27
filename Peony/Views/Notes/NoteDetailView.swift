@@ -174,11 +174,11 @@ struct NoteDetailView: View {
                 // Header
                 VStack(spacing: 12) {
                     Text("🌱")
-                        .font(.system(size: 60))
+                        .font(.system(size: 44))
                     
                     Text("Plant as Seed")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                        .font(.title3)
+                        .fontWeight(.semibold)
                     
                     Text("Your entry will grow into a beautiful flower over 45 days. Daily watering will speed up the growth!")
                         .font(.subheadline)

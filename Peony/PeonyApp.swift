@@ -52,17 +52,16 @@ struct PeonyApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Group {
+            ZStack {
                 if hasSeenOnboarding {
                     MainAppView() // v2.0 - Tab navigation (Garden + Journal)
-                        .id("main-content")
+                        .transition(.opacity)
                 } else {
                     OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)
-                        .id("onboarding")
+                        .transition(.opacity)
                 }
             }
-            .transition(.opacity)
-            .animation(.easeInOut(duration: 0.3), value: hasSeenOnboarding)
+            .animation(.easeInOut(duration: 0.5), value: hasSeenOnboarding)
         }
         .modelContainer(sharedModelContainer)
     }

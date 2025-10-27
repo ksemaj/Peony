@@ -3,6 +3,7 @@
 //  Peony
 //
 //  Created for version 2.5 - AI Features (Week 3)
+//  Refactored - Modular Architecture Cleanup (extracted ThemeChip and FlowLayout)
 //
 
 import SwiftUI
@@ -31,8 +32,7 @@ struct ThemesCard: View {
                         .font(.title3)
                     
                     Text("Your Themes \(timeframe.description)")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
+                        .font(.serifSubheadline)
                         .foregroundColor(.black)
                     
                     Spacer()
@@ -97,91 +97,6 @@ struct ThemesCard: View {
             }
         }
         .transition(.opacity.combined(with: .scale(scale: 0.95)))
-    }
-}
-
-// MARK: - Theme Chip
-
-struct ThemeChip: View {
-    let theme: ThemeAnalyzer.Theme
-    
-    var body: some View {
-        HStack(spacing: 4) {
-            Text(theme.word.capitalized)
-                .font(.caption)
-                .fontWeight(.medium)
-            
-            Text("(\(theme.count))")
-                .font(.caption2)
-                .foregroundColor(.gray)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.pastelGreenLight.opacity(0.3))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.green.opacity(0.2), lineWidth: 1)
-        )
-    }
-}
-
-// MARK: - Flow Layout
-
-/// Custom layout that arranges views in a flowing grid
-struct FlowLayout: Layout {
-    var spacing: CGFloat = 8
-    
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let result = FlowResult(
-            in: proposal.replacingUnspecifiedDimensions().width,
-            subviews: subviews,
-            spacing: spacing
-        )
-        return result.size
-    }
-    
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        let result = FlowResult(
-            in: bounds.width,
-            subviews: subviews,
-            spacing: spacing
-        )
-        for (index, subview) in subviews.enumerated() {
-            subview.place(at: CGPoint(x: bounds.minX + result.positions[index].x,
-                                     y: bounds.minY + result.positions[index].y),
-                         proposal: .unspecified)
-        }
-    }
-    
-    struct FlowResult {
-        var size: CGSize = .zero
-        var positions: [CGPoint] = []
-        
-        init(in maxWidth: CGFloat, subviews: Subviews, spacing: CGFloat) {
-            var x: CGFloat = 0
-            var y: CGFloat = 0
-            var lineHeight: CGFloat = 0
-            
-            for subview in subviews {
-                let subviewSize = subview.sizeThatFits(.unspecified)
-                
-                if x + subviewSize.width > maxWidth && x > 0 {
-                    // Move to next line
-                    x = 0
-                    y += lineHeight + spacing
-                    lineHeight = 0
-                }
-                
-                positions.append(CGPoint(x: x, y: y))
-                lineHeight = max(lineHeight, subviewSize.height)
-                x += subviewSize.width + spacing
-            }
-            
-            size = CGSize(width: maxWidth, height: y + lineHeight)
-        }
     }
 }
 

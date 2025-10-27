@@ -48,25 +48,18 @@ class MoodDetector {
         return mood
     }
     
-    /// Get mood emoji for display
+    /// Get mood emoji for display (now uses shared MoodHelpers)
     /// - Parameter mood: The mood string (joyful, grateful, etc.)
     /// - Returns: Emoji representing the mood
     static func moodEmoji(for mood: String) -> String {
-        switch mood {
-        case "joyful": return "😊"
-        case "grateful": return "🙏"
-        case "reflective": return "🤔"
-        case "thoughtful": return "💭"
-        case "peaceful": return "😌"
-        default: return "✨"
-        }
+        MoodHelpers.emoji(for: mood)
     }
     
-    /// Get mood display name
+    /// Get mood display name (now uses shared MoodHelpers)
     /// - Parameter mood: The mood string
     /// - Returns: Capitalized display name
     static func moodDisplayName(for mood: String) -> String {
-        mood.capitalized
+        MoodHelpers.displayName(for: mood)
     }
     
     // MARK: - Private Methods
