@@ -14,7 +14,7 @@ struct SeedCardView: View {
     var body: some View {
         VStack(spacing: 12) {
             // Image preview or custom plant
-            if let image = seed.image {
+            if let imageData = seed.imageData, let image = imageData.asUIImage {
                 ZStack {
                     Image(uiImage: image)
                         .resizable()

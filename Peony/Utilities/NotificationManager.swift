@@ -105,10 +105,10 @@ class NotificationManager: ObservableObject {
             return
         }
         
-        let hour = UserDefaults.standard.integer(forKey: "wateringReminderHour")
-        let minute = UserDefaults.standard.integer(forKey: "wateringReminderMinute")
+        let hour = AppSettings.wateringReminderHour
+        let minute = AppSettings.wateringReminderMinute
         
-        print("🔔 UserDefaults - hour: \(hour), minute: \(minute)")
+        print("🔔 Settings - hour: \(hour), minute: \(minute)")
         
         let actualHour = hour > 0 ? hour : AppConfig.Notifications.defaultWateringReminderHour
         let actualMinute = minute > 0 ? minute : AppConfig.Notifications.defaultWateringReminderMinute
@@ -152,9 +152,9 @@ class NotificationManager: ObservableObject {
         
         guard isAuthorized && enabled else { return }
         
-        let weekday = UserDefaults.standard.integer(forKey: "weeklyCheckinWeekday")
-        let hour = UserDefaults.standard.integer(forKey: "weeklyCheckinHour")
-        let minute = UserDefaults.standard.integer(forKey: "weeklyCheckinMinute")
+        let weekday = AppSettings.weeklyCheckinWeekday
+        let hour = AppSettings.weeklyCheckinHour
+        let minute = AppSettings.weeklyCheckinMinute
         
         let actualWeekday = weekday > 0 ? weekday : AppConfig.Notifications.defaultWeeklyCheckinWeekday
         let actualHour = hour > 0 ? hour : AppConfig.Notifications.defaultWeeklyCheckinHour

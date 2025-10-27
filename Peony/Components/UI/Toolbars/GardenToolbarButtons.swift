@@ -35,13 +35,14 @@ struct GardenToolbarButtons: View {
 
 /// Test notification button (trailing toolbar)
 struct NotificationTestButton: View {
+    @Environment(\.notificationService) private var notificationService
     @State private var showingNotificationAlert = false
     @State private var notificationAlertMessage = ""
     @State private var isNotificationError = false
     
     var body: some View {
         Button {
-            NotificationManager.shared.sendTestNotificationWithFeedback { result in
+            notificationService.sendTestNotificationWithFeedback { result in
                 switch result {
                 case .success(let message):
                     notificationAlertMessage = message

@@ -257,12 +257,20 @@ print("📝 PromptGenerator: ...")
 
 ## 📖 Documentation
 
-Full refactor documentation available in [`docs/`](./docs/):
+### Current Documentation
+- This README - Main project overview
+- [`docs/`](./docs/) - Active project documentation (currently empty, ready for relevant docs)
 
-- [`docs/README.md`](./docs/README.md) - Documentation index
-- [`docs/README_REFACTOR.md`](./docs/README_REFACTOR.md) - Quick reference
-- [`docs/REFACTOR_COMPLETE_SUMMARY.md`](./docs/REFACTOR_COMPLETE_SUMMARY.md) - Complete details
-- [`docs/XCODE_SETUP_REQUIRED.md`](./docs/XCODE_SETUP_REQUIRED.md) - Setup guide
+### Analysis & Reports
+- [`.audits/`](./.audits/) - **Latest Audit (Oct 27, 2024)** - Comprehensive code quality, security, and performance analysis
+  - `AUDIT_2024_10_27.md` - Full detailed audit (16 sections)
+  - `EXECUTIVE_SUMMARY.md` - Quick overview with health score (7.5/10)
+  - `ACTION_CHECKLIST.md` - 150+ prioritized action items
+- [`.modular/`](./.modular/) - Modularity analysis and fixes
+- [`.cleanups/`](./.cleanups/) - Repository cleanup logs
+
+### Archived Files
+Previous documentation in [`.archive/`](./.archive/) - Not actively maintained
 
 ---
 

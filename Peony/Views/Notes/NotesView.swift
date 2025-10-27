@@ -133,7 +133,7 @@ struct NotesView: View {
 
             // Prompt Card
             if let prompt = dailyPrompt,
-               UserDefaults.standard.string(forKey: AppConfig.AI.promptFrequencyKey) != "off" {
+               AppSettings.aiPromptFrequency != "off" {
                 Button {
                     let generator = UIImpactFeedbackGenerator(style: .light)
                     generator.impactOccurred()
@@ -228,7 +228,7 @@ struct NotesView: View {
                 }
 
                 if let prompt = dailyPrompt,
-                   UserDefaults.standard.string(forKey: AppConfig.AI.promptFrequencyKey) != "off" {
+                   AppSettings.aiPromptFrequency != "off" {
                     Button {
                         let generator = UIImpactFeedbackGenerator(style: .light)
                         generator.impactOccurred()

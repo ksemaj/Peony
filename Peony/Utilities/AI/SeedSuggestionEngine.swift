@@ -24,7 +24,7 @@ struct SeedSuggestionEngine {
     /// - Returns: True if note qualifies for suggestion
     static func shouldSuggestAsSeed(_ note: JournalEntry) -> Bool {
         // Check if seed suggestions enabled
-        let isEnabled = UserDefaults.standard.bool(forKey: AppConfig.AI.seedSuggestionsEnabledKey)
+        let isEnabled = AppSettings.aiSeedSuggestionsEnabled
         print("🌱 Seed suggestions enabled: \(isEnabled)")
         guard isEnabled else {
             return false
@@ -71,7 +71,7 @@ struct SeedSuggestionEngine {
         let idString = noteID.uuidString
         if !suggested.contains(idString) {
             suggested.append(idString)
-            UserDefaults.standard.set(suggested, forKey: suggestedNotesKey)
+            AppSettings.suggestedNoteIDs = suggested
         }
     }
     
@@ -82,7 +82,7 @@ struct SeedSuggestionEngine {
         let idString = noteID.uuidString
         if !converted.contains(idString) {
             converted.append(idString)
-            UserDefaults.standard.set(converted, forKey: convertedNotesKey)
+            AppSettings.convertedNoteIDs = converted
         }
     }
     
@@ -107,11 +107,11 @@ struct SeedSuggestionEngine {
     // MARK: - Private Methods
     
     private static func getSuggestedNoteIDs() -> [String] {
-        return UserDefaults.standard.stringArray(forKey: suggestedNotesKey) ?? []
+        return AppSettings.suggestedNoteIDs
     }
     
     private static func getConvertedNoteIDs() -> [String] {
-        return UserDefaults.standard.stringArray(forKey: convertedNotesKey) ?? []
+        return AppSettings.convertedNoteIDs
     }
 }
 

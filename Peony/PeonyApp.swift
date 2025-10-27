@@ -13,8 +13,8 @@ struct PeonyApp: App {
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     
     init() {
-        // Register default settings (v2.5 AI features)
-        AppConfig.AI.registerDefaults()
+        // Register default settings
+        AppSettings.registerDefaults()
     }
     
     var sharedModelContainer: ModelContainer = {

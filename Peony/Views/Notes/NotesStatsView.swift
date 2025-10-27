@@ -90,7 +90,7 @@ struct NotesStatsView: View {
                     .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 2)
                     
                     // Common themes card (v2.5 Week 3)
-                    if !monthlyThemes.isEmpty && UserDefaults.standard.bool(forKey: AppConfig.AI.themeAnalysisEnabledKey) {
+                    if !monthlyThemes.isEmpty && AppSettings.aiThemeAnalysisEnabled {
                         VStack(alignment: .leading, spacing: 16) {
                             Text("Common Themes This Month")
                                 .font(.serifSubheadline)

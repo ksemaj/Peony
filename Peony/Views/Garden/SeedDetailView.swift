@@ -146,7 +146,7 @@ struct SeedDetailView: View {
                 }
                 
                 // Attached image (if exists)
-                if let image = seed.image {
+                if let imageData = seed.imageData, let image = imageData.asUIImage {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Memory")
                             .font(.headline)
@@ -241,8 +241,8 @@ struct SeedDetailView: View {
                 }
             }
         }
-        .fullScreenCover(isPresented: $showingFullScreenImage) {
-            if let image = seed.image {
+            .fullScreenCover(isPresented: $showingFullScreenImage) {
+            if let imageData = seed.imageData, let image = imageData.asUIImage {
                 FullScreenImageView(image: image)
             }
         }

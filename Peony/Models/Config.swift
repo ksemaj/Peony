@@ -48,7 +48,7 @@ enum AppConfig {
     }
     
     // App Info
-    static let appVersion = "2.0.0"
+    static let appVersion = "2.6.0"
     // TODO: Replace with actual URLs before App Store submission
     static let privacyPolicyURL = "https://example.com/privacy"  // FIXME: Replace before release
     static let supportURL = "https://example.com/support"  // FIXME: Replace before release
@@ -61,31 +61,9 @@ enum AppConfig {
     }
     
     // AI Settings (v2.5 - On-Device Implementation)
+    // Note: AI settings now managed by AppSettings utility
     enum AI {
         static var provider: AIProvider = .appleCoreML  // Default to on-device
-        
-        // On-Device AI (Free)
-        static let moodDetectionEnabledKey = "aiMoodDetectionEnabled"
-        static let promptFrequencyKey = "aiPromptFrequency"
-        static let themeAnalysisEnabledKey = "aiThemeAnalysisEnabled"
-        static let seedSuggestionsEnabledKey = "aiSeedSuggestionsEnabled"
-        
-        // Cloud AI (Premium - Future)
-        // ⚠️ SECURITY WARNING: Never store API keys in UserDefaults or code!
-        // Use Keychain for sensitive data when implementing cloud features.
-        static var openAIKey: String? = nil  // TODO: Move to Keychain (v2.6)
-        static var claudeKey: String? = nil  // TODO: Move to Keychain (v2.6)
-        
-        // Defaults
-        static func registerDefaults() {
-            let defaults: [String: Any] = [
-                moodDetectionEnabledKey: true,  // Enable by default
-                promptFrequencyKey: "daily",    // Show prompts daily
-                themeAnalysisEnabledKey: true,
-                seedSuggestionsEnabledKey: true // Enable by default
-            ]
-            UserDefaults.standard.register(defaults: defaults)
-        }
         
         // Prompt frequency options
         enum PromptFrequency: String, CaseIterable {

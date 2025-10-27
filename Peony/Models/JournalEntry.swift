@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftData
-import UIKit
 
 @Model
 class JournalEntry {
@@ -63,7 +62,7 @@ class JournalEntry {
         print("📝 JournalEntry.detectAndSetMood() called for note \(id)")
         
         // Only detect if mood detection is enabled
-        let isEnabled = UserDefaults.standard.bool(forKey: "aiMoodDetectionEnabled")
+        let isEnabled = AppSettings.aiMoodDetectionEnabled
         print("📝 Mood detection enabled: \(isEnabled)")
         
         guard isEnabled else {
@@ -81,12 +80,9 @@ class JournalEntry {
     /// - Parameters:
     ///   - context: The ModelContext to insert the new seed into
     ///   - title: Title for the new seed
-    ///   - image: Optional image for the seed
+    ///   - imageData: Optional image data for the seed
     /// - Returns: The newly created JournalSeed
-    func convertToSeed(context: ModelContext, title: String, image: UIImage? = nil) -> JournalSeed {
-        // Convert image to data if provided
-        let imageData = image?.jpegData(compressionQuality: 0.8)
-        
+    func convertToSeed(context: ModelContext, title: String, imageData: Data? = nil) -> JournalSeed {
         // Create new seed with this note's content
         let seed = JournalSeed(content: content, title: title, imageData: imageData)
         

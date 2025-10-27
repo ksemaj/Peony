@@ -13,13 +13,6 @@ class PromptGenerator {
     static let shared = PromptGenerator()
     
     private var allPrompts: [WritingPrompt] = []
-    private let userDefaults = UserDefaults.standard
-    
-    // UserDefaults keys
-    private let lastPromptDateKey = "lastPromptDate"
-    private let lastPromptIDKey = "lastPromptID"
-    private let recentPromptIDsKey = "recentPromptIDs"
-    private let respondedPromptIDsKey = "respondedPromptIDs"
     
     private init() {
         loadPrompts()
@@ -45,7 +38,7 @@ class PromptGenerator {
         var responded = getRespondedPromptIDs()
         if !responded.contains(promptID) {
             responded.append(promptID)
-            userDefaults.set(responded, forKey: respondedPromptIDsKey)
+            AppSettings.respondedPromptIDs = responded
         }
     }
     
@@ -86,10 +79,10 @@ class PromptGenerator {
     
     private func getStoredTodaysPrompt() -> WritingPrompt? {
         // Check if we have a prompt from today
-        guard let lastDate = userDefaults.object(forKey: lastPromptDateKey) as? Date,
+        guard let lastDate = AppSettings.lastPromptDate,
               Calendar.current.isDateInToday(lastDate),
-              let lastPromptID = userDefaults.string(forKey: lastPromptIDKey),
-              let prompt = allPrompts.first(where: { $0.id == lastPromptID }) else {
+              !AppSettings.lastPromptID.isEmpty,
+              let prompt = allPrompts.first(where: { $0.id == AppSettings.lastPromptID }) else {
             return nil
         }
         
@@ -128,8 +121,8 @@ class PromptGenerator {
         guard let prompt = prompt else { return }
         
         // Store current prompt and date
-        userDefaults.set(Date(), forKey: lastPromptDateKey)
-        userDefaults.set(prompt.id, forKey: lastPromptIDKey)
+        AppSettings.lastPromptDate = Date()
+        AppSettings.lastPromptID = prompt.id
         
         // Add to recent prompts (keep last 14)
         var recent = getRecentPromptIDs()
@@ -137,15 +130,15 @@ class PromptGenerator {
         if recent.count > 14 {
             recent.removeFirst()
         }
-        userDefaults.set(recent, forKey: recentPromptIDsKey)
+        AppSettings.recentPromptIDs = recent
     }
     
     private func getRecentPromptIDs() -> [String] {
-        return userDefaults.stringArray(forKey: recentPromptIDsKey) ?? []
+        return AppSettings.recentPromptIDs
     }
     
     private func getRespondedPromptIDs() -> [String] {
-        return userDefaults.stringArray(forKey: respondedPromptIDsKey) ?? []
+        return AppSettings.respondedPromptIDs
     }
 }
 

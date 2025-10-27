@@ -66,7 +66,8 @@ struct NotificationTimePage: View {
                 )
                 .datePickerStyle(.wheel)
                 .labelsHidden()
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: 100)
+                .clipped()
                 .padding(.horizontal, 16)
                 
                 Text("You can always change this later")
@@ -75,7 +76,7 @@ struct NotificationTimePage: View {
             }
             .padding(.horizontal, 24)
             .padding(.vertical, 24)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: 320)
             .background(Color.cardLight)
             .cornerRadius(16)
             .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)

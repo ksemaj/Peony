@@ -18,7 +18,7 @@ struct PlantedSeedView: View {
                 DirtMoundView(size: 50)
                 
                 // Plant growing from soil
-                if let image = seed.image {
+                if let imageData = seed.imageData, let image = imageData.asUIImage {
                     Image(uiImage: image)
                         .resizable()
                         .aspectRatio(contentMode: .fill)

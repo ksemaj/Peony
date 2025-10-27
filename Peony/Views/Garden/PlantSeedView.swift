@@ -13,6 +13,7 @@ import PhotosUI
 struct PlantSeedView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.notificationService) private var notificationService
     @State private var title = ""
     @State private var content = ""
     @State private var showingSuccess = false
@@ -240,24 +241,21 @@ struct PlantSeedView: View {
         
         // Request notification permission and schedule notifications
         Task {
-            let notificationManager = NotificationManager.shared
-            if !notificationManager.isAuthorized {
-                let granted = await notificationManager.requestAuthorization()
+            if !notificationService.isAuthorized {
+                let granted = await notificationService.requestAuthorization()
                 if granted {
                     // Schedule bloom notification
-                    notificationManager.scheduleBloomNotification(for: newSeed)
+                    notificationService.scheduleBloomNotification(for: newSeed)
                     
                     // Schedule watering reminder if enabled
-                    let wateringEnabled = UserDefaults.standard.bool(forKey: "wateringRemindersEnabled")
-                    notificationManager.scheduleDailyWateringReminder(enabled: wateringEnabled)
+                    notificationService.scheduleDailyWateringReminder(enabled: AppSettings.wateringRemindersEnabled)
                     
                     // Schedule weekly check-in if enabled
-                    let weeklyEnabled = UserDefaults.standard.bool(forKey: "weeklyCheckinEnabled")
-                    notificationManager.scheduleWeeklyCheckin(enabled: weeklyEnabled)
+                    notificationService.scheduleWeeklyCheckin(enabled: AppSettings.weeklyCheckinEnabled)
                 }
             } else {
                 // Already authorized, just schedule
-                notificationManager.scheduleBloomNotification(for: newSeed)
+                notificationService.scheduleBloomNotification(for: newSeed)
             }
         }
     }

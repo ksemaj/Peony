@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftData
-import UIKit
 
 @Model
 class JournalSeed {
@@ -55,10 +54,8 @@ class JournalSeed {
         }
     }
     
-    var image: UIImage? {
-        guard let imageData = imageData else { return nil }
-        return UIImage(data: imageData)
-    }
+    // Note: Image conversion moved to view layer (ImageHelpers.swift)
+    // Use imageData.asUIImage in views to display image
     
     func water() {
         guard canWaterToday else { return }

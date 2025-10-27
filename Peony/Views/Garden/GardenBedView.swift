@@ -45,18 +45,6 @@ struct GardenBedView: View {
                         .stroke(Color.green.opacity(0.3), lineWidth: 3)
                 )
                 .frame(width: 340, height: 260)
-
-            // Grass texture overlay - denser
-            ForEach(0..<25, id: \.self) { i in
-                GrassBladeView(
-                    size: CGFloat.random(in: 12...26),
-                    rotation: Double.random(in: -40...40)
-                )
-                    .offset(
-                        x: CGFloat.random(in: -150...150),
-                    y: CGFloat.random(in: -110...110)
-                )
-            }
             
             // Seeds placed organically
             ForEach(Array(seeds.enumerated()), id: \.element.id) { index, seed in
