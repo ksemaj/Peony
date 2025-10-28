@@ -84,7 +84,7 @@ struct ContentViewWrapper: View {
                 OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)
             }
         }
-        .environment(\.modelContainer, databaseManager.container)
+        .modelContainer(databaseManager.container)
         .alert("Database Option", isPresented: $showDatabaseError) {
             Button("Reset Data") {
                 databaseManager.resetDatabase()
@@ -107,11 +107,11 @@ struct ContentViewWrapper: View {
 
 @MainActor
 class DatabaseManager: ObservableObject {
-    var container: ModelContainer
-    var hasError: Bool = false
+    @Published var container: ModelContainer
+    @Published var hasError: Bool = false
     
     init() {
-        var schema = Schema([
+        let schema = Schema([
             JournalSeed.self,
             WateringStreak.self,
             JournalEntry.self,
