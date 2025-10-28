@@ -88,7 +88,6 @@ struct ExportDataView: View {
                     dismiss()
                 }
                 .foregroundColor(.gray)
-        }
             }
             .background(
                 LinearGradient(
