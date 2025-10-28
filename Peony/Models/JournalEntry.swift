@@ -59,19 +59,14 @@ class JournalEntry {
     /// Detect and set mood based on content
     /// Uses on-device NaturalLanguage framework for privacy
     func detectAndSetMood() {
-        print("📝 JournalEntry.detectAndSetMood() called for note \(id)")
-        
         // Only detect if mood detection is enabled
         let isEnabled = AppSettings.aiMoodDetectionEnabled
-        print("📝 Mood detection enabled: \(isEnabled)")
         
         guard isEnabled else {
-            print("📝 Mood detection disabled, skipping")
             return
         }
         
         self.detectedMood = MoodDetector.detectMood(in: content)
-        print("📝 Final detectedMood: \(detectedMood ?? "nil")")
     }
     
     // MARK: - Seed Conversion (v2.5 Week 4)

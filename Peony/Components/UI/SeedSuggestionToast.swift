@@ -12,6 +12,7 @@ struct SeedSuggestionToast: View {
     let note: JournalEntry
     let onPlantSeed: () -> Void
     let onDismiss: () -> Void
+    let onJustDismiss: () -> Void  // For "Not Now" - only dismiss toast
     
     @State private var isPresented = false
     
@@ -19,12 +20,13 @@ struct SeedSuggestionToast: View {
         ZStack {
             // Semi-transparent background overlay
             if isPresented {
-                Color.black.opacity(0.3)
+                Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        dismissToast()
+                        dismissToast(shouldDismiss: true)
                     }
                     .transition(.opacity)
+                    .zIndex(1)
             }
             
             // Toast card
@@ -54,7 +56,8 @@ struct SeedSuggestionToast: View {
                     HStack(spacing: 12) {
                         // Dismiss button
                         Button {
-                            dismissToast()
+                            dismissToast(shouldDismiss: false)
+                            onJustDismiss()
                         } label: {
                             Text("Not Now")
                                 .font(.body)
@@ -62,14 +65,18 @@ struct SeedSuggestionToast: View {
                                 .foregroundColor(.gray)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
-                                .background(Color.white)
+                                .background(Color.white.opacity(1.0))
                                 .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                )
                         }
                         
                         // Plant seed button
                         Button {
-                            onPlantSeed()
-                            dismissToast()
+                            dismissToast(shouldDismiss: false)
+                            onPlantSeed()  // Call immediately to show sheet
                         } label: {
                             Text("Plant It")
                                 .font(.body)
@@ -77,17 +84,18 @@ struct SeedSuggestionToast: View {
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
-                                .background(Color.green)
+                                .background(Color.green.opacity(1.0))
                                 .cornerRadius(10)
                         }
                     }
                 }
                 .padding(24)
-                .background(Color.white)
+                .background(Color.white.opacity(1.0))
                 .cornerRadius(20)
                 .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
                 .padding(.horizontal, 32)
                 .transition(.scale.combined(with: .opacity))
+                .zIndex(2)
             }
         }
         .onAppear {
@@ -97,12 +105,14 @@ struct SeedSuggestionToast: View {
         }
     }
     
-    private func dismissToast() {
+    private func dismissToast(shouldDismiss: Bool = true) {
         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
             isPresented = false
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            onDismiss()
+        if shouldDismiss {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                onDismiss()
+            }
         }
     }
 }
@@ -123,6 +133,9 @@ struct SeedSuggestionToast: View {
                             print("Plant seed tapped")
                         },
                         onDismiss: {
+                            showToast = false
+                        },
+                        onJustDismiss: {
                             showToast = false
                         }
                     )

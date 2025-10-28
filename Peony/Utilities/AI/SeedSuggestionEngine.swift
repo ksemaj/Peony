@@ -25,43 +25,28 @@ struct SeedSuggestionEngine {
     static func shouldSuggestAsSeed(_ note: JournalEntry) -> Bool {
         // Check if seed suggestions enabled
         let isEnabled = AppSettings.aiSeedSuggestionsEnabled
-        print("🌱 Seed suggestions enabled: \(isEnabled)")
         guard isEnabled else {
             return false
         }
         
         // Check word count threshold
-        print("🌱 Note word count: \(note.wordCount) (need \(minimumWordCount)+)")
         guard note.wordCount >= minimumWordCount else {
             return false
         }
         
         // Check if already suggested
         if hasBeenSuggested(note.id) {
-            print("🌱 Already suggested")
             return false
         }
         
         // Check if already converted
         if hasBeenConverted(note.id) {
-            print("🌱 Already converted")
             return false
         }
         
-        // Check sentiment (meaningful moods)
-        guard let mood = note.detectedMood else {
-            print("🌱 No mood detected")
-            return false // No mood detected
-        }
-        
-        print("🌱 Note mood: \(mood)")
-        
-        // Only suggest reflective, grateful, or thoughtful notes
-        // These tend to be more meaningful and seed-worthy
-        let meaningfulMoods = ["reflective", "grateful", "thoughtful"]
-        let qualifies = meaningfulMoods.contains(mood)
-        print("🌱 Qualifies for seed: \(qualifies)")
-        return qualifies
+        // Any 150+ word entry qualifies for seed suggestion
+        // The length requirement ensures quality content
+        return true
     }
     
     /// Mark a note as suggested
