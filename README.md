@@ -137,7 +137,7 @@ Peony/
 ### v2.6.0 - October 2024 (Latest)
 - Visual quality overhaul with time-aware sky system
 - Major architecture refactor: 37 components extracted
-- ContentView reduced from 2,755 to 120 lines (96% reduction)
+- ContentView reduced MASSIVELY
 
 ### Earlier Versions
 - v2.6: Component extraction and code cleanup
