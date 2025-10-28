@@ -76,39 +76,6 @@ Peony/
 
 ---
 
-## Getting Started
-
-### Prerequisites
-- Xcode 15.0+
-- iOS 16.0+ device or simulator
-- macOS Ventura or later
-
-### Setup
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/ksemaj/Peony.git
-cd Peony
-```
-
-2. **Open in Xcode**
-```bash
-open Peony.xcodeproj
-```
-
-3. **Build and Run**
-- Select target device/simulator
-- Press `Cmd + R` or click ▶️ Play button
-
-### First Launch
-
-1. Complete onboarding (3 slides)
-2. Enable AI features (optional but recommended)
-3. Set notification preferences
-4. Plant your first seed or write a quick note!
-
----
-
 ## App Structure
 
 ### Main Tabs
