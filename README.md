@@ -44,26 +44,6 @@ Quick access notes for instant capture. Features include:
 
 ## Architecture
 
-### Project Structure
-```
-Peony/
-├── Components/
-│   ├── Plants/ (6 files) - Plant visualization stages
-│   ├── Flora/ (7 files) - Decorative garden elements
-│   └── UI/ (15 files) - Buttons, backgrounds, effects, toolbars
-├── Views/
-│   ├── Garden/ (11 files) - Seed management and layout
-│   ├── Notes/ (9 files) - Journal entries and notes
-│   ├── Onboarding/ (5 files) - First-time user flow
-│   └── Shared/ (3 files) - Reusable utilities
-├── Models/ (7 files) - SwiftData models and extensions
-└── Utilities/
-    ├── AI/ (4 files) - Mood detection, prompts, suggestions
-    └── Managers/ (8 files) - Database, notifications, time, etc.
-```
-
-Total: 79 Swift files
-
 ### Tech Stack
 - **UI Framework:** SwiftUI (iOS 16.0+)
 - **Data Persistence:** SwiftData
