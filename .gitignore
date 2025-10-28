@@ -15,6 +15,7 @@ DerivedData/
 
 # Editor/IDE
 .cursor/
+.claude/
 .windsurfrules
 
 # Swift Package Manager
