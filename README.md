@@ -39,43 +39,6 @@ Peony transforms journaling into a garden-growing experience:
 
 ---
 
-## Architecture
-
-### Recent Major Refactor (Oct 2024)
-
-**ContentView.swift**: 2,755 lines → 120 lines (96% reduction!)
-
-Extracted **37 components** into organized structure:
-
-```
-Peony/
-├── Components/
-│   ├── Plants/ (6 files) - Growth stage visualizations
-│   ├── Flora/ (7 files) - Decorative elements  
-│   └── UI/ (15 files) - Backgrounds, effects, buttons, overlays
-├── Views/
-│   ├── Garden/ (10 files) - Seed management & layout
-│   ├── Notes/ (9 files) - Quick notes & journal
-│   ├── Onboarding/ (5 files) - First-time experience
-│   └── Shared/ (3 files) - Reusable utilities
-├── Models/ (7 files) - SwiftData models & extensions
-└── Utilities/
-    ├── AI/ (4 files) - Mood, prompts, themes, suggestions
-    ├── TimeManager.swift - Real-time day/night and seasonal calculations
-    └── AmbientLighting.swift - Dynamic lighting based on time
-```
-
-### Tech Stack
-
-- **UI:** SwiftUI (iOS 16.0+)
-- **Data:** SwiftData (model persistence)
-- **AI:** NaturalLanguage framework (on-device)
-- **Notifications:** UserNotifications framework
-- **Typography:** Playfair Display (custom serif font)
-- **Architecture:** MVVM with component-based structure
-
----
-
 ## App Structure
 
 ### Main Tabs
