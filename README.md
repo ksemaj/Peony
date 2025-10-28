@@ -127,16 +127,6 @@ Peony transforms journaling into a garden-growing experience:
 
 ---
 
-## Roadmap
-
-**Completed**: Core journaling mechanics, garden visualization, streak system, AI mood detection, quick notes, theme analysis, code refactor
-
-**In Progress**: Data export/backup, iCloud sync prep, additional plant varieties
-
-**Planned**: Garden customization, advanced AI insights, widget support
-
----
-
 ## Development Principles
 
 - Privacy-first (all AI on-device using NaturalLanguage)
