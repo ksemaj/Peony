@@ -140,6 +140,13 @@ Peony/
 - Mindfulness-focused
 - Clean, maintainable code
 
+### README Guidelines
+- Only include information that accurately represents the current project
+- Remove references to non-existent directories or outdated metrics
+- Keep it simple: focus on what exists now, not historical artifacts
+- No setup instructions for personal projects
+- No references to health scores, audits, or archived documentation unless they currently exist
+
 ---
 
 ## License
