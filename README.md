@@ -127,14 +127,6 @@ All AI features run on-device using NaturalLanguage framework:
 
 ---
 
-## Documentation
-
-- [`.github/FEATURE_BRANCH_WORKFLOW.md`](.github/FEATURE_BRANCH_WORKFLOW.md) - Development workflow
-- [`.cursor/rules/architecture-rules.mdc`](.cursor/rules/architecture-rules.mdc) - Architecture guidelines
-- [`.cursor/commands/de-slop.md`](.cursor/commands/de-slop.md) - Code cleanup process
-
----
-
 ## Principles
 
 - **Privacy-first:** All AI runs on-device using NaturalLanguage
