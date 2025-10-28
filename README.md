@@ -167,7 +167,7 @@ Peony/
 
 - Privacy-first (all AI on-device using NaturalLanguage)
 - Beautiful, intentional design
-- Meaningful gamification (not addictive)
+- Meaningful gamification
 - Mindfulness-focused
 - Clean, maintainable code
 
