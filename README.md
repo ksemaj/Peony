@@ -1,4 +1,4 @@
-# 🌸 Peony 
+# Peony 🌸 
 
 A beautiful iOS journaling app for mindful reflection. Write journal entries that grow into flowers through consistent care.
 
