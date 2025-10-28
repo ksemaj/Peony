@@ -83,6 +83,8 @@ struct ContentView: View {
                                 .font(.title2)
                                 .foregroundColor(.green)
                         }
+                        .accessibilityLabel("Plant new seed")
+                        .accessibilityHint("Tap to create a new journal entry seed")
                     }
                 }
             }
@@ -136,6 +138,8 @@ struct ContentView: View {
                     .shadow(color: .warmGold.opacity(0.4), radius: 5, x: 0, y: 2)
             }
             .padding(.top, 8)
+            .accessibilityLabel("Plant your first seed")
+            .accessibilityHint("Tap to create your first journal entry")
             
             Spacer()
             Spacer()
