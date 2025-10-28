@@ -45,7 +45,7 @@ Peony transforms journaling into a garden-growing experience:
 - **Data:** SwiftData (model persistence)
 - **AI:** NaturalLanguage framework (on-device)
 - **Notifications:** UserNotifications framework
-- **Typography:** Playfair Display (custom serif font)
+- **Typography:** Playfair Display (serif) and SF Pro (sans)
 - **Architecture:** MVVM with component-based structure
 
 ---
