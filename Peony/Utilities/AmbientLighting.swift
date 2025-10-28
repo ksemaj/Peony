@@ -28,32 +28,24 @@ class AmbientLighting {
         let timeOfDay = timeManager.timeOfDay
         let season = timeManager.currentSeason
         
-        // Base lighting on time of day
+        // Base lighting on time of day - 3 day + 3 night stages
         switch timeOfDay {
-        case .preDawn:
-            return LightingCondition(
-                brightness: 0.3,
-                tintColor: Color(red: 0.70, green: 0.75, blue: 0.85).opacity(0.3),
-                shadowIntensity: 0.7,
-                warmth: 0.2
-            )
-            
-        case .dawn:
+        case .sunrise:
             return LightingCondition(
                 brightness: 0.6,
                 tintColor: getSeasonalDawnTint(season: season).opacity(0.25),
                 shadowIntensity: 0.4,
                 warmth: 0.7
             )
-            
-        case .morning:
+
+        case .day:
             return LightingCondition(
                 brightness: 0.95,
                 tintColor: Color.clear,
                 shadowIntensity: 0.15,
                 warmth: 0.6
             )
-            
+
         case .afternoon:
             return LightingCondition(
                 brightness: 1.0,
@@ -61,16 +53,24 @@ class AmbientLighting {
                 shadowIntensity: 0.1,
                 warmth: 0.5
             )
-            
-        case .dusk:
+
+        case .sunset:
             return LightingCondition(
                 brightness: 0.55,
                 tintColor: getSeasonalDuskTint(season: season).opacity(0.3),
                 shadowIntensity: 0.5,
                 warmth: 0.8
             )
-            
-        case .night:
+
+        case .evening:
+            return LightingCondition(
+                brightness: 0.4,
+                tintColor: Color(red: 0.65, green: 0.70, blue: 0.85).opacity(0.35),
+                shadowIntensity: 0.65,
+                warmth: 0.2
+            )
+
+        case .midnight:
             return LightingCondition(
                 brightness: 0.25,
                 tintColor: Color(red: 0.65, green: 0.70, blue: 0.85).opacity(0.4),
@@ -127,4 +127,6 @@ class AmbientLighting {
         }
     }
 }
+
+
 

@@ -12,7 +12,7 @@ struct ButterflyView: View {
     let index: Int
     @State private var position = CGPoint(x: 0, y: 0)
     @State private var wingAngle: Double = 0
-    @State private var timeManager = TimeManager.shared
+    @Bindable var timeManager = TimeManager.shared
     
     var body: some View {
         let lightingModifier = AmbientLighting.shared.getFaunaLightingModifier(timeManager: timeManager)

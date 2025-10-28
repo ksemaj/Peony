@@ -9,64 +9,72 @@ import SwiftUI
 
 /// Time-based sky background that changes color throughout the day with seasonal variations
 struct SkyBackgroundView: View {
-    @State private var timeManager = TimeManager.shared
+    @Bindable var timeManager = TimeManager.shared
     
     /// Get sky colors based on current time of day and season
     var skyColors: [Color] {
         let season = timeManager.currentSeason
         let timeOfDay = timeManager.timeOfDay
-        
+
         // Get the appropriate color palette tuple
         let palette: [(r: Double, g: Double, b: Double)]
         
         switch (season, timeOfDay) {
-        // Spring palettes
-        case (.spring, .preDawn):
-            palette = AppConfig.Environment.SeasonalPalettes.springPreDawn
-        case (.spring, .dawn):
-            palette = AppConfig.Environment.SeasonalPalettes.springDawn
-        case (.spring, .morning), (.spring, .afternoon):
+        // Spring palettes - 3 day + 3 night
+        case (.spring, .sunrise):
+            palette = AppConfig.Environment.SeasonalPalettes.springSunrise
+        case (.spring, .day):
             palette = AppConfig.Environment.SeasonalPalettes.springDay
-        case (.spring, .dusk):
-            palette = AppConfig.Environment.SeasonalPalettes.springDusk
-        case (.spring, .night):
-            palette = AppConfig.Environment.SeasonalPalettes.springNight
-            
-        // Summer palettes
-        case (.summer, .preDawn):
-            palette = AppConfig.Environment.SeasonalPalettes.summerPreDawn
-        case (.summer, .dawn):
-            palette = AppConfig.Environment.SeasonalPalettes.summerDawn
-        case (.summer, .morning), (.summer, .afternoon):
+        case (.spring, .afternoon):
+            palette = AppConfig.Environment.SeasonalPalettes.springAfternoon
+        case (.spring, .sunset):
+            palette = AppConfig.Environment.SeasonalPalettes.springSunset
+        case (.spring, .evening):
+            palette = AppConfig.Environment.SeasonalPalettes.springEvening
+        case (.spring, .midnight):
+            palette = AppConfig.Environment.SeasonalPalettes.springMidnight
+
+        // Summer palettes - 3 day + 3 night
+        case (.summer, .sunrise):
+            palette = AppConfig.Environment.SeasonalPalettes.summerSunrise
+        case (.summer, .day):
             palette = AppConfig.Environment.SeasonalPalettes.summerDay
-        case (.summer, .dusk):
-            palette = AppConfig.Environment.SeasonalPalettes.summerDusk
-        case (.summer, .night):
-            palette = AppConfig.Environment.SeasonalPalettes.summerNight
-            
-        // Fall palettes
-        case (.fall, .preDawn):
-            palette = AppConfig.Environment.SeasonalPalettes.fallPreDawn
-        case (.fall, .dawn):
-            palette = AppConfig.Environment.SeasonalPalettes.fallDawn
-        case (.fall, .morning), (.fall, .afternoon):
+        case (.summer, .afternoon):
+            palette = AppConfig.Environment.SeasonalPalettes.summerAfternoon
+        case (.summer, .sunset):
+            palette = AppConfig.Environment.SeasonalPalettes.summerSunset
+        case (.summer, .evening):
+            palette = AppConfig.Environment.SeasonalPalettes.summerEvening
+        case (.summer, .midnight):
+            palette = AppConfig.Environment.SeasonalPalettes.summerMidnight
+
+        // Fall palettes - 3 day + 3 night
+        case (.fall, .sunrise):
+            palette = AppConfig.Environment.SeasonalPalettes.fallSunrise
+        case (.fall, .day):
             palette = AppConfig.Environment.SeasonalPalettes.fallDay
-        case (.fall, .dusk):
-            palette = AppConfig.Environment.SeasonalPalettes.fallDusk
-        case (.fall, .night):
-            palette = AppConfig.Environment.SeasonalPalettes.fallNight
-            
-        // Winter palettes
-        case (.winter, .preDawn):
-            palette = AppConfig.Environment.SeasonalPalettes.winterPreDawn
-        case (.winter, .dawn):
-            palette = AppConfig.Environment.SeasonalPalettes.winterDawn
-        case (.winter, .morning), (.winter, .afternoon):
+        case (.fall, .afternoon):
+            palette = AppConfig.Environment.SeasonalPalettes.fallAfternoon
+        case (.fall, .sunset):
+            palette = AppConfig.Environment.SeasonalPalettes.fallSunset
+        case (.fall, .evening):
+            palette = AppConfig.Environment.SeasonalPalettes.fallEvening
+        case (.fall, .midnight):
+            palette = AppConfig.Environment.SeasonalPalettes.fallMidnight
+
+        // Winter palettes - 3 day + 3 night
+        case (.winter, .sunrise):
+            palette = AppConfig.Environment.SeasonalPalettes.winterSunrise
+        case (.winter, .day):
             palette = AppConfig.Environment.SeasonalPalettes.winterDay
-        case (.winter, .dusk):
-            palette = AppConfig.Environment.SeasonalPalettes.winterDusk
-        case (.winter, .night):
-            palette = AppConfig.Environment.SeasonalPalettes.winterNight
+        case (.winter, .afternoon):
+            palette = AppConfig.Environment.SeasonalPalettes.winterAfternoon
+        case (.winter, .sunset):
+            palette = AppConfig.Environment.SeasonalPalettes.winterSunset
+        case (.winter, .evening):
+            palette = AppConfig.Environment.SeasonalPalettes.winterEvening
+        case (.winter, .midnight):
+            palette = AppConfig.Environment.SeasonalPalettes.winterMidnight
         }
         
         // Convert tuples to Color objects
@@ -80,8 +88,6 @@ struct SkyBackgroundView: View {
             endPoint: .bottom
         )
         .ignoresSafeArea()
-        .animation(.easeInOut(duration: 2.0), value: timeManager.timeOfDay)
-        .animation(.easeInOut(duration: 5.0), value: timeManager.currentSeason)
     }
 }
 

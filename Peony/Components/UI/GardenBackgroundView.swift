@@ -30,7 +30,7 @@ struct GardenBackgroundView: View {
                         CelestialView()
                             .offset(y: -50)
                     }
-                    .frame(height: geometry.size.height * 0.30)
+                    .frame(height: max(geometry.size.height * 0.30, 100))
                     
                     Spacer()
                 }

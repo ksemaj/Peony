@@ -38,20 +38,21 @@ struct PlantingSuccessView: View {
                     // Golden sparkles effect
                     if showSparkles {
                         ForEach(0..<12) { index in
-                            Circle()
-                                .fill(
+                            Image(systemName: "sparkle")
+                                .font(.system(size: 16))
+                                .foregroundStyle(
                                     LinearGradient(
                                         colors: [Color.warmGold, Color.amberGlow],
                                         startPoint: .topLeading,
                                         endPoint: .bottomTrailing
                                     )
                                 )
-                                .frame(width: 6, height: 6)
+                                .shadow(color: .warmGold.opacity(0.5), radius: 4)
                                 .offset(
                                     x: cos(Double(index) * .pi / 6) * 50,
                                     y: sin(Double(index) * .pi / 6) * 50
                                 )
-                                .opacity(showSparkles ? 0.9 : 0)
+                                .opacity(showSparkles ? 1 : 0)
                                 .scaleEffect(showSparkles ? 1 : 0.1)
                                 .animation(.spring(response: 0.6, dampingFraction: 0.6).delay(Double(index) * 0.04), value: showSparkles)
                         }
@@ -148,5 +149,6 @@ struct PlantingSuccessView: View {
         print("Dismissed")
     }
 }
+
 
 

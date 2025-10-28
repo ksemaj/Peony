@@ -104,114 +104,134 @@ extension AppConfig {
             static let twilightDurationMinutes = 30      // Duration of dawn/dusk transition
         }
         
-        /// Seasonal sky color configurations
+        /// Seasonal sky color configurations - 3 day + 3 night stages
         enum SeasonalPalettes {
             // Spring - Fresh pastels with hints of pink and green
-            static let springPreDawn = [
-                (r: 0.10, g: 0.12, b: 0.28),  // Deep indigo (still night)
-                (r: 0.15, g: 0.18, b: 0.35),  // Dark purple-blue
-                (r: 0.20, g: 0.24, b: 0.42)   // Rich blue
-            ]
-            static let springDawn = [
-                (r: 0.20, g: 0.30, b: 0.55),  // Deep twilight blue (saturated)
-                (r: 0.30, g: 0.45, b: 0.70),  // Rich dawn blue  
-                (r: 0.40, g: 0.60, b: 0.85)   // Vibrant morning blue
+            static let springSunrise = [
+                (r: 0.85, g: 0.50, b: 0.60),  // Deep pink sunrise
+                (r: 0.88, g: 0.60, b: 0.50),  // Rich coral glow
+                (r: 0.85, g: 0.65, b: 0.45)   // Warm orange-pink
             ]
             static let springDay = [
-                (r: 0.35, g: 0.65, b: 0.90),  // Rich sky blue (much more saturated)
-                (r: 0.45, g: 0.70, b: 0.92),  // Bright sky blue
-                (r: 0.55, g: 0.75, b: 0.95)   // Lighter sky blue
+                (r: 0.25, g: 0.55, b: 0.85),  // Deep sky blue
+                (r: 0.35, g: 0.60, b: 0.87),  // Rich sky blue
+                (r: 0.45, g: 0.65, b: 0.88)   // Bright sky blue
             ]
-            static let springDusk = [
-                (r: 0.95, g: 0.88, b: 0.92),  // Rose pink
-                (r: 0.95, g: 0.90, b: 0.82),  // Peach glow
-                (r: 0.92, g: 0.94, b: 0.90)   // Soft green-cream
+            static let springAfternoon = [
+                (r: 0.28, g: 0.58, b: 0.84),  // Deep afternoon blue
+                (r: 0.38, g: 0.63, b: 0.86),  // Rich afternoon
+                (r: 0.48, g: 0.68, b: 0.87)   // Bright afternoon
             ]
-            static let springNight = [
-                (r: 0.08, g: 0.10, b: 0.25),  // Deep indigo night
-                (r: 0.12, g: 0.15, b: 0.32),  // Dark purple-blue
-                (r: 0.18, g: 0.22, b: 0.38)   // Night blue
+            static let springSunset = [
+                (r: 0.88, g: 0.60, b: 0.40),  // Deep peach sunset
+                (r: 0.88, g: 0.65, b: 0.35),  // Rich golden orange
+                (r: 0.85, g: 0.70, b: 0.40)   // Warm gold glow
+            ]
+            static let springEvening = [
+                (r: 0.10, g: 0.12, b: 0.28),  // Deep twilight purple-blue
+                (r: 0.15, g: 0.18, b: 0.35),  // Deep evening blue
+                (r: 0.20, g: 0.22, b: 0.40)   // Dark blue evening
+            ]
+            static let springMidnight = [
+                (r: 0.03, g: 0.05, b: 0.15),  // Very deep indigo midnight
+                (r: 0.05, g: 0.08, b: 0.20),  // Deep purple-blue
+                (r: 0.08, g: 0.10, b: 0.24)   // Dark night blue
             ]
             
             // Summer - Vibrant blues with warm highlights
-            static let summerPreDawn = [
-                (r: 0.12, g: 0.15, b: 0.32),  // Deep navy (still night)
-                (r: 0.18, g: 0.22, b: 0.40),  // Dark midnight blue
-                (r: 0.25, g: 0.30, b: 0.48)   // Rich navy
-            ]
-            static let summerDawn = [
-                (r: 0.25, g: 0.35, b: 0.60),  // Deep dawn blue (saturated)
-                (r: 0.35, g: 0.50, b: 0.75),  // Rich morning blue
-                (r: 0.45, g: 0.65, b: 0.88)   // Bright dawn sky
+            static let summerSunrise = [
+                (r: 0.88, g: 0.45, b: 0.40),  // Rich coral sunrise
+                (r: 0.90, g: 0.55, b: 0.35),  // Deep orange glow
+                (r: 0.88, g: 0.65, b: 0.40)   // Rich golden morning
             ]
             static let summerDay = [
-                (r: 0.30, g: 0.60, b: 0.95),  // Vibrant saturated sky blue
-                (r: 0.40, g: 0.68, b: 0.96),  // Bright summer blue
-                (r: 0.50, g: 0.75, b: 0.97)   // Light summer sky
+                (r: 0.20, g: 0.50, b: 0.88),  // Rich saturated sky blue
+                (r: 0.28, g: 0.58, b: 0.88),  // Deep summer blue
+                (r: 0.38, g: 0.65, b: 0.88)   // Bright summer sky
             ]
-            static let summerDusk = [
-                (r: 0.98, g: 0.80, b: 0.70),  // Warm orange
-                (r: 0.95, g: 0.88, b: 0.75),  // Golden hour
-                (r: 0.90, g: 0.92, b: 0.88)   // Warm gray
+            static let summerAfternoon = [
+                (r: 0.25, g: 0.53, b: 0.87),  // Deep afternoon blue
+                (r: 0.33, g: 0.60, b: 0.88),  // Rich afternoon
+                (r: 0.43, g: 0.67, b: 0.88)   // Bright afternoon
             ]
-            static let summerNight = [
-                (r: 0.10, g: 0.12, b: 0.30),  // Deep navy night
-                (r: 0.15, g: 0.18, b: 0.36),  // Dark night blue
-                (r: 0.22, g: 0.25, b: 0.42)   // Night blue
+            static let summerSunset = [
+                (r: 0.90, g: 0.50, b: 0.25),  // Rich orange sunset
+                (r: 0.88, g: 0.60, b: 0.25),  // Deep gold
+                (r: 0.85, g: 0.65, b: 0.30)   // Rich amber glow
+            ]
+            static let summerEvening = [
+                (r: 0.12, g: 0.16, b: 0.30),  // Deep evening blue
+                (r: 0.16, g: 0.20, b: 0.38),  // Rich evening
+                (r: 0.22, g: 0.24, b: 0.42)   // Dark blue evening
+            ]
+            static let summerMidnight = [
+                (r: 0.03, g: 0.05, b: 0.18),  // Very deep navy midnight
+                (r: 0.06, g: 0.08, b: 0.22),  // Deep night blue
+                (r: 0.10, g: 0.12, b: 0.26)   // Dark night blue
             ]
             
             // Fall - Warm oranges, reds, and golden tones
-            static let fallPreDawn = [
-                (r: 0.15, g: 0.10, b: 0.25),  // Deep plum (still night)
-                (r: 0.22, g: 0.16, b: 0.32),  // Dark purple
-                (r: 0.30, g: 0.24, b: 0.40)   // Rich mauve
-            ]
-            static let fallDawn = [
-                (r: 0.28, g: 0.32, b: 0.52),  // Deep purple-blue twilight (saturated)
-                (r: 0.38, g: 0.48, b: 0.68),  // Rich dawn purple-blue
-                (r: 0.48, g: 0.62, b: 0.80)   // Bright dawn sky
+            static let fallSunrise = [
+                (r: 0.82, g: 0.40, b: 0.50),  // Deep magenta sunrise
+                (r: 0.88, g: 0.50, b: 0.35),  // Rich burnt orange glow
+                (r: 0.85, g: 0.60, b: 0.40)   // Deep amber morning
             ]
             static let fallDay = [
-                (r: 0.40, g: 0.62, b: 0.88),  // Rich blue-gray (much more saturated)
-                (r: 0.50, g: 0.68, b: 0.90),  // Bright fall blue
-                (r: 0.60, g: 0.75, b: 0.92)   // Light fall sky
+                (r: 0.28, g: 0.52, b: 0.82),  // Deep vibrant blue
+                (r: 0.38, g: 0.58, b: 0.84),  // Rich fall blue
+                (r: 0.48, g: 0.65, b: 0.86)   // Bright fall sky
             ]
-            static let fallDusk = [
-                (r: 0.98, g: 0.75, b: 0.60),  // Deep orange
-                (r: 0.98, g: 0.85, b: 0.70),  // Golden orange
-                (r: 0.95, g: 0.90, b: 0.82)   // Warm cream
+            static let fallAfternoon = [
+                (r: 0.30, g: 0.55, b: 0.81),  // Deep afternoon blue
+                (r: 0.40, g: 0.61, b: 0.83),  // Rich afternoon
+                (r: 0.50, g: 0.67, b: 0.85)   // Bright afternoon
             ]
-            static let fallNight = [
-                (r: 0.12, g: 0.08, b: 0.24),  // Deep plum night
-                (r: 0.18, g: 0.14, b: 0.30),  // Dark purple-gray
-                (r: 0.24, g: 0.20, b: 0.36)   // Night purple
+            static let fallSunset = [
+                (r: 0.85, g: 0.45, b: 0.30),  // Rich burnt sienna sunset
+                (r: 0.88, g: 0.58, b: 0.28),  // Deep gold
+                (r: 0.85, g: 0.65, b: 0.35)   // Rich amber
+            ]
+            static let fallEvening = [
+                (r: 0.15, g: 0.10, b: 0.24),  // Deep plum evening
+                (r: 0.22, g: 0.15, b: 0.30),  // Rich purple evening
+                (r: 0.25, g: 0.18, b: 0.34)   // Dark evening purple
+            ]
+            static let fallMidnight = [
+                (r: 0.05, g: 0.03, b: 0.12),  // Very deep plum midnight
+                (r: 0.08, g: 0.05, b: 0.18),  // Deep purple-gray
+                (r: 0.12, g: 0.08, b: 0.22)   // Dark night purple
             ]
             
             // Winter - Cool grays and icy blues
-            static let winterPreDawn = [
-                (r: 0.08, g: 0.12, b: 0.28),  // Deep midnight blue (still night)
-                (r: 0.14, g: 0.20, b: 0.36),  // Dark steel
-                (r: 0.22, g: 0.28, b: 0.44)   // Rich steel blue
-            ]
-            static let winterDawn = [
-                (r: 0.22, g: 0.32, b: 0.58),  // Deep steel twilight (saturated)
-                (r: 0.32, g: 0.48, b: 0.72),  // Rich slate blue
-                (r: 0.42, g: 0.62, b: 0.82)   // Vibrant dawn blue
+            static let winterSunrise = [
+                (r: 0.80, g: 0.55, b: 0.65),  // Deep cool rose sunrise
+                (r: 0.82, g: 0.62, b: 0.58),  // Rich coral glow
+                (r: 0.80, g: 0.68, b: 0.62)   // Icy pink morning
             ]
             static let winterDay = [
-                (r: 0.38, g: 0.62, b: 0.88),  // Cool vibrant sky blue
-                (r: 0.48, g: 0.70, b: 0.92),  // Bright icy blue
-                (r: 0.58, g: 0.76, b: 0.94)   // Light winter sky
+                (r: 0.28, g: 0.52, b: 0.82),  // Deep icy sky blue
+                (r: 0.38, g: 0.60, b: 0.85),  // Rich icy blue
+                (r: 0.48, g: 0.66, b: 0.87)   // Bright winter sky
             ]
-            static let winterDusk = [
-                (r: 0.88, g: 0.85, b: 0.92),  // Cool lavender
-                (r: 0.92, g: 0.90, b: 0.94),  // Icy purple
-                (r: 0.90, g: 0.92, b: 0.95)   // Cool blue-gray
+            static let winterAfternoon = [
+                (r: 0.30, g: 0.55, b: 0.81),  // Deep afternoon blue
+                (r: 0.40, g: 0.62, b: 0.84),  // Rich icy afternoon
+                (r: 0.50, g: 0.68, b: 0.86)   // Bright winter afternoon
             ]
-            static let winterNight = [
-                (r: 0.06, g: 0.10, b: 0.22),  // Deep midnight blue
-                (r: 0.12, g: 0.16, b: 0.28),  // Dark steel blue
-                (r: 0.18, g: 0.22, b: 0.34)   // Night steel
+            static let winterSunset = [
+                (r: 0.80, g: 0.62, b: 0.50),  // Deep cool amber sunset
+                (r: 0.78, g: 0.65, b: 0.55),  // Rich slate gold
+                (r: 0.75, g: 0.68, b: 0.58)   // Deep icy bronze
+            ]
+            static let winterEvening = [
+                (r: 0.10, g: 0.14, b: 0.28),  // Deep steel evening
+                (r: 0.16, g: 0.20, b: 0.34),  // Rich steel evening
+                (r: 0.20, g: 0.24, b: 0.38)   // Dark evening steel
+            ]
+            static let winterMidnight = [
+                (r: 0.02, g: 0.04, b: 0.12),  // Very deep midnight blue
+                (r: 0.05, g: 0.08, b: 0.18),  // Deep steel blue
+                (r: 0.08, g: 0.12, b: 0.22)   // Dark night steel
             ]
         }
         

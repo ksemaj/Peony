@@ -9,8 +9,6 @@ import SwiftUI
 
 /// Decorative garden path with stone texture
 struct GardenPathView: View {
-    @State private var scaleX: CGFloat = 0
-    
     var body: some View {
         ZStack {
             // Base path
@@ -30,12 +28,6 @@ struct GardenPathView: View {
             }
             .frame(maxWidth: .infinity)
         }
-        .scaleEffect(x: scaleX, y: 1.0)
-        .onAppear {
-            withAnimation(.easeInOut(duration: 0.6).delay(0.4)) {
-                scaleX = 1.0
-            }
-        }
     }
 }
 
@@ -44,5 +36,6 @@ struct GardenPathView: View {
         .padding()
         .background(Color.ivoryLight)
 }
+
 
 

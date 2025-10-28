@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Time-based view that shows butterflies during day, fireflies at night
 struct FaunaView: View {
-    @State private var timeManager = TimeManager.shared
+    @Bindable var timeManager = TimeManager.shared
     
     var body: some View {
         Group {

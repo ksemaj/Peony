@@ -22,13 +22,54 @@ struct GardenToolbarButtons: View {
     }
 }
 
+/// Debug time button - cycles through times of day for testing
+struct DebugTimeButton: View {
+    @Bindable var timeManager = TimeManager.shared
+    @State private var showingDebugAlert = false
+
+    var body: some View {
+        Button {
+            if !timeManager.isDebugMode {
+                // First tap: enable debug mode
+                timeManager.isDebugMode = true
+                timeManager.debugTimeOfDay = .afternoon
+                timeManager.updateDebugTime()
+                showingDebugAlert = true
+            } else {
+                // Subsequent taps: cycle through times
+                timeManager.cycleDebugTime()
+            }
+        } label: {
+            Image(systemName: timeManager.isDebugMode ? "clock.fill" : "clock")
+                .foregroundColor(timeManager.isDebugMode ? .blue : .gray)
+        }
+        .alert("Debug Mode Enabled", isPresented: $showingDebugAlert) {
+            Button("Got it!") { }
+            Button("Disable", role: .destructive) {
+                timeManager.isDebugMode = false
+            }
+        } message: {
+            Text("Tap the clock to cycle through times of day:\n\n☀️ Sunrise (left) → Day → Afternoon (zenith) → Sunset (right)\n🌙 Evening → Midnight\n\nLong press to disable.")
+        }
+        .simultaneousGesture(
+            LongPressGesture(minimumDuration: 1.0)
+                .onEnded { _ in
+                    if timeManager.isDebugMode {
+                        timeManager.isDebugMode = false
+                        showingDebugAlert = false
+                    }
+                }
+        )
+    }
+}
+
 /// Test notification button (trailing toolbar)
 struct NotificationTestButton: View {
     @Environment(\.notificationService) private var notificationService
     @State private var showingNotificationAlert = false
     @State private var notificationAlertMessage = ""
     @State private var isNotificationError = false
-    
+
     var body: some View {
         Button {
             notificationService.sendTestNotificationWithFeedback { result in
