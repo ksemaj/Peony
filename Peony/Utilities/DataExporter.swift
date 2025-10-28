@@ -9,10 +9,10 @@ import Foundation
 import SwiftData
 
 /// Utility for exporting app data to JSON
-class DataExporter {
+final class DataExporter {
     
     /// Export all app data to a JSON file
-    static func exportAllData(
+    nonisolated static func exportAllData(
         seeds: [JournalSeed],
         entries: [JournalEntry],
         streaks: [WateringStreak],
@@ -55,7 +55,7 @@ class DataExporter {
 
 // MARK: - Export Data Structure
 
-struct ExportData: Codable {
+struct ExportData: Codable, @unchecked Sendable {
     let version: String
     let exportDate: Date
     let seeds: [ExportableSeed]
@@ -117,7 +117,7 @@ extension JournalEntry {
             createdAt: createdDate,
             wordCount: wordCount,
             preview: preview,
-            detectedMood: detectedMood?.rawValue
+            detectedMood: detectedMood
         )
     }
 }
