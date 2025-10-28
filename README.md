@@ -1,62 +1,214 @@
-# Peony
+# Peony - Mindful Journaling iOS App
 
-A mindful journaling app where your thoughts grow into beautiful flowers.
+A beautiful iOS journaling app that combines mindfulness with gamification. Write journal entries that grow into flowers through consistent care and reflection.
 
-## Overview
-
-Peony transforms journaling into a garden-growing experience. Write journal entries that grow into flowers through daily care and reflection.
-
-## Features
-
-- **🌱 Plant Seeds** - Create journal entries (content hidden until bloom)
-- **💧 Daily Watering** - Nurture your seeds to speed up growth
-- **🌸 Growth Stages** - Watch seeds progress: Seed → Sprout → Stem → Bud → Flower
-- **🔥 Streak System** - Daily care bonuses for consistency
-- **📔 Journal Mode** - Quick notes with AI-powered insights
-- **🎨 Beautiful Design** - Custom plant animations and time-aware backgrounds
-
-## Getting Started
-
-```bash
-git clone https://github.com/ksemaj/Peony.git
-cd Peony
-open Peony.xcodeproj
-```
-
-Requires Xcode 15.0+ and iOS 16.0+
-
-## Architecture
-
-Clean, modular SwiftUI architecture with proper separation of concerns:
-
-```
-Peony/
-├── Components/     # Reusable UI components
-├── Views/          # Screen-level views
-├── Models/         # SwiftData models
-└── Utilities/      # Business logic & AI
-```
-
-## Tech Stack
-
-- **SwiftUI** - Modern iOS UI framework
-- **SwiftData** - Data persistence
-- **NaturalLanguage** - On-device AI features
-- **Custom Architecture** - MVVM with component-based structure
-
-## Privacy
-
-- All AI processing happens on-device using Apple's NaturalLanguage framework
-- No analytics or tracking
-- Data stored locally using SwiftData
-- User maintains full control
-
-## Status
-
-✅ Active Development  
-🚀 Version 2.6.0  
-📱 iOS 16.0+
+**Status:** Active Development  
+**Latest:** v2.6.0 - October 2024 (Sky System & Visual Enhancements)  
+**Platform:** iOS 16.0+  
+**Language:** Swift 5.9 / SwiftUI
 
 ---
 
-**Built with ❤️ in SwiftUI**
+## Core Concept
+
+Peony transforms journaling into a garden-growing experience:
+
+1. **Plant a Seed** - Write a journal entry (content hidden until bloom)
+2. **Water Daily** - Return each day to nurture your seed
+3. **Watch It Grow** - Seed → Sprout → Stem → Bud → Flower (100%)
+4. **Content Revealed** - Read your full entry when the flower blooms
+5. **Quick Notes** - Capture thoughts instantly in the Journal tab
+
+### Dual Journaling Modes
+
+- **Garden Mode**: Long-form entries with delayed gratification and growth mechanics
+- **Journal Mode**: Quick capture notes with instant access and AI-powered insights
+
+---
+
+## Core Experience
+
+- 5-stage plant growth with daily watering
+- Streak system with growth bonuses (3, 7, 14, 30 days)
+- Content locked until bloom for delayed gratification
+- On-device AI using NaturalLanguage framework for mood detection, theme analysis, and smart suggestions
+- Beautiful pastel design with time-aware sky (real sun/moon positions, seasonal colors)
+- Custom plant animations with realistic growth stages
+- Smart notifications for bloom reminders and daily check-ins
+- Attach images to entries
+
+---
+
+## Architecture
+
+### Recent Major Refactor (Oct 2024)
+
+**ContentView.swift**: 2,755 lines → 120 lines (96% reduction!)
+
+Extracted **37 components** into organized structure:
+
+```
+Peony/
+├── Components/
+│   ├── Plants/ (6 files) - Growth stage visualizations
+│   ├── Flora/ (7 files) - Decorative elements  
+│   └── UI/ (15 files) - Backgrounds, effects, buttons, overlays
+├── Views/
+│   ├── Garden/ (10 files) - Seed management & layout
+│   ├── Notes/ (9 files) - Quick notes & journal
+│   ├── Onboarding/ (5 files) - First-time experience
+│   └── Shared/ (3 files) - Reusable utilities
+├── Models/ (7 files) - SwiftData models & extensions
+└── Utilities/
+    ├── AI/ (4 files) - Mood, prompts, themes, suggestions
+    ├── TimeManager.swift - Real-time day/night and seasonal calculations
+    └── AmbientLighting.swift - Dynamic lighting based on time
+```
+
+### Tech Stack
+
+- **UI:** SwiftUI (iOS 16.0+)
+- **Data:** SwiftData (model persistence)
+- **AI:** NaturalLanguage framework (on-device)
+- **Notifications:** UserNotifications framework
+- **Typography:** Playfair Display (custom serif font)
+- **Architecture:** MVVM with component-based structure
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Xcode 15.0+
+- iOS 16.0+ device or simulator
+- macOS Ventura or later
+
+### Setup
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/ksemaj/Peony.git
+cd Peony
+```
+
+2. **Open in Xcode**
+```bash
+open Peony.xcodeproj
+```
+
+3. **Build and Run**
+- Select target device/simulator
+- Press `Cmd + R` or click ▶️ Play button
+
+### First Launch
+
+1. Complete onboarding (3 slides)
+2. Enable AI features (optional but recommended)
+3. Set notification preferences
+4. Plant your first seed or write a quick note!
+
+---
+
+## App Structure
+
+### Main Tabs
+
+**Garden Tab**
+- View all planted seeds in garden beds
+- Tap seeds to view details and water
+- Growth progress visualization
+- Plant new seeds with + button
+
+**Journal Tab**
+- Quick notes list (instant access)
+- Free write or use daily prompts
+- Mood detection on entries
+- Convert notes to seeds
+- Theme analysis & insights
+
+### Key Screens
+
+- `MainAppView` - Tab navigation
+- `ContentView` - Garden view (main)
+- `PlantSeedView` - Create new seed
+- `SeedDetailView` - View/edit/water seeds
+- `NotesView` - Journal entry list
+- `NoteDetailView` - View/edit notes
+- `OnboardingView` - First-time setup
+
+---
+
+## Design
+
+### Colors
+- Backgrounds: Ivory, Pastel Green, Forest tones
+- Accents: Warm Gold, Amber Glow
+- Plants: Seed Brown, Sprout Green, Bud Pink, Flower Pink
+
+### Typography
+- Playfair Display (serif) for headlines
+- SF Pro (sans) for body text
+
+### Animations
+- Plant growth transitions
+- Watering success feedback
+- Planting success celebration
+
+---
+
+## Key Models
+
+- `JournalSeed` - Main seed/entry model (SwiftData)
+- `JournalEntry` - Quick notes model (SwiftData)
+- `WateringStreak` - Streak tracking (SwiftData)
+- `WritingPrompt` - Prompt data (JSON)
+
+---
+
+## Recent Updates
+
+### v2.6.0 - October 2024 (Latest)
+- Visual quality overhaul with time-aware sky system
+- Major architecture refactor: 37 components extracted
+- ContentView reduced from 2,755 to 120 lines (96% reduction)
+
+### Earlier Versions
+- v2.6: Component extraction and code cleanup
+- v2.5: AI-powered features (mood detection, theme analysis)
+- v2.0: Dual journaling modes (Garden + Journal)
+- v1.0: Core garden mechanics
+
+---
+
+## Documentation
+
+- [`docs/`](./docs/) - Active project documentation
+
+---
+
+## Roadmap
+
+**Completed**: Core journaling mechanics, garden visualization, streak system, AI mood detection, quick notes, theme analysis, code refactor
+
+**In Progress**: Data export/backup, iCloud sync prep, additional plant varieties
+
+**Planned**: Garden customization, advanced AI insights, widget support
+
+---
+
+## Development Principles
+
+- Privacy-first (all AI on-device using NaturalLanguage)
+- Beautiful, intentional design
+- Meaningful gamification (not addictive)
+- Mindfulness-focused
+- Clean, maintainable code
+
+---
+
+## License
+
+Private project - All rights reserved
+
+**Author**: [@ksemaj](https://github.com/ksemaj)  
+**Last Updated**: October 27, 2024
