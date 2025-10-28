@@ -102,6 +102,10 @@ struct ExportDataView: View {
             .sheet(isPresented: $showShareSheet) {
                 if let url = exportURL {
                     ShareSheet(items: [url])
+                        .onDisappear {
+                            // Auto-dismiss export view after share sheet closes
+                            dismiss()
+                        }
                 }
             }
         }
