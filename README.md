@@ -5,8 +5,7 @@ A beautiful iOS journaling app that combines mindfulness with gamification. Writ
 **Status:** Active Development  
 **Latest:** v2.6.0 - October 2024 (Sky System & Visual Enhancements)  
 **Platform:** iOS 16.0+  
-**Language:** Swift 5.9 / SwiftUI  
-**Health Score:** 9.0/10
+**Language:** Swift 5.9 / SwiftUI
 
 ---
 
@@ -108,7 +107,6 @@ Peony/
 - Visual quality overhaul with time-aware sky system
 - Major architecture refactor: 37 components extracted
 - ContentView reduced from 2,755 to 120 lines (96% reduction)
-- Health Score: 9.0/10
 
 ### Earlier Versions
 - v2.6: Component extraction and code cleanup
@@ -121,9 +119,6 @@ Peony/
 ## Documentation
 
 - [`docs/`](./docs/) - Active project documentation
-- [`.audits/`](./.audits/) - Code quality, security, and performance analysis
-- [`.modular/`](./.modular/) - Modularity analysis and fixes
-- [`.cleanups/`](./.cleanups/) - Repository cleanup logs
 
 ---
 
