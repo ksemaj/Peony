@@ -39,6 +39,17 @@ Peony transforms journaling into a garden-growing experience:
 
 ---
 
+## Tech Stack
+
+- **UI:** SwiftUI (iOS 16.0+)
+- **Data:** SwiftData (model persistence)
+- **AI:** NaturalLanguage framework (on-device)
+- **Notifications:** UserNotifications framework
+- **Typography:** Playfair Display (custom serif font)
+- **Architecture:** MVVM with component-based structure
+
+---
+
 ## App Structure
 
 ### Main Tabs
