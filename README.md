@@ -1,4 +1,4 @@
-# Peony - Mindful Journaling iOS App
+# Peony
 
 A beautiful iOS journaling app that combines mindfulness with gamification. Write journal entries that grow into flowers through consistent care and reflection.
 
@@ -30,9 +30,9 @@ Peony transforms journaling into a garden-growing experience:
 
 - 5-stage plant growth with daily watering
 - Streak system with growth bonuses (3, 7, 14, 30 days)
-- Content locked until bloom for delayed gratification
+- Content locked until bloom for delayed sense of growth
 - On-device AI using NaturalLanguage framework for mood detection, theme analysis, and smart suggestions
-- Beautiful pastel design with time-aware sky (real sun/moon positions, seasonal colors)
+- Beautiful pastel design with time-aware sky (real sun/moon positions, relevant to users location, seasonal colors)
 - Custom plant animations with realistic growth stages
 - Smart notifications for bloom reminders and daily check-ins
 - Attach images to entries
@@ -136,9 +136,9 @@ Peony/
 
 - Privacy-first (all AI on-device using NaturalLanguage)
 - Beautiful, intentional design
-- Meaningful gamification (not addictive)
+- Meaningful "gamification"
 - Mindfulness-focused
-- Clean, maintainable code
+- Clean, maintainable code due to Refactor
 
 ### README Guidelines
 - Only include information that accurately represents the current project
