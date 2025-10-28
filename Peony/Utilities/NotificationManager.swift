@@ -18,9 +18,7 @@ class NotificationManager: ObservableObject {
     
     private init() {
         Task {
-            print("🔔 NotificationManager: Initializing and checking authorization...")
             await checkAuthorization()
-            print("🔔 NotificationManager: Initial authorization status = \(isAuthorized)")
         }
     }
     
@@ -28,17 +26,14 @@ class NotificationManager: ObservableObject {
     
     func requestAuthorization() async -> Bool {
         do {
-            print("🔔 NotificationManager: Requesting authorization...")
             let granted = try await UNUserNotificationCenter.current().requestAuthorization(
                 options: [.alert, .badge, .sound]
             )
-            print("🔔 NotificationManager: Authorization granted = \(granted)")
             await MainActor.run {
                 isAuthorized = granted
             }
             return granted
         } catch {
-            print("❌ NotificationManager: Error requesting notification authorization: \(error)")
             return false
         }
     }
@@ -46,7 +41,6 @@ class NotificationManager: ObservableObject {
     func checkAuthorization() async {
         let settings = await UNUserNotificationCenter.current().notificationSettings()
         let authorized = settings.authorizationStatus == .authorized
-        print("🔔 checkAuthorization: status = \(settings.authorizationStatus.rawValue), authorized = \(authorized)")
         await MainActor.run {
             isAuthorized = authorized
         }
@@ -93,27 +87,20 @@ class NotificationManager: ObservableObject {
     
     /// Schedule daily watering reminder (user configurable)
     func scheduleDailyWateringReminder(enabled: Bool = true) {
-        print("🔔 scheduleDailyWateringReminder called - enabled: \(enabled), isAuthorized: \(isAuthorized)")
-        
         // Cancel existing
         UNUserNotificationCenter.current().removePendingNotificationRequests(
             withIdentifiers: ["daily-watering-reminder"]
         )
         
         guard isAuthorized && enabled else {
-            print("🔔 Skipping daily watering reminder - not authorized or not enabled")
             return
         }
         
         let hour = AppSettings.wateringReminderHour
         let minute = AppSettings.wateringReminderMinute
         
-        print("🔔 Settings - hour: \(hour), minute: \(minute)")
-        
         let actualHour = hour > 0 ? hour : AppConfig.Notifications.defaultWateringReminderHour
         let actualMinute = minute > 0 ? minute : AppConfig.Notifications.defaultWateringReminderMinute
-        
-        print("🔔 Scheduling daily watering reminder for \(actualHour):\(String(format: "%02d", actualMinute))")
         
         let content = UNMutableNotificationContent()
         content.title = "💧 Time to water your garden"
@@ -132,13 +119,7 @@ class NotificationManager: ObservableObject {
             trigger: trigger
         )
         
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("❌ Error scheduling watering reminder: \(error)")
-            } else {
-                print("✅ Daily watering reminder scheduled successfully!")
-            }
-        }
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
     
     // MARK: - Weekly Check-in
@@ -178,11 +159,7 @@ class NotificationManager: ObservableObject {
             trigger: trigger
         )
         
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Error scheduling weekly check-in: \(error)")
-            }
-        }
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
     
     // MARK: - Cancel Notifications
@@ -226,8 +203,6 @@ class NotificationManager: ObservableObject {
     /// - Parameter completion: Returns success message or error
     func sendTestNotificationWithFeedback(completion: @escaping (Result<String, Error>) -> Void) {
         Task {
-            print("🔔 sendTestNotificationWithFeedback called")
-            
             // Check authorization
             let authorized = await requestAuthorization()
             
@@ -257,13 +232,11 @@ class NotificationManager: ObservableObject {
             
             do {
                 try await UNUserNotificationCenter.current().add(request)
-                print("✅ Test notification scheduled for 5 seconds from now")
                 
                 await MainActor.run {
                     completion(.success("✅ Test notification scheduled!\n\nMinimize the app to see it arrive in 5 seconds."))
                 }
             } catch {
-                print("❌ Error scheduling test notification: \(error)")
                 await MainActor.run {
                     completion(.failure(error))
                 }
@@ -272,10 +245,7 @@ class NotificationManager: ObservableObject {
     }
     
     func sendTestNotification(type: NotificationType) {
-        print("🔔 sendTestNotification called - type: \(type), isAuthorized: \(isAuthorized)")
-        
         guard isAuthorized else {
-            print("❌ Test notification skipped - not authorized")
             return
         }
         
@@ -302,14 +272,7 @@ class NotificationManager: ObservableObject {
             trigger: trigger
         )
         
-        print("🔔 Scheduling test notification to fire in 2 seconds...")
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("❌ Error sending test notification: \(error)")
-            } else {
-                print("✅ Test notification scheduled successfully!")
-            }
-        }
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
     
     enum NotificationType {

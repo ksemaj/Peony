@@ -145,9 +145,7 @@ struct PlantingSuccessView: View {
 }
 
 #Preview {
-    PlantingSuccessView(seed: JournalSeed(content: "Test", title: "My Seed")) {
-        print("Dismissed")
-    }
+    PlantingSuccessView(seed: JournalSeed(content: "Test", title: "My Seed")) {}
 }
 
 

@@ -103,8 +103,6 @@ struct WateringSuccessView: View {
         streakCount: 7,
         multiplier: 1.5,
         milestone: 7
-    ) {
-        print("Dismissed")
-    }
+    ) {}
 }
 
