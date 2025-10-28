@@ -14,6 +14,19 @@ class PromptGenerator {
     
     private var allPrompts: [WritingPrompt] = []
     
+    // MARK: - Fallback Prompts
+    
+    private static let fallbackPrompts: [WritingPrompt] = [
+        WritingPrompt(id: "fallback-1", text: "What made you smile today?", category: .gratitude, timeOfDay: [.anytime]),
+        WritingPrompt(id: "fallback-2", text: "What did you learn about yourself this week?", category: .reflection, timeOfDay: [.anytime]),
+        WritingPrompt(id: "fallback-3", text: "What are you looking forward to?", category: .goals, timeOfDay: [.anytime]),
+        WritingPrompt(id: "fallback-4", text: "Describe a moment from today in detail.", category: .reflection, timeOfDay: [.evening]),
+        WritingPrompt(id: "fallback-5", text: "What made today unique?", category: .reflection, timeOfDay: [.anytime]),
+        WritingPrompt(id: "fallback-6", text: "List three things you're grateful for.", category: .gratitude, timeOfDay: [.anytime]),
+        WritingPrompt(id: "fallback-7", text: "What surprised you recently?", category: .reflection, timeOfDay: [.anytime]),
+        WritingPrompt(id: "fallback-8", text: "How are you feeling right now?", category: .feelings, timeOfDay: [.anytime])
+    ]
+    
     private init() {
         loadPrompts()
     }
@@ -54,22 +67,23 @@ class PromptGenerator {
     private func loadPrompts() {
         // Load prompts from JSON bundle resource
         guard let url = Bundle.main.url(forResource: "Prompts", withExtension: "json") else {
-            print("❌ ERROR: Prompts.json not found in bundle")
-            print("❌ Make sure Prompts.json is added to 'Copy Bundle Resources' in Build Phases")
-            allPrompts = []
+            print("⚠️ WARNING: Prompts.json not found in bundle")
+            print("⚠️ Using fallback prompts")
+            allPrompts = Self.fallbackPrompts
             return
         }
         
         guard let data = try? Data(contentsOf: url) else {
-            print("❌ ERROR: Could not read Prompts.json")
-            allPrompts = []
+            print("⚠️ WARNING: Could not read Prompts.json")
+            print("⚠️ Using fallback prompts")
+            allPrompts = Self.fallbackPrompts
             return
         }
         
         guard let prompts = try? JSONDecoder().decode([WritingPrompt].self, from: data) else {
-            print("❌ ERROR: Could not decode Prompts.json")
-            print("❌ Check JSON format is valid")
-            allPrompts = []
+            print("⚠️ WARNING: Could not decode Prompts.json")
+            print("⚠️ Using fallback prompts")
+            allPrompts = Self.fallbackPrompts
             return
         }
         

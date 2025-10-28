@@ -12,7 +12,7 @@ import SwiftData
 struct PeonyApp: App {
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     @State private var showDatabaseError = false
-    @State private var databaseErrorMessage = ""
+    @State private var needsReload = false
     
     init() {
         // Register default settings
@@ -60,62 +60,108 @@ struct PeonyApp: App {
         UINavigationBar.appearance().isTranslucent = true
     }
     
-    var sharedModelContainer: ModelContainer = {
+    var body: some Scene {
+        WindowGroup {
+            ContentViewWrapper(
+                hasSeenOnboarding: $hasSeenOnboarding,
+                showDatabaseError: $showDatabaseError
+            )
+            .animation(.none, value: hasSeenOnboarding)
+        }
+    }
+}
+
+struct ContentViewWrapper: View {
+    @Binding var hasSeenOnboarding: Bool
+    @Binding var showDatabaseError: Bool
+    @StateObject private var databaseManager = DatabaseManager()
+    
+    var body: some View {
+        ZStack {
+            if hasSeenOnboarding {
+                MainAppView() // v2.0 - Tab navigation (Garden + Journal)
+            } else {
+                OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)
+            }
+        }
+        .environment(\.modelContainer, databaseManager.container)
+        .alert("Database Option", isPresented: $showDatabaseError) {
+            Button("Reset Data") {
+                databaseManager.resetDatabase()
+                // Terminate app to restart with fresh database
+                exit(0)
+            }
+            Button("Close App", role: .cancel) {
+                exit(0)
+            }
+        } message: {
+            Text("Unable to load your data. You can reset all data to start fresh, or close the app.")
+        }
+        .onAppear {
+            if databaseManager.hasError {
+                showDatabaseError = true
+            }
+        }
+    }
+}
+
+@MainActor
+class DatabaseManager: ObservableObject {
+    var container: ModelContainer
+    var hasError: Bool = false
+    
+    init() {
+        var schema = Schema([
+            JournalSeed.self,
+            WateringStreak.self,
+            JournalEntry.self,
+        ])
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        
+        do {
+            // Try to create container
+            container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            // Try recovery
+            print("⚠️ Database error, attempting recovery: \(error)")
+            
+            let storeURL = modelConfiguration.url
+            try? FileManager.default.removeItem(at: storeURL)
+            try? FileManager.default.removeItem(at: storeURL.appendingPathExtension("wal"))
+            try? FileManager.default.removeItem(at: storeURL.appendingPathExtension("shm"))
+            
+            do {
+                container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+                print("✅ Database recovered successfully")
+            } catch let recoveryError {
+                print("❌ CRITICAL: Database recovery failed: \(recoveryError)")
+                hasError = true
+                // Create a dummy container to prevent crash - it won't work but app won't crash
+                do {
+                    let dummyConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+                    container = try ModelContainer(for: schema, configurations: [dummyConfig])
+                } catch let finalError {
+                    // This should never happen, but we need a container - log and set error
+                    print("❌ FATAL: Could not create any database container: \(finalError)")
+                    hasError = true
+                    // Create a minimal container to prevent crash
+                    container = try! ModelContainer(for: Schema([]), configurations: [])
+                }
+            }
+        }
+    }
+    
+    func resetDatabase() {
         let schema = Schema([
             JournalSeed.self,
             WateringStreak.self,
-            JournalEntry.self, // v2.0 - Journal feature (renamed from QuickNote in v2.6)
+            JournalEntry.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            // Migration failed - delete the old store and create a fresh one
-            print("⚠️ Database migration failed, attempting recovery: \(error)")
-            
-            // Get the default store URL and delete the old store files
-            let storeURL = modelConfiguration.url
-            try? FileManager.default.removeItem(at: storeURL)
-            
-            // Also remove related files
-            let walURL = storeURL.appendingPathExtension("wal")
-            let shmURL = storeURL.appendingPathExtension("shm")
-            try? FileManager.default.removeItem(at: walURL)
-            try? FileManager.default.removeItem(at: shmURL)
-            
-            // Try creating the container again
-            do {
-                print("✅ Database recreated successfully")
-                return try ModelContainer(for: schema, configurations: [modelConfiguration])
-            } catch {
-                // Last resort: create in-memory container so app doesn't crash
-                print("❌ CRITICAL: Could not create persistent database. Using in-memory storage.")
-                print("❌ Error: \(error)")
-                
-                let inMemoryConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-                do {
-                    return try ModelContainer(for: schema, configurations: [inMemoryConfig])
-                } catch {
-                    // This should never fail, but if it does, we have no choice
-                    print("❌ FATAL: Even in-memory database failed: \(error)")
-                    fatalError("Critical database error: \(error)")
-                }
-            }
-        }
-    }()
-
-    var body: some Scene {
-        WindowGroup {
-            ZStack {
-                if hasSeenOnboarding {
-                    MainAppView() // v2.0 - Tab navigation (Garden + Journal)
-                } else {
-                    OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)
-                }
-            }
-            .animation(.none, value: hasSeenOnboarding) // Disable animation to prevent shift
-        }
-        .modelContainer(sharedModelContainer)
+        
+        let storeURL = modelConfiguration.url
+        try? FileManager.default.removeItem(at: storeURL)
+        try? FileManager.default.removeItem(at: storeURL.appendingPathExtension("wal"))
+        try? FileManager.default.removeItem(at: storeURL.appendingPathExtension("shm"))
     }
 }

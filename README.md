@@ -3,7 +3,7 @@
 A beautiful iOS journaling app that combines mindfulness with gamification. Write journal entries that grow into flowers through consistent care and reflection.
 
 **Status:** ✅ Active Development  
-**Latest:** v2.6.0 - October 2024 (Sky System & Visual Enhancements)  
+**Latest:** 2.6.0 - October 2024 (Sky System & Visual Enhancements)  
 **Platform:** iOS 16.0+  
 **Language:** Swift 5.9 / SwiftUI  
 **Health Score:** 9.0/10
@@ -229,7 +229,7 @@ print("📝 PromptGenerator: ...")
 
 ## 📊 Version History
 
-### v2.6.0 - October 2024 ✅ (Latest)
+### 2.6.0 - October 2024 ✅ (Latest)
 - **Visual Quality Overhaul**: Eliminated all frosted/white effects
 - **Time-Aware Sky System**: Real sun/moon positions, seasonal colors
 - **New Utilities**: TimeManager and AmbientLighting systems
