@@ -1,8 +1,8 @@
-# 🌸 Peony - Mindful Journaling iOS App
+# Peony - Mindful Journaling iOS App
 
 A beautiful iOS journaling app that combines mindfulness with gamification. Write journal entries that grow into flowers through consistent care and reflection.
 
-**Status:** ✅ Active Development  
+**Status:** Active Development  
 **Latest:** v2.6.0 - October 2024 (Sky System & Visual Enhancements)  
 **Platform:** iOS 16.0+  
 **Language:** Swift 5.9 / SwiftUI  
@@ -10,7 +10,7 @@ A beautiful iOS journaling app that combines mindfulness with gamification. Writ
 
 ---
 
-## 🌱 Core Concept
+## Core Concept
 
 Peony transforms journaling into a garden-growing experience:
 
@@ -22,39 +22,39 @@ Peony transforms journaling into a garden-growing experience:
 
 ### Dual Journaling Modes
 
-- **🌱 Garden Mode**: Long-form entries with delayed gratification and growth mechanics
-- **📔 Journal Mode**: Quick capture notes with instant access and AI-powered insights
+- **Garden Mode**: Long-form entries with delayed gratification and growth mechanics
+- **Journal Mode**: Quick capture notes with instant access and AI-powered insights
 
 ---
 
-## ✨ Features
+## Features
 
 ### Gamification
-- 🌱 5-stage plant growth (seed → flower)
-- 💧 Daily watering mechanic
-- 🔥 Streak system with bonuses (3, 7, 14, 30 days)
-- 🎯 Delayed gratification (content locked until bloom)
-- 📈 Growth stats and tracking
+- 5-stage plant growth (seed → flower)
+- Daily watering mechanic
+- Streak system with bonuses (3, 7, 14, 30 days)
+- Delayed gratification (content locked until bloom)
+- Growth stats and tracking
 
 ### On-Device AI (Privacy-First)
-- 🎭 Mood detection (Natural Language framework)
-- 💭 Theme analysis (pattern recognition)
-- ✍️ Writing prompts (daily suggestions)
-- 🌱 Smart seed suggestions (converts worthy notes)
-- 📊 Insights and analytics
+- Mood detection (Natural Language framework)
+- Theme analysis (pattern recognition)
+- Writing prompts (daily suggestions)
+- Smart seed suggestions (converts worthy notes)
+- Insights and analytics
 
 ### User Experience
-- 🎨 Beautiful pastel design with custom serif typography
-- 🌅 Dynamic time-aware sky (real sun/moon positions, seasonal colors)
-- 🌸 Custom plant animations with realistic growth stages
-- 📱 Native iOS with SwiftUI
-- 🔔 Smart notifications (bloom reminders, daily check-ins)
-- 📸 Attach images to entries
-- 🦋 Time-aware fauna (butterflies during day, fireflies at night)
+- Beautiful pastel design with custom serif typography
+- Dynamic time-aware sky (real sun/moon positions, seasonal colors)
+- Custom plant animations with realistic growth stages
+- Native iOS with SwiftUI
+- Smart notifications (bloom reminders, daily check-ins)
+- Attach images to entries
+- Time-aware fauna (butterflies during day, fireflies at night)
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ### Recent Major Refactor (Oct 2024)
 
@@ -91,7 +91,7 @@ Peony/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Xcode 15.0+
@@ -113,7 +113,7 @@ open Peony.xcodeproj
 
 3. **Build and Run**
 - Select target device/simulator
-- Press `Cmd + R` or click ▶️ Play button
+- Press `Cmd + R` or click Play button
 
 ### First Launch
 
@@ -124,17 +124,17 @@ open Peony.xcodeproj
 
 ---
 
-## 📱 App Structure
+## App Structure
 
 ### Main Tabs
 
-**🌱 Garden Tab**
+**Garden Tab**
 - View all planted seeds in garden beds
 - Tap seeds to view details and water
 - Growth progress visualization
 - Plant new seeds with + button
 
-**📔 Journal Tab**
+**Journal Tab**
 - Quick notes list (instant access)
 - Free write or use daily prompts
 - Mood detection on entries
@@ -153,7 +153,7 @@ open Peony.xcodeproj
 
 ---
 
-## 🎨 Design System
+## Design System
 
 ### Colors
 - **Backgrounds:** Ivory, Pastel Green, Forest tones
@@ -173,7 +173,7 @@ open Peony.xcodeproj
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### AI Features (`AppConfig.AI`)
 ```swift
@@ -199,13 +199,13 @@ open Peony.xcodeproj
 
 ---
 
-## 🧪 Development
+## Development
 
 ### Testing Shortcuts
 
 **Toolbar Buttons** (visible in Garden tab):
 - `?` - Help/Onboarding
-- 🔔 - Test notifications
+- Test notifications button
 - `+` - Plant new seed
 
 ### Debug Mode
@@ -213,9 +213,9 @@ open Peony.xcodeproj
 Enable AI feature logs:
 ```swift
 // Check console for mood detection output
-print("🎭 MoodDetector: ...")
-print("🌱 SeedSuggestionEngine: ...")
-print("📝 PromptGenerator: ...")
+print("MoodDetector: ...")
+print("SeedSuggestionEngine: ...")
+print("PromptGenerator: ...")
 ```
 
 ### Key Models
@@ -227,9 +227,9 @@ print("📝 PromptGenerator: ...")
 
 ---
 
-## 📊 Version History
+## Version History
 
-### v2.6.0 - October 2024 ✅ (Latest)
+### v2.6.0 - October 2024 (Latest)
 - **Visual Quality Overhaul**: Eliminated all frosted/white effects
 - **Time-Aware Sky System**: Real sun/moon positions, seasonal colors
 - **New Utilities**: TimeManager and AmbientLighting systems
@@ -238,7 +238,7 @@ print("📝 PromptGenerator: ...")
 - **Repository Organization**: Clean structure with organized docs
 - Health Score: 9.0/10
 
-### v2.6 - October 2024 ✅
+### v2.6 - October 2024
 - **Major Refactor**: 37 components extracted
 - ContentView reduced 96% (2,755 → 120 lines)
 - Code deduplication complete
@@ -265,7 +265,7 @@ print("📝 PromptGenerator: ...")
 
 ---
 
-## 📖 Documentation
+## Documentation
 
 ### Current Documentation
 - This README - Main project overview
@@ -284,23 +284,23 @@ Previous documentation in [`.archive/`](./.archive/) - Not actively maintained
 
 ---
 
-## 🎯 Roadmap
+## Roadmap
 
-### Completed ✅
-- ✅ Core journaling mechanics
-- ✅ Garden visualization
-- ✅ Streak system
-- ✅ AI mood detection
-- ✅ Quick notes mode
-- ✅ Theme analysis
-- ✅ Code architecture refactor
+### Completed
+- Core journaling mechanics
+- Garden visualization
+- Streak system
+- AI mood detection
+- Quick notes mode
+- Theme analysis
+- Code architecture refactor
 
-### In Progress 🚧
+### In Progress
 - Data export/backup functionality
 - iCloud sync preparation
 - Additional plant varieties
 
-### Planned 📅
+### Planned
 - Garden customization
 - Advanced AI insights
 - Social features (optional)
@@ -309,7 +309,7 @@ Previous documentation in [`.archive/`](./.archive/) - Not actively maintained
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 This is a personal project, but suggestions and feedback are welcome!
 
@@ -322,19 +322,19 @@ This is a personal project, but suggestions and feedback are welcome!
 
 ---
 
-## 📄 License
+## License
 
 Private project - All rights reserved
 
 ---
 
-## 👤 Author
+## Author
 
 **James** - [@ksemaj](https://github.com/ksemaj)
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Custom typography: Playfair Display font
 - Inspiration: Mindfulness practices and nature
@@ -343,5 +343,5 @@ Private project - All rights reserved
 ---
 
 **Last Updated:** October 27, 2024  
-**Build Status:** ✅ Working  
-**Refactor Status:** ✅ Complete
+**Build Status:** Working  
+**Refactor Status:** Complete
