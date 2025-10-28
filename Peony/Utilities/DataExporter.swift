@@ -12,21 +12,26 @@ import SwiftData
 final class DataExporter {
     
     /// Export all app data to a JSON file
-    nonisolated static func exportAllData(
+    static func exportAllData(
         seeds: [JournalSeed],
         entries: [JournalEntry],
         streaks: [WateringStreak],
-        completion: @escaping (Result<URL, Error>) -> Void
+        completion: @escaping @Sendable (Result<URL, Error>) -> Void
     ) {
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .userInitiated).async { [seeds, entries, streaks] in
             do {
+                // Extract data first to avoid capturing SwiftData models in async context
+                let exportSeeds = seeds.map { $0.asExportable }
+                let exportEntries = entries.map { $0.asExportable }
+                let exportStreaks = streaks.map { $0.asExportable }
+                
                 // Create export data structure
                 let exportData = ExportData(
                     version: AppConfig.appVersion,
                     exportDate: Date(),
-                    seeds: seeds.map { $0.asExportable },
-                    entries: entries.map { $0.asExportable },
-                    streaks: streaks.map { $0.asExportable }
+                    seeds: exportSeeds,
+                    entries: exportEntries,
+                    streaks: exportStreaks
                 )
                 
                 // Encode to JSON
@@ -55,7 +60,7 @@ final class DataExporter {
 
 // MARK: - Export Data Structure
 
-struct ExportData: Codable, @unchecked Sendable {
+struct ExportData: Codable {
     let version: String
     let exportDate: Date
     let seeds: [ExportableSeed]
