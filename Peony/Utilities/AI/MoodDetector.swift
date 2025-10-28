@@ -18,8 +18,11 @@ class MoodDetector {
     /// - Parameter text: The text to analyze
     /// - Returns: A mood string (joyful, grateful, reflective, thoughtful, peaceful) or nil if detection fails
     static func detectMood(in text: String) -> String? {
+        print("🎭 MoodDetector: Analyzing text (length: \(text.count))")
+        
         // Require minimum content length for meaningful analysis
         guard text.count > 20 else {
+            print("🎭 MoodDetector: Text too short, skipping")
             return nil
         }
         
@@ -36,10 +39,12 @@ class MoodDetector {
         // Convert sentiment tag to numeric score
         guard let scoreString = sentiment?.rawValue,
               let score = Double(scoreString) else {
+            print("🎭 MoodDetector: Could not extract sentiment score")
             return nil
         }
         
         let mood = mapScoreToMood(score)
+        print("🎭 MoodDetector: Detected mood '\(mood)' (score: \(score))")
         return mood
     }
     

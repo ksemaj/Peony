@@ -13,6 +13,9 @@ struct CreateNoteView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var content = ""
     @FocusState private var isFocused: Bool
+    @State private var showSeedSuggestionToast = false
+    @State private var createdNote: JournalEntry?
+    @State private var showingPlantSeedSheet = false
 
     // Optional prompt text to display above editor (v2.6)
     let promptText: String?
@@ -116,6 +119,36 @@ struct CreateNoteView: View {
             .onAppear {
                 isFocused = true
             }
+            .sheet(isPresented: $showingPlantSeedSheet) {
+                if let note = createdNote {
+                    PlantSeedView(prefilledNote: note)
+                        .onDisappear {
+                            // Dismiss the CreateNoteView after the sheet closes
+                            showSeedSuggestionToast = false
+                            dismiss()
+                        }
+                }
+            }
+            .overlay {
+                // Seed suggestion toast (only during free-writing)
+                if showSeedSuggestionToast, let note = createdNote {
+                    SeedSuggestionToast(
+                        note: note,
+                        onPlantSeed: {
+                            showSeedSuggestionToast = false
+                            showingPlantSeedSheet = true
+                        },
+                        onDismiss: {
+                            showSeedSuggestionToast = false
+                            dismiss()
+                        },
+                        onJustDismiss: {
+                            showSeedSuggestionToast = false
+                            dismiss()
+                        }
+                    )
+                }
+            }
         }
     }
 
@@ -127,8 +160,16 @@ struct CreateNoteView: View {
         // Haptic feedback
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
-
-        dismiss()
+        
+        // Check if we should show seed suggestion toast
+        // Only show during free-writing (no prompt text)
+        if promptText == nil && SeedSuggestionEngine.shouldSuggestAsSeed(note) {
+            createdNote = note
+            SeedSuggestionEngine.markSuggested(note.id)
+            showSeedSuggestionToast = true
+        } else {
+            dismiss()
+        }
     }
 }
 

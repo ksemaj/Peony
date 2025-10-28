@@ -23,6 +23,7 @@ struct SeedDetailView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(spacing: 24) {
+                // Plant display
                 VStack(spacing: 16) {
                     PlantView(growthStage: seed.growthStage, size: 100)
 
@@ -40,6 +41,7 @@ struct SeedDetailView: View {
                 .background(Color.cardLight)
                 .cornerRadius(16)
                 
+                // Stats
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
                         Text("Planted:")
@@ -117,19 +119,13 @@ struct SeedDetailView: View {
                 .background(Color.cardLight)
                 .cornerRadius(16)
 
+                // Watering mechanic
                 if seed.growthPercentage < 100 {
                     WateringButton(
                         seed: seed,
                         canWater: seed.canWaterToday,
                         showAnimation: $showWateringAnimation,
                         onWater: {
-                            // Create watering streak if needed and insert into context
-                            if seed.wateringStreak == nil {
-                                let newStreak = WateringStreak(seedId: seed.id)
-                                modelContext.insert(newStreak)
-                                seed.wateringStreak = newStreak
-                            }
-                            
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
                                 seed.water()
                                 showWateringAnimation = true
@@ -149,6 +145,7 @@ struct SeedDetailView: View {
                     )
                 }
                 
+                // Attached image (if exists)
                 if let imageData = seed.imageData, let image = imageData.asUIImage {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Memory")
@@ -173,6 +170,7 @@ struct SeedDetailView: View {
                     .cornerRadius(16)
                 }
 
+                // Journal entry (only show full content when flower blooms)
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Your Entry")
                         .font(.serifSubheadline)

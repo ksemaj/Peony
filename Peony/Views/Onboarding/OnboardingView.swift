@@ -101,13 +101,19 @@ struct OnboardingView: View {
                     }
                     
                     Button {
+                        print("🎯 Button tapped - currentPage: \(currentPage)")
                         if currentPage < 4 {
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                                 currentPage += 1
                             }
                         } else {
+                            print("🎯 Get Started button pressed! About to set hasSeenOnboarding")
+                            print("🎯 Current hasSeenOnboarding value: \(hasSeenOnboarding)")
+                            
                             // Set WITHOUT animation to avoid blocking
                             hasSeenOnboarding = true
+                            
+                            print("🎯 hasSeenOnboarding NOW: \(hasSeenOnboarding)")
                             
                             // Schedule notifications in background
                             Task {

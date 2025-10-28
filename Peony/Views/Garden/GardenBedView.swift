@@ -41,6 +41,8 @@ struct GardenBedView: View {
                         PlantedSeedView(seed: seed)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("\(seed.title), \(Int(seed.growthPercentage)) percent grown")
+                    .accessibilityHint("Tap to view details and water")
                     .position(
                         x: 160 + organicPositions[index].x,
                         y: 160 + organicPositions[index].y

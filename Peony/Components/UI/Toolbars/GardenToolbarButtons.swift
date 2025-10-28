@@ -19,6 +19,8 @@ struct GardenToolbarButtons: View {
             Image(systemName: "questionmark.circle")
                 .foregroundColor(.green)
         }
+        .accessibilityLabel("Help and tutorials")
+        .accessibilityHint("Tap to view garden tutorials and tips")
     }
 }
 
@@ -43,6 +45,8 @@ struct DebugTimeButton: View {
             Image(systemName: timeManager.isDebugMode ? "clock.fill" : "clock")
                 .foregroundColor(timeManager.isDebugMode ? .blue : .gray)
         }
+        .accessibilityLabel(timeManager.isDebugMode ? "Debug time mode active. Current time: \(timeManager.debugTimeOfDay.rawValue)" : "Debug time toggle")
+        .accessibilityHint("Tap to cycle through different times of day for testing")
         .alert("Debug Mode Enabled", isPresented: $showingDebugAlert) {
             Button("Got it!") { }
             Button("Disable", role: .destructive) {
@@ -87,6 +91,8 @@ struct NotificationTestButton: View {
             Image(systemName: "bell.fill")
                 .foregroundColor(.orange)
         }
+        .accessibilityLabel("Test notifications")
+        .accessibilityHint("Tap to test notification functionality")
         .alert("Notification Test", isPresented: $showingNotificationAlert) {
             if isNotificationError {
                 Button("Open Settings") {

@@ -44,16 +44,9 @@ struct SeedSuggestionEngine {
             return false
         }
         
-        // Check sentiment (meaningful moods)
-        guard let mood = note.detectedMood else {
-            return false // No mood detected
-        }
-        
-        // Only suggest reflective, grateful, or thoughtful notes
-        // These tend to be more meaningful and seed-worthy
-        let meaningfulMoods = ["reflective", "grateful", "thoughtful"]
-        let qualifies = meaningfulMoods.contains(mood)
-        return qualifies
+        // Any 150+ word entry qualifies for seed suggestion
+        // The length requirement ensures quality content
+        return true
     }
     
     /// Mark a note as suggested

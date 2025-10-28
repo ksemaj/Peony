@@ -116,6 +116,8 @@ struct WateringButton: View {
         }
         .buttonStyle(.plain)
         .disabled(!canWater)
+        .accessibilityLabel(canWater ? "Water your seed to help it grow. Current streak: \(seed.currentStreakCount) days" : "Already watered today. Come back tomorrow to water again")
+        .accessibilityHint(canWater ? "Tap to water and increase growth by \(String(format: "%.1f", seed.wateringStreak?.streakMultiplier ?? 1.0)) percent" : "Plant has been watered today")
         .padding(.horizontal)
     }
 }

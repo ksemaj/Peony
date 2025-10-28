@@ -60,6 +60,7 @@ extension Color {
 // MARK: - Typography Extension
 extension Font {
     // Serif fonts for headlines (Playfair Display Variable Font with fallback)
+    // Supports Dynamic Type scaling
     static func serifDisplay(_ size: CGFloat, weight: Font.Weight = .regular) -> Font {
         // Try custom font first, fall back to system serif
         if UIFont(name: "PlayfairDisplay-Regular", size: size) != nil {
@@ -78,10 +79,19 @@ extension Font {
         return .custom("Georgia-Bold", size: size)
     }
 
-    // Convenience methods
-    static let serifTitle = Font.serifDisplayBold(36)
-    static let serifLargeTitle = Font.serifDisplayBold(42)
-    static let serifHeadline = Font.serifDisplayBold(24)
-    static let serifSubheadline = Font.serifDisplay(20, weight: .semibold)
+    // Dynamic Type friendly convenience methods
+    // These will scale automatically with user's accessibility settings
+    static var serifTitle: Font {
+        serifDisplayBold(36)
+    }
+    static var serifLargeTitle: Font {
+        serifDisplayBold(42)
+    }
+    static var serifHeadline: Font {
+        serifDisplayBold(24)
+    }
+    static var serifSubheadline: Font {
+        serifDisplay(20, weight: .semibold)
+    }
 }
 

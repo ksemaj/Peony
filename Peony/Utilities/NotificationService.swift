@@ -92,18 +92,22 @@ class MockNotificationService: NotificationService {
     
     func scheduleBloomNotification(for seed: JournalSeed) {
         scheduledSeeds.append(seed.id)
+        print("🧪 Mock: Scheduled bloom notification for seed \(seed.id)")
     }
     
     func scheduleDailyWateringReminder(enabled: Bool) {
         wateringReminderScheduled = enabled
+        print("🧪 Mock: Watering reminder \(enabled ? "enabled" : "disabled")")
     }
     
     func scheduleWeeklyCheckin(enabled: Bool) {
         weeklyCheckinScheduled = enabled
+        print("🧪 Mock: Weekly checkin \(enabled ? "enabled" : "disabled")")
     }
     
     func cancelNotifications(for seed: JournalSeed) {
         scheduledSeeds.removeAll { $0 == seed.id }
+        print("🧪 Mock: Cancelled notifications for seed \(seed.id)")
     }
     
     func sendTestNotificationWithFeedback(completion: @escaping (Result<String, Error>) -> Void) {

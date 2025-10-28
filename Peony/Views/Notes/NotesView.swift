@@ -14,8 +14,12 @@ struct NotesView: View {
     @State private var showingCreateNote = false
     @State private var animateEmptyState = false
     @State private var showingStats = false
+    @State private var showingExportSheet = false
     @State private var dailyPrompt: WritingPrompt?
     @State private var promptTextToUse: String?
+    
+    @Query(sort: \JournalSeed.plantedDate, order: .reverse) private var seeds: [JournalSeed]
+    @Query(sort: \WateringStreak.lastWateredDate, order: .reverse) private var streaks: [WateringStreak]
 
     var body: some View {
         NavigationStack {
@@ -75,9 +79,23 @@ struct NotesView: View {
                             .foregroundColor(.green)
                     }
                 }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showingExportSheet = true
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                            .foregroundColor(.green)
+                    }
+                    .accessibilityLabel("Export data")
+                    .accessibilityHint("Export all your journal entries to JSON file")
+                }
             }
             .sheet(isPresented: $showingCreateNote) {
                 CreateNoteView(promptText: promptTextToUse)
+            }
+            .sheet(isPresented: $showingExportSheet) {
+                ExportDataView(seeds: seeds, entries: notes, streaks: streaks)
             }
             .onChange(of: showingCreateNote) { _, isShowing in
                 // Clear prompt text when sheet is dismissed

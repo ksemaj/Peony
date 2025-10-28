@@ -78,9 +78,8 @@ struct NoteDetailView: View {
                         .cornerRadius(12)
                         .shadow(color: .green.opacity(0.3), radius: 8, x: 0, y: 4)
                     }
+                    .padding(.top, 4)
                 }
-                
-                Spacer(minLength: 20)
                 
                 // Metadata card
                 VStack(alignment: .leading, spacing: 8) {

@@ -381,3 +381,99 @@ struct GrowthStreakIntegrationTests {
         #expect(seed.growthPercentage >= expectedBonus)
     }
 }
+
+// MARK: - Missing Tests for Checklist
+
+@Suite("Growth Edge Cases")
+struct GrowthEdgeCaseTests {
+    
+    @Test("Growth percentage with no watering should use time-based progression only")
+    func testGrowthPercentage_withNoWatering() {
+        let seed = JournalSeed(
+            content: "Test seed",
+            title: "Test",
+            growthDurationDays: 30
+        )
+        
+        // Simulate 10 days passed
+        let calendar = Calendar.current
+        seed.plantedDate = calendar.date(byAdding: .day, value: -10, to: Date())!
+        
+        // No watering, only time-based growth
+        seed.timesWatered = 0
+        
+        // Expected: (10 days / 30 days) * 100 = 33.33%
+        let expectedGrowth = (10.0 / 30.0) * 100.0
+        #expect(abs(seed.growthPercentage - expectedGrowth) < 0.01)
+    }
+    
+    @Test("Growth percentage with streak should apply multiplier correctly")
+    func testGrowthPercentage_withStreak() {
+        let seed = JournalSeed(
+            content: "Test seed",
+            title: "Test",
+            growthDurationDays: 45
+        )
+        
+        let streak = WateringStreak(seedId: seed.id)
+        seed.wateringStreak = streak
+        
+        // Set tier 2 streak (7-29 days)
+        streak.currentStreak = 14
+        
+        // Water 5 times with tier 2 multiplier (1.5)
+        seed.timesWatered = 5
+        
+        // Expected: 5 waterings * 1.0% * 1.5 multiplier = 7.5%
+        let expectedBonus = 5.0 * AppConfig.wateringBonus * AppConfig.Streak.tierTwoMultiplier
+        #expect(abs(seed.growthPercentage - expectedBonus) < 0.01)
+    }
+}
+
+@Suite("Streak Edge Cases")
+struct StreakEdgeCaseTests {
+    
+    @Test("Streak multiplier tier calculation across all thresholds")
+    func testStreakMultiplier_tierCalculation() {
+        let seed = JournalSeed(
+            content: "Test seed",
+            title: "Test"
+        )
+        
+        let streak = WateringStreak(seedId: seed.id)
+        
+        // Tier 1: Days 1-6 (multiplier = 1.0)
+        streak.currentStreak = 3
+        #expect(streak.streakMultiplier == 1.0)
+        
+        // Tier 2: Days 7-29 (multiplier = 1.5)
+        streak.currentStreak = 15
+        #expect(streak.streakMultiplier == 1.5)
+        
+        // Tier 3: Day 30+ (multiplier = 2.0)
+        streak.currentStreak = 45
+        #expect(streak.streakMultiplier == 2.0)
+    }
+    
+    @Test("Streak breaks after 48 hour window")
+    func testStreakBreak_after48Hours() {
+        let streak = WateringStreak(seedId: UUID())
+        
+        // Build up a streak
+        streak.currentStreak = 10
+        streak.longestStreak = 10
+        
+        // Water 49 hours ago (just past 48-hour window)
+        streak.lastWateredDate = Date().addingTimeInterval(-49 * 3600)
+        
+        // Streak should be inactive
+        #expect(streak.isActive == false)
+        
+        // Check streak should reset to 0
+        streak.checkAndUpdateStreak()
+        #expect(streak.currentStreak == 0)
+        
+        // Longest streak should be preserved
+        #expect(streak.longestStreak == 10)
+    }
+}

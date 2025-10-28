@@ -23,8 +23,15 @@ struct PlantSeedView: View {
     @State private var selectedImageData: Data?
     @State private var selectedImage: UIImage?
     
+    // Optional prefilled note (for seed suggestion flow)
+    let prefilledNote: JournalEntry?
+    
     enum Field {
         case title, content
+    }
+    
+    init(prefilledNote: JournalEntry? = nil) {
+        self.prefilledNote = prefilledNote
     }
     
     var gardenBackground: some View {
@@ -228,6 +235,12 @@ struct PlantSeedView: View {
                             selectedImage = uiImage
                         }
                     }
+                }
+            }
+            .onAppear {
+                // Prefill content if coming from seed suggestion
+                if let note = prefilledNote {
+                    content = note.content
                 }
             }
         }

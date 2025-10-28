@@ -69,20 +69,24 @@ struct WateringSuccessView: View {
             .opacity(cardOpacity)
         }
         .onAppear {
+            // Card animation
             withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                 cardScale = 1.0
                 cardOpacity = 1.0
             }
             
+            // Text appears
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                 withAnimation(.easeIn(duration: 0.3)) {
                     showText = true
                 }
             }
             
+            // Haptic feedback
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
             
+            // Auto-dismiss
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                     cardScale = 0.8
@@ -103,6 +107,8 @@ struct WateringSuccessView: View {
         streakCount: 7,
         multiplier: 1.5,
         milestone: 7
-    ) {}
+    ) {
+        print("Dismissed")
+    }
 }
 

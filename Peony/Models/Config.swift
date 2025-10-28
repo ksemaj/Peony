@@ -51,8 +51,7 @@ enum AppConfig {
     static let appVersion = "2.6.0"
     
     // Privacy & Support URLs
-    // TODO: Create actual privacy policy and support pages before App Store submission
-    // Uncomment and update these when ready:
+    // Note: Add URLs here when ready for App Store submission
     // static let privacyPolicyURL = "https://yourdomain.com/privacy"
     // static let supportURL = "https://yourdomain.com/support"
     

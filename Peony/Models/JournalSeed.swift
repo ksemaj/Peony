@@ -38,10 +38,7 @@ class JournalSeed {
     }
     
     var canWaterToday: Bool {
-        guard let lastWatered = Calendar.current.dateComponents([.day], from: lastWateredDate, to: Date()).day else {
-            return true
-        }
-        return lastWatered >= 1
+        !Calendar.current.isDate(lastWateredDate, inSameDayAs: Date())
     }
     
     var growthStage: GrowthStage {
