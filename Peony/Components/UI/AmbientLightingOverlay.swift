@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Overlay that applies time-based lighting effects to garden scene
 struct AmbientLightingOverlay: View {
-    @State private var timeManager = TimeManager.shared
+    @Bindable var timeManager = TimeManager.shared
     
     var body: some View {
         let lighting = AmbientLighting.shared.getCurrentLighting(timeManager: timeManager)
@@ -25,7 +25,6 @@ struct AmbientLightingOverlay: View {
             }
         }
         .allowsHitTesting(false) // Don't intercept touch events
-        .animation(.easeInOut(duration: 3.0), value: timeManager.timeOfDay)
     }
 }
 

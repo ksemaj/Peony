@@ -26,9 +26,13 @@ struct GardenLayoutView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 20) {
-                // Add spacer to push content down more
+                // Add spacer to push content down more - use stable calculation
+                // Default to 200 if geometry is not yet available to prevent shifts
+                let spacerHeight = geometry.size.height > 0 
+                    ? max(80, (geometry.size.height - 300) / 2)
+                    : 200
                 Spacer()
-                    .frame(height: max(80, (geometry.size.height - 300) / 2))
+                    .frame(height: spacerHeight)
                 
                 ForEach(0..<numberOfBeds, id: \.self) { bedIndex in
                     GardenBedView(seeds: seedsForBed(bedIndex), bedIndex: bedIndex)

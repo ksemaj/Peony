@@ -46,26 +46,11 @@ struct NotificationTimePage: View {
                 Divider()
                     .padding(.horizontal, 16)
                 
-                // Time picker
-                DatePicker(
-                    "Reminder Time",
-                    selection: Binding(
-                        get: {
-                            var components = DateComponents()
-                            components.hour = wateringReminderHour
-                            components.minute = wateringReminderMinute
-                            return Calendar.current.date(from: components) ?? Date()
-                        },
-                        set: { newDate in
-                            let components = Calendar.current.dateComponents([.hour, .minute], from: newDate)
-                            wateringReminderHour = components.hour ?? 9
-                            wateringReminderMinute = components.minute ?? 0
-                        }
-                    ),
-                    displayedComponents: .hourAndMinute
+                // Time picker with improved contrast
+                CustomTimePicker(
+                    selectedHour: $wateringReminderHour,
+                    selectedMinute: $wateringReminderMinute
                 )
-                .datePickerStyle(.wheel)
-                .labelsHidden()
                 .frame(height: 216)
                 .padding(.horizontal, 16)
                 

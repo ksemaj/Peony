@@ -53,18 +53,21 @@ struct DriftingCloud: View {
                     y: yPosition
                 )
                 .onAppear {
-                    // Random starting position
-                    let randomY = CGFloat.random(in: (geometry.size.height * 0.05)...(geometry.size.height * 0.25))
-                    yPosition = randomY
+                    // Random starting position - on level with "my garden" text for layered effect
+                    // Cloud's vertical position adds more randomness
+                    let baseY = CGFloat.random(in: (geometry.size.height * 0.05)...(geometry.size.height * 0.35))
+                    let wiggle = CGFloat.random(in: -10...10)
+                    yPosition = baseY + wiggle
                     
-                    // Start off-screen left
-                    xOffset = -cloudSize.width
+                    // Start off-screen with random entry point for more variety
+                    let startOffset = CGFloat.random(in: -100...100)
+                    xOffset = -cloudSize.width + startOffset
                     
                     // Calculate drift speed based on depth (farther = slower)
                     let duration = baseDuration * depthSpeedMultiplier
                     
-                    // Add slight randomization to prevent perfect synchronization
-                    let randomDelay = Double.random(in: 0...(duration * 0.3))
+                    // Add more randomization to prevent perfect synchronization
+                    let randomDelay = Double.random(in: 0...(duration * 0.5))
                     
                     // Animate cloud drifting across screen
                     withAnimation(
@@ -114,7 +117,7 @@ struct DriftingCloud: View {
 
 /// Complete cloud layer system with multiple parallax depths
 struct CloudLayer: View {
-    @State private var timeManager = TimeManager.shared
+    @Bindable var timeManager = TimeManager.shared
     
     var body: some View {
         ZStack {
@@ -166,10 +169,10 @@ struct CloudLayer: View {
         }
     }
     
-    /// Seasonal cloud opacity (lighter in day, barely visible at night)
+    /// Seasonal cloud opacity (visible during day, hidden at night)
     private var seasonalOpacity: Double {
         if timeManager.isNighttime {
-            return 0.15 // Very faint at night
+            return 0.0 // Completely hidden at night
         } else {
             return 1.0
         }

@@ -17,7 +17,10 @@ struct PeonyApp: App {
     init() {
         // Register default settings
         AppSettings.registerDefaults()
-        
+
+        // Initialize location services for accurate sunrise/sunset
+        _ = LocationManager.shared
+
         // COMPLETELY remove tab bar background - AGGRESSIVE MODE
         let appearance = UITabBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -107,13 +110,11 @@ struct PeonyApp: App {
             ZStack {
                 if hasSeenOnboarding {
                     MainAppView() // v2.0 - Tab navigation (Garden + Journal)
-                        .transition(.opacity)
                 } else {
                     OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)
-                        .transition(.opacity)
                 }
             }
-            .animation(.easeInOut(duration: 0.5), value: hasSeenOnboarding)
+            .animation(.none, value: hasSeenOnboarding) // Disable animation to prevent shift
         }
         .modelContainer(sharedModelContainer)
     }

@@ -13,7 +13,7 @@ struct FireflyView: View {
     @State private var position = CGPoint(x: 0, y: 0)
     @State private var glowIntensity: Double = 0.3
     @State private var trajectory: Double = 0
-    @State private var timeManager = TimeManager.shared
+    @Bindable var timeManager = TimeManager.shared
     
     var body: some View {
         let lightingModifier = AmbientLighting.shared.getFaunaLightingModifier(timeManager: timeManager)

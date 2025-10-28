@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Animated sun that moves across the sky in a realistic arc pattern
 struct SunView: View {
-    @State private var timeManager = TimeManager.shared
+    @Bindable var timeManager = TimeManager.shared
     @State private var pulseScale: CGFloat = 1.0
     
     var body: some View {
@@ -101,19 +101,19 @@ struct SunView: View {
         let horizontalProgress = progress
         let xPosition = screenWidth * 0.1 + (screenWidth * 0.8 * horizontalProgress)
         
-        // Vertical position (arc shape using sine function)
-        // Arc height varies by season
+        // Vertical position (wide upside-down U arc)
+        // Arc height varies by season for a pronounced U shape
         let arcHeight = getSeasonalArcHeight(screenHeight: screenHeight)
         let verticalProgress = sin(progress * .pi) // Creates arc from 0 to 1 and back to 0
-        let yPosition = screenHeight * 0.55 - (arcHeight * verticalProgress)
+        let yPosition = screenHeight * 0.70 - (arcHeight * verticalProgress)
         
         return CGPoint(x: xPosition, y: yPosition)
     }
     
     /// Get arc height based on season (higher in summer, lower in winter)
     private func getSeasonalArcHeight(screenHeight: CGFloat) -> CGFloat {
-        let baseHeight = screenHeight * 0.25
-        
+        let baseHeight = screenHeight * 0.25 // Taller arc for pronounced upside-down U
+
         switch timeManager.currentSeason {
         case .spring:
             return baseHeight * 0.9

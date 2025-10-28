@@ -11,7 +11,8 @@ import SwiftData
 struct MainAppView: View {
     @State private var selectedTab = 0
     @State private var previousTab = 0
-    
+    @State private var hasAppeared = false
+
     var body: some View {
         TabView(selection: $selectedTab) {
             // Garden Tab with animated wrapper
@@ -26,7 +27,7 @@ struct MainAppView: View {
                 Label("Garden", systemImage: "leaf.fill")
             }
             .tag(0)
-            
+
             // Journal Tab with animated wrapper (renamed from Notes in v2.6)
             AnimatedTabContent(
                 selectedTab: selectedTab,
@@ -40,6 +41,8 @@ struct MainAppView: View {
             }
             .tag(1)
         }
+        .background(Color.clear)
+        .preferredColorScheme(.dark)
         .tint(.green)
         .onAppear {
             // Aggressively remove ALL tab bar backgrounds
@@ -72,6 +75,9 @@ struct MainAppView: View {
         .onChange(of: selectedTab) { oldValue, newValue in
             previousTab = oldValue
         }
+        .onAppear {
+            hasAppeared = true
+        }
     }
 }
 
@@ -82,15 +88,11 @@ struct AnimatedTabContent<Content: View>: View {
     let previousTab: Int
     let currentTag: Int
     @ViewBuilder let content: () -> Content
-    
+
     var body: some View {
         content()
-            .transition(.asymmetric(
-                insertion: slideInsertion,
-                removal: slideRemoval
-            ))
             .id("\(currentTag)-\(selectedTab)")
-            .animation(.spring(response: 0.45, dampingFraction: 0.75), value: selectedTab)
+            .animation(.none, value: selectedTab) // Disable implicit tab change animations
     }
     
     private var slideInsertion: AnyTransition {

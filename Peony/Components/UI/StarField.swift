@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Individual star with twinkling animation
+/// Individual star with twinkling animation and sparkle effect
 struct Star: View {
     let index: Int
     let brightness: Double
@@ -15,46 +15,90 @@ struct Star: View {
     
     @State private var opacity: Double = 0.0
     @State private var scale: CGFloat = 1.0
+    @State private var sparkleIntensity: Double = 0.0
+    @State private var rotation: Double = 0.0
     
     var body: some View {
-        Circle()
-            .fill(Color.white)
-            .frame(width: size, height: size)
-            .opacity(opacity * brightness)
-            .scaleEffect(scale)
-            .drawingGroup() // Crisper rendering
-            .onAppear {
-                // Staggered appearance
-                let delay = Double.random(in: 0...2)
-                
-                // Twinkling animation with random timing
-                let twinkleDuration = Double.random(in: 1.5...4.0)
-                let scaleVariation = Double.random(in: 0.05...0.15)
-                
-                // Fade in
-                withAnimation(.easeIn(duration: 1.0).delay(delay)) {
-                    opacity = 1.0
-                }
-                
-                // Start twinkling
-                DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                    withAnimation(
-                        .easeInOut(duration: twinkleDuration)
-                        .repeatForever(autoreverses: true)
-                    ) {
-                        opacity = Double.random(in: 0.3...1.0)
-                        scale = 1.0 + scaleVariation
-                    }
+        ZStack {
+            // Base star with gradient glow
+            Circle()
+                .fill(
+                    RadialGradient(
+                        colors: [
+                            .white,
+                            .white.opacity(0.8),
+                            .white.opacity(0.3),
+                            .clear
+                        ],
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: size * 2
+                    )
+                )
+                .frame(width: size * 2, height: size * 2)
+                .opacity(opacity * brightness)
+            
+            // Center bright point
+            Circle()
+                .fill(Color.white)
+                .frame(width: size, height: size)
+                .opacity(opacity * brightness * (0.5 + sparkleIntensity * 0.5))
+            
+            // Sparkle effect - small bright points that rotate
+            ForEach(0..<4, id: \.self) { sparkleIndex in
+                Circle()
+                    .fill(Color.white)
+                    .frame(width: size * 0.8, height: size * 0.8)
+                    .offset(x: size * 1.5 * cos(rotation + Double(sparkleIndex) * .pi / 2),
+                           y: size * 1.5 * sin(rotation + Double(sparkleIndex) * .pi / 2))
+                    .opacity(sparkleIntensity * brightness * 0.6)
+            }
+        }
+        .scaleEffect(scale)
+        .drawingGroup() // Crisper rendering
+        .onAppear {
+            // Staggered appearance
+            let delay = Double.random(in: 0...2)
+            
+            // Twinkling animation with random timing
+            let twinkleDuration = Double.random(in: 1.5...4.0)
+            let scaleVariation = Double.random(in: 0.05...0.15)
+            
+            // Fade in
+            withAnimation(.easeIn(duration: 1.0).delay(delay)) {
+                opacity = 1.0
+            }
+            
+            // Start twinkling
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                withAnimation(
+                    .easeInOut(duration: twinkleDuration)
+                    .repeatForever(autoreverses: true)
+                ) {
+                    opacity = Double.random(in: 0.4...1.0)
+                    scale = 1.0 + scaleVariation
+                    sparkleIntensity = Double.random(in: 0.5...1.0)
                 }
             }
+            
+            // Sparkle rotation animation (slow, subtle)
+            let rotationDuration = Double.random(in: 8...15)
+            withAnimation(
+                .linear(duration: rotationDuration)
+                .repeatForever(autoreverses: false)
+            ) {
+                rotation = 360
+            }
+        }
     }
 }
 
 /// Complete star field system for night sky
 struct StarField: View {
-    @State private var timeManager = TimeManager.shared
+    @Bindable var timeManager = TimeManager.shared
     @State private var stars: [(position: CGPoint, brightness: Double, size: CGFloat)] = []
-    
+    @State private var animationTrigger: Bool = false
+
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -74,11 +118,25 @@ struct StarField: View {
                 generateStars(in: geometry.size)
             }
             .onChange(of: timeManager.currentSeason) { _, _ in
-                generateStars(in: geometry.size)
+                withAnimation(.easeInOut(duration: 1.5)) {
+                    generateStars(in: geometry.size)
+                }
             }
             .onChange(of: geometry.size) { oldSize, newSize in
-                if stars.isEmpty { // Only generate if stars haven't been generated yet
-                    generateStars(in: newSize)
+                // Regenerate stars if size changed significantly or if no stars exist
+                let sizeChangeThreshold: CGFloat = 50
+                let widthChanged = abs(newSize.width - oldSize.width) > sizeChangeThreshold
+                let heightChanged = abs(newSize.height - oldSize.height) > sizeChangeThreshold
+
+                if stars.isEmpty || widthChanged || heightChanged {
+                    // Only animate if stars already exist (not initial generation)
+                    if !stars.isEmpty && (widthChanged || heightChanged) {
+                        withAnimation(.easeInOut(duration: 1.0)) {
+                            generateStars(in: newSize)
+                        }
+                    } else {
+                        generateStars(in: newSize)
+                    }
                 }
             }
         }
@@ -89,16 +147,10 @@ struct StarField: View {
         if !timeManager.isNighttime {
             return 0.0
         }
-        
-        // Fade in/out during twilight
+
+        // Show stars during night stages only
         switch timeManager.timeOfDay {
-        case .dusk:
-            // Fade in during dusk (inverse of twilight opacity)
-            return 1.0 - timeManager.twilightOpacity
-        case .dawn:
-            // Fade out during dawn
-            return 1.0 - timeManager.twilightOpacity
-        case .night:
+        case .evening, .midnight:
             return 1.0 * seasonalVisibility
         default:
             return 0.0
@@ -128,13 +180,18 @@ struct StarField: View {
     /// Generate random star positions with varied properties
     private func generateStars(in size: CGSize) {
         var newStars: [(position: CGPoint, brightness: Double, size: CGFloat)] = []
-        
-        // Only place stars in top 40% of screen (sky area)
-        let skyHeight = size.height * 0.40
-        
+
+        // Place stars in top 60% of screen (sky area), avoiding top UI elements
+        let topOffset: CGFloat = 150 // Avoid notch/status bar/buttons area
+        let skyHeight = size.height * 0.60
+
+        // Ensure topOffset doesn't exceed skyHeight (would cause crash)
+        let validTopOffset = min(topOffset, skyHeight * 0.2) // Use 20% of sky height as minimum
+        let validSkyHeight = max(skyHeight, topOffset + 100) // Ensure at least 100px range
+
         for _ in 0..<starCount {
             let x = CGFloat.random(in: 0...size.width)
-            let y = CGFloat.random(in: 0...skyHeight)
+            let y = CGFloat.random(in: validTopOffset...validSkyHeight)
             
             // Varied star properties
             let brightness = Double.random(in: 0.4...1.0)

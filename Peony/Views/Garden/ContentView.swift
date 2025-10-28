@@ -28,6 +28,7 @@ struct ContentView: View {
             ZStack {
                 // Fixed garden background with sky and celestial elements
                 GardenBackgroundView()
+                    .ignoresSafeArea()
                 
                 // Title overlay at top-center (fixed position, no animations)
                 VStack {
@@ -56,7 +57,12 @@ struct ContentView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
+            .animation(.none, value: allSeeds.count) // Disable implicit animations
+            .transaction { transaction in
+                transaction.animation = .none // Completely disable animations on initial load
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     GardenToolbarButtons(
@@ -66,8 +72,10 @@ struct ContentView: View {
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 12) {
+                        DebugTimeButton()
+
                         NotificationTestButton()
-                        
+
                         Button {
                             showingPlantSheet = true
                         } label: {
@@ -100,11 +108,11 @@ struct ContentView: View {
             Text("Your Garden Awaits")
                 .font(.title2)
                 .fontWeight(.semibold)
-                .foregroundColor(.black)
+                .foregroundColor(.white)
             
             Text("Plant your first seed to begin your mindful journaling journey")
-                .font(.body)
-                .foregroundColor(.gray)
+                .font(.serifDisplay(16, weight: .medium))
+                .foregroundColor(.white)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
             

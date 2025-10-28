@@ -28,28 +28,11 @@ struct GardenBedView: View {
     
     var body: some View {
         ZStack {
-            // Garden bed background - Semi-transparent to show sky
+            // Garden bed border - ONLY border, completely transparent fill
             RoundedRectangle(cornerRadius: 20)
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color.pastelGreenLight.opacity(0.4),
-                            Color.pastelGreenMid.opacity(0.5)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .background(
-                    // Subtle blur effect for glass morphism
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(.ultraThinMaterial)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.green.opacity(0.4), lineWidth: 3)
-                )
+                .stroke(Color.green.opacity(0.6), lineWidth: 3)
                 .frame(width: 320, height: 320)
+                .background(Color.clear)
             
             // Seeds placed organically
             ForEach(Array(seeds.enumerated()), id: \.element.id) { index, seed in
