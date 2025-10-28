@@ -1,97 +1,114 @@
 # Peony - Mindful Journaling iOS App
 
-A beautiful iOS journaling app that combines mindfulness with gamification. Write journal entries that grow into flowers through consistent care and reflection.
+A beautiful iOS journaling app for mindful reflection. Write journal entries that grow into flowers through consistent care.
 
 **Status:** Active Development  
-**Version:** 2.6.0  
+**Latest:** v2.6.0 - October 2024 (Sky System & Visual Enhancements)  
 **Platform:** iOS 16.0+  
 **Language:** Swift 5.9 / SwiftUI
 
 ---
 
-## Overview
+## Core Concept
 
-Peony transforms journaling into a garden-growing experience. Users plant seeds (journal entries), water them daily, and watch them grow through five stages before the content is revealed. The app also includes a Journal mode for quick note-taking with AI-powered features.
+Peony transforms journaling into a garden-growing experience:
 
----
+1. **Plant a Seed** - Write a journal entry (content hidden until bloom)
+2. **Water Daily** - Return each day to nurture your seed
+3. **Watch It Grow** - Seed → Sprout → Stem → Bud → Flower (100%)
+4. **Content Revealed** - Read your full entry when the flower blooms
+5. **Quick Notes** - Capture thoughts instantly in the Journal tab
 
-## Core Features
+### Dual Journaling Modes
 
-### Garden Mode
-Plant a seed by writing a journal entry. The content is hidden until the seed grows to 100%. Water the seed daily to increase growth rate and build streaks. Seeds grow through five stages: Seed, Sprout, Stem, Bud, and Flower.
-
-### Journal Mode  
-Quick access notes for instant capture. Features include:
-- Free write or daily prompts
-- On-device mood detection
-- Theme analysis
-- Smart seed suggestions (convert worthy notes to plants)
-
-### Growth Mechanics
-- Natural growth over time based on planted duration
-- Daily watering increases growth percentage
-- Streak system with tiered bonuses (higher multipliers at 7, 14, 30+ days)
-- Content locked until full bloom for delayed gratification
-
-### Visual Experience
-- Time-aware sky system with real sun/moon positions
-- Seasonal color palettes (spring, summer, fall, winter)
-- Custom plant growth animations
-- Ambient lighting effects
-- Custom serif typography (Playfair Display)
+- **Garden Mode**: Long-form entries with delayed gratification and growth mechanics
+- **Journal Mode**: Quick capture notes with instant access and AI-powered insights
 
 ---
 
-## Architecture
+## Core Experience
 
-### Tech Stack
-- **UI Framework:** SwiftUI (iOS 16.0+)
-- **Data Persistence:** SwiftData
-- **AI Processing:** NaturalLanguage framework (on-device)
+- 5-stage plant growth with daily watering
+- Streak system with growth bonuses (3, 7, 14, 30 days)
+- Content locked until bloom for delayed gratification
+- On-device AI using NaturalLanguage framework for mood detection, theme analysis, and smart suggestions
+- Beautiful pastel design with time-aware sky (real sun/moon positions, seasonal colors)
+- Custom plant animations with realistic growth stages
+- Smart notifications for bloom reminders and daily check-ins
+- Attach images to entries
+
+---
+
+## Tech Stack
+
+- **UI:** SwiftUI (iOS 16.0+)
+- **Data:** SwiftData (model persistence)
+- **AI:** NaturalLanguage framework (on-device)
 - **Notifications:** UserNotifications framework
 - **Typography:** Playfair Display (serif) and SF Pro (sans)
 - **Architecture:** MVVM with component-based structure
 
-### Key Models
-- `JournalSeed` - Main seed/entry model with growth tracking
-- `JournalEntry` - Quick notes model for Journal tab
-- `WateringStreak` - Streak tracking with tiered bonuses
-- `WritingPrompt` - Daily prompt data (JSON)
+---
+
+## App Structure
+
+### Main Tabs
+
+**Garden Tab**
+- View all planted seeds in garden beds
+- Tap seeds to view details and water
+- Growth progress visualization
+- Plant new seeds with + button
+
+**Journal Tab**
+- Quick notes list (instant access)
+- Free write or use daily prompts
+- Mood detection on entries
+- Convert notes to seeds
+- Theme analysis & insights
+
+### Key Screens
+
+- `MainAppView` - Tab navigation
+- `ContentView` - Garden view (main)
+- `PlantSeedView` - Create new seed
+- `SeedDetailView` - View/edit/water seeds
+- `NotesView` - Journal entry list
+- `NoteDetailView` - View/edit notes
+- `OnboardingView` - First-time setup
 
 ---
 
-## Development
+## Design
 
-### Setup
-1. Clone the repository
-2. Open `Peony.xcodeproj` in Xcode 15.0+
-3. Select target device/simulator
-4. Build and run (Cmd+R)
+### Colors
+- Backgrounds: Ivory, Pastel Green, Forest tones
+- Accents: Warm Gold, Amber Glow
+- Plants: Seed Brown, Sprout Green, Bud Pink, Flower Pink
 
-### Testing
-- 480+ lines of unit tests in `PeonyTests.swift`
-- Tests cover growth calculations, streak mechanics, edge cases
-- Use Testing framework (Swift 5.9)
+### Typography
+- Playfair Display (serif) for headlines
+- SF Pro (sans) for body text
 
-### Configuration
-Key settings in `AppConfig.swift`:
-- Growth duration: 30-365 days (default 45)
-- Streak tier multipliers: 1.0x (1-6 days), 1.5x (7-29 days), 2.0x (30+ days)
-- Notification defaults: 9 AM daily watering reminder
-- Minimum seed suggestion: 150 words
+### Animations
+- Plant growth transitions
+- Watering success feedback
+- Planting success celebration
 
-### AI Features
-All AI features run on-device using NaturalLanguage framework:
-- Mood detection from journal text
-- Theme analysis for patterns
-- Writing prompt generation
-- Seed suggestions based on length and sentiment
+---
+
+## Key Models
+
+- `JournalSeed` - Main seed/entry model (SwiftData)
+- `JournalEntry` - Quick notes model (SwiftData)
+- `WateringStreak` - Streak tracking (SwiftData)
+- `WritingPrompt` - Prompt data (JSON)
 
 ---
 
 ## Recent Updates
 
-### v2.6.0 - October 2024 (Current)
+### v2.6.0 - October 2024 (Latest)
 - Data export functionality (JSON format)
 - Database error handling and recovery
 - Accessibility improvements (labels throughout)
@@ -100,40 +117,21 @@ All AI features run on-device using NaturalLanguage framework:
 - Removed rain droplets animation (simplified)
 - Added comprehensive unit tests
 
-### Architecture Refactor
-- Extracted 37 components from monolithic files
-- ContentView reduced from 2,755 lines to 120 lines
-- Proper separation: Components, Views, Utilities, Models
-- Clean modular structure for maintainability
+### Earlier Versions
+- v2.6: Component extraction and code cleanup
+- v2.5: AI-powered features (mood detection, theme analysis)
+- v2.0: Dual journaling modes (Garden + Journal)
+- v1.0: Core garden mechanics
 
 ---
 
-## Design System
+## Development Principles
 
-### Colors
-- Backgrounds: Ivory, Pastel Green, Forest tones
-- Accents: Warm Gold, Amber Glow
-- Plants: Seed Brown, Sprout Green, Bud Pink, Flower Pink
-
-### Typography
-- Headlines: Playfair Display (serif)
-- Body: SF Pro (sans-serif)
-
-### Animations
-- Plant growth stage transitions
-- Watering success feedback
-- Planting success celebration
-- Tab navigation transitions
-
----
-
-## Principles
-
-- **Privacy-first:** All AI runs on-device using NaturalLanguage
-- **Intentional design:** Beautiful, meaningful interfaces
-- **Mindful gamification:** Focus on habit-building, not addiction
-- **Clean code:** Modular architecture, maintainable structure
-- **No emojis in documentation or GitHub content**
+- Privacy-first (all AI on-device using NaturalLanguage)
+- Beautiful, intentional design
+- Meaningful gamification
+- Mindfulness-focused
+- Clean, maintainable code
 
 ---
 
@@ -141,5 +139,5 @@ All AI features run on-device using NaturalLanguage framework:
 
 Private project - All rights reserved
 
-**Author:** [@ksemaj](https://github.com/ksemaj)  
-**Last Updated:** October 28, 2025
+**Author**: [@ksemaj](https://github.com/ksemaj)  
+**Last Updated**: October 28, 2025
