@@ -17,83 +17,62 @@ struct WateringSuccessView: View {
     
     @State private var cardScale: CGFloat = 0.8
     @State private var cardOpacity: Double = 0
-    @State private var dropletsVisible = false
     @State private var showText = false
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // Background overlay for pastel theme
-                Color.white.opacity(0.6)
-                    .ignoresSafeArea()
-                    .opacity(cardOpacity)
-                
-                // Rain droplets animation - fills entire screen
-                if dropletsVisible {
-                    RainDropletsAnimation()
-                        .ignoresSafeArea()
-                        .allowsHitTesting(false)
-                }
-            
-                // Success card
-                VStack(spacing: 20) {
-                    // Water droplet icon
-                    Text("💧")
-                        .font(.system(size: 44))
-                    
-                    // Success message
-                    VStack(spacing: 8) {
-                        Text("Watered!")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.black)
-                        
-                        Text("+\(String(format: "%.1f", multiplier))% growth")
-                            .font(.headline)
-                            .foregroundColor(.blue)
-                        
-                        // Streak display
-                        if streakCount > 0 {
-                            HStack(spacing: 4) {
-                                Text("🔥")
-                                Text("\(streakCount) day streak!")
-                                    .font(.subheadline)
-                                    .foregroundColor(.orange)
-                            }
-                            .padding(.top, 4)
-                        }
-                        
-                        // Milestone celebration
-                        if let milestone = milestone {
-                            Text("🎉 \(milestone)-Day Milestone! 🎉")
-                                .font(.headline)
-                                .foregroundColor(.purple)
-                                .padding(.top, 8)
-                        }
-                    }
-                    .opacity(showText ? 1 : 0)
-                }
-                .padding(32)
-                .background(
-                    RoundedRectangle(cornerRadius: 24)
-                        .fill(Color.white)
-                        .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
-                )
-                .frame(maxWidth: 320)
-                .scaleEffect(cardScale)
+        ZStack {
+            Color.white.opacity(0.6)
+                .ignoresSafeArea()
                 .opacity(cardOpacity)
+        
+            VStack(spacing: 20) {
+                Text("💧")
+                    .font(.system(size: 44))
+                
+                VStack(spacing: 8) {
+                    Text("Watered!")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                    
+                    Text("+\(String(format: "%.1f", multiplier))% growth")
+                        .font(.headline)
+                        .foregroundColor(.blue)
+                    
+                    if streakCount > 0 {
+                        HStack(spacing: 4) {
+                            Text("🔥")
+                            Text("\(streakCount) day streak!")
+                                .font(.subheadline)
+                                .foregroundColor(.orange)
+                        }
+                        .padding(.top, 4)
+                    }
+                    
+                    if let milestone = milestone {
+                        Text("🎉 \(milestone)-Day Milestone! 🎉")
+                            .font(.headline)
+                            .foregroundColor(.purple)
+                            .padding(.top, 8)
+                    }
+                }
+                .opacity(showText ? 1 : 0)
             }
+            .padding(32)
+            .background(
+                RoundedRectangle(cornerRadius: 24)
+                    .fill(Color.white)
+                    .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
+            )
+            .frame(maxWidth: 320)
+            .scaleEffect(cardScale)
+            .opacity(cardOpacity)
         }
         .onAppear {
             // Card animation
             withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                 cardScale = 1.0
                 cardOpacity = 1.0
-            }
-            
-            // Droplets
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                dropletsVisible = true
             }
             
             // Text appears
