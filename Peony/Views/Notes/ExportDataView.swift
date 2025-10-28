@@ -122,7 +122,7 @@ struct ExportDataView: View {
             case .success(let url):
                 exportURL = url
                 showShareSheet = true
-                dismiss()
+                // Don't dismiss - let user interact with share sheet
             case .failure(let error):
                 exportError = error.localizedDescription
             }
