@@ -267,20 +267,16 @@ print("📝 PromptGenerator: ...")
 
 ## 📖 Documentation
 
-### Current Documentation
-- This README - Main project overview
-- [`docs/`](./docs/) - Active project documentation (currently empty, ready for relevant docs)
+### Documentation
+- **Main README** - Project overview and architecture
+- **GitHub Issues** - Current development work and tracking
+- **Critical Issues** - See [`ISSUES_TO_CREATE.md`](./ISSUES_TO_CREATE.md) for items from recent audit
 
-### Analysis & Reports
-- [`.audits/`](./.audits/) - **Latest Audit (Oct 27, 2024)** - Comprehensive code quality, security, and performance analysis
-  - `AUDIT_2024_10_27.md` - Full detailed audit (16 sections)
-  - `EXECUTIVE_SUMMARY.md` - Quick overview with health score (7.5/10)
-  - `ACTION_CHECKLIST.md` - 150+ prioritized action items
-- [`.modular/`](./.modular/) - Modularity analysis and fixes
-- [`.cleanups/`](./.cleanups/) - Repository cleanup logs
-
-### Archived Files
-Previous documentation in [`.archive/`](./.archive/) - Not actively maintained
+### Recent Updates
+- ✅ Repository audit and cleanup (Oct 2025)
+- ✅ Architecture rules aligned and simplified
+- ✅ Removed outdated documentation and archives
+- ✅ Consolidated all documentation into this README
 
 ---
 
@@ -342,6 +338,6 @@ Private project - All rights reserved
 
 ---
 
-**Last Updated:** October 27, 2024  
+**Last Updated:** October 2025  
 **Build Status:** ✅ Working  
 **Refactor Status:** ✅ Complete
