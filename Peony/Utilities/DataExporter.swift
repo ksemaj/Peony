@@ -18,7 +18,7 @@ final class DataExporter {
         streaks: [WateringStreak],
         completion: @escaping @Sendable (Result<URL, Error>) -> Void
     ) {
-        DispatchQueue.global(qos: .userInitiated).async { [seeds, entries, streaks] in
+        Task { @MainActor in
             do {
                 // Extract data first to avoid capturing SwiftData models in async context
                 let exportSeeds = seeds.map { $0.asExportable }
@@ -34,11 +34,13 @@ final class DataExporter {
                     streaks: exportStreaks
                 )
                 
-                // Encode to JSON
-                let encoder = JSONEncoder()
-                encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-                encoder.dateEncodingStrategy = .iso8601
-                let jsonData = try encoder.encode(exportData)
+                // Encode to JSON (must happen on MainActor due to ExportData conformance)
+                let jsonData = try await MainActor.run {
+                    let encoder = JSONEncoder()
+                    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+                    encoder.dateEncodingStrategy = .iso8601
+                    return try encoder.encode(exportData)
+                }
                 
                 // Create temporary file
                 let tempURL = FileManager.default.temporaryDirectory
