@@ -21,7 +21,7 @@ struct NoteRowView: View {
             // Date
             Text(note.createdDate, style: .date)
                 .font(.caption)
-                .foregroundColor(.gray)
+                .foregroundColor(Color(red: 0.45, green: 0.45, blue: 0.45))
             
             // Preview
             Text(note.preview)
@@ -34,7 +34,7 @@ struct NoteRowView: View {
             HStack {
                 Text("\(note.wordCount) words")
                     .font(.caption2)
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color(red: 0.45, green: 0.45, blue: 0.45))
                 
                 Spacer()
                 

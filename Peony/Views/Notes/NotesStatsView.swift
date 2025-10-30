@@ -51,7 +51,7 @@ struct NotesStatsView: View {
                 VStack(spacing: 20) {
                     // Header emoji
                     Text("📊")
-                        .font(.system(size: 44))
+                        .font(.system(size: 44)) // Decorative emoji, fixed size
                         .padding(.top, 16)
                     
                     // Overall stats card
@@ -110,9 +110,9 @@ struct NotesStatsView: View {
                                         HStack(spacing: 4) {
                                             Text("\(theme.count)")
                                                 .font(.body)
-                                                .fontWeight(.semibold)
-                                                .foregroundColor(.green)
-                                            
+                                                .fontWeight(.bold)
+                                                .foregroundColor(Color(red: 0.0, green: 0.5, blue: 0.0))
+
                                             // Visual bar
                                             RoundedRectangle(cornerRadius: 4)
                                                 .fill(Color.green.opacity(0.3))
@@ -133,10 +133,10 @@ struct NotesStatsView: View {
                     if totalNotes == 0 {
                         VStack(spacing: 12) {
                             Text("✨")
-                                .font(.system(size: 32))
+                                .font(.system(size: 32)) // Decorative emoji, fixed size
                             Text("Start writing to see your statistics!")
                                 .font(.subheadline)
-                                .foregroundColor(.gray)
+                                .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
                                 .multilineTextAlignment(.center)
                         }
                         .padding()
@@ -146,10 +146,10 @@ struct NotesStatsView: View {
                     } else {
                         VStack(spacing: 12) {
                             Text("🌱")
-                                .font(.system(size: 32))
+                                .font(.system(size: 32)) // Decorative emoji, fixed size
                             Text("Keep writing! Your thoughts are growing.")
                                 .font(.subheadline)
-                                .foregroundColor(.gray)
+                                .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
                                 .multilineTextAlignment(.center)
                         }
                         .padding()
@@ -195,13 +195,13 @@ struct StatRow: View {
             Text(label)
                 .font(.body)
                 .foregroundColor(.black)
-            
+
             Spacer()
-            
+
             Text(value)
                 .font(.body)
-                .fontWeight(.semibold)
-                .foregroundColor(.green)
+                .fontWeight(.bold)
+                .foregroundColor(Color(red: 0.0, green: 0.5, blue: 0.0))
         }
     }
 }

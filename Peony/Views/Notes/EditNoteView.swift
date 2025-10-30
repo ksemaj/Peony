@@ -30,6 +30,7 @@ struct EditNoteView: View {
                 .ignoresSafeArea()
                 
                 VStack(spacing: 16) {
+                    // Emoji indicator (decorative, fixed size is okay)
                     Text("📝")
                         .font(.system(size: 44))
                         .padding(.top, 16)
@@ -38,6 +39,7 @@ struct EditNoteView: View {
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.black)
+                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge) // Cap at xxxLarge for readability
                     
                     ZStack(alignment: .topLeading) {
                         if content.isEmpty {
@@ -74,6 +76,7 @@ struct EditNoteView: View {
                         dismiss()
                     }
                     .foregroundColor(.secondary)
+                    .accessibilityLabel("Cancel editing note")
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
@@ -83,6 +86,8 @@ struct EditNoteView: View {
                     .fontWeight(.semibold)
                     .foregroundColor(content.isEmpty ? .secondary : .green)
                     .disabled(content.isEmpty)
+                    .accessibilityLabel(content.isEmpty ? "Save disabled. Enter content to enable" : "Save changes")
+                    .accessibilityHint("Tap to save your edited journal entry")
                 }
             }
             .onAppear {

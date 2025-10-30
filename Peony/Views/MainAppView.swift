@@ -54,16 +54,18 @@ struct MainAppView: View {
             
             let appearance = UITabBarAppearance()
             appearance.configureWithTransparentBackground()
-            appearance.backgroundColor = .clear
+            // Add a semi-transparent white background so text is readable
+            appearance.backgroundColor = UIColor(white: 1.0, alpha: 0.85)
             appearance.shadowColor = .clear
             appearance.shadowImage = UIImage()
-            appearance.backgroundImage = UIImage()
-            appearance.backgroundEffect = nil // Remove blur effect
-            
-            // Make tab items visible
-            appearance.stackedLayoutAppearance.normal.iconColor = .white
+            appearance.backgroundImage = nil
+            appearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterialLight)
+
+            // Make tab items visible with colors that work on light background
+            let unselectedColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
+            appearance.stackedLayoutAppearance.normal.iconColor = unselectedColor
             appearance.stackedLayoutAppearance.selected.iconColor = .systemGreen
-            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: unselectedColor]
             appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemGreen]
             
             UITabBar.appearance().standardAppearance = appearance

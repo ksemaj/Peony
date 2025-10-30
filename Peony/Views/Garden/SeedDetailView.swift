@@ -163,6 +163,8 @@ struct SeedDetailView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel("View full screen image")
+                        .accessibilityHint("Tap to view attached memory in full screen")
                     }
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -239,6 +241,8 @@ struct SeedDetailView: View {
                     Image(systemName: "ellipsis.circle")
                         .foregroundColor(.green)
                 }
+                .accessibilityLabel("Seed options menu")
+                .accessibilityHint("Tap to edit or delete this entry")
             }
         }
             .fullScreenCover(isPresented: $showingFullScreenImage) {

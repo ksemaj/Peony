@@ -89,6 +89,8 @@ struct PlantSeedView: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Add photo")
+        .accessibilityHint("Tap to select an image from your photo library")
     }
     
     var selectedImageView: some View {
@@ -111,6 +113,8 @@ struct PlantSeedView: View {
                     .background(Circle().fill(Color.black.opacity(0.6)))
             }
             .padding(8)
+            .accessibilityLabel("Remove photo")
+            .accessibilityHint("Tap to remove the selected image")
         }
     }
     
@@ -217,6 +221,7 @@ struct PlantSeedView: View {
                         dismiss()
                     }
                     .foregroundColor(.secondary)
+                    .accessibilityLabel("Cancel planting seed")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Plant") {
@@ -225,6 +230,8 @@ struct PlantSeedView: View {
                     .fontWeight(.semibold)
                     .foregroundColor(title.isEmpty || content.isEmpty ? .secondary : .green)
                     .disabled(title.isEmpty || content.isEmpty)
+                    .accessibilityLabel(title.isEmpty || content.isEmpty ? "Plant seed disabled. Enter title and content to enable" : "Plant seed")
+                    .accessibilityHint("Tap to create your new journal entry seed")
                 }
             }
             .onChange(of: selectedPhoto) { oldValue, newValue in

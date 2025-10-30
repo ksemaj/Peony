@@ -27,14 +27,17 @@ struct ExportDataView: View {
                     Image(systemName: "square.and.arrow.up")
                         .font(.system(size: 48))
                         .foregroundColor(.green)
+                        .symbolVariant(.fill)
                     
                     Text("Export Your Data")
                         .font(.title2)
                         .fontWeight(.semibold)
+                        .foregroundColor(.black)
+                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                     
                     Text("Your data will be exported as a JSON file you can save anywhere")
                         .font(.subheadline)
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                 }
@@ -87,7 +90,7 @@ struct ExportDataView: View {
                 Button("Cancel") {
                     dismiss()
                 }
-                .foregroundColor(.gray)
+                .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
             }
             .background(
                 LinearGradient(
@@ -145,11 +148,12 @@ struct DataSummaryRow: View {
                 .font(.title3)
             Text(label)
                 .font(.body)
+                .foregroundColor(.black)
             Spacer()
             Text("\(count)")
                 .font(.body)
-                .fontWeight(.semibold)
-                .foregroundColor(.green)
+                .fontWeight(.bold)
+                .foregroundColor(Color(red: 0.0, green: 0.5, blue: 0.0))
         }
     }
 }

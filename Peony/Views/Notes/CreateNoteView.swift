@@ -36,7 +36,7 @@ struct CreateNoteView: View {
                 .ignoresSafeArea()
 
                 VStack(spacing: 16) {
-                    // Emoji indicator
+                    // Emoji indicator (decorative, fixed size is okay)
                     Text("📝")
                         .font(.system(size: 44))
                         .padding(.top, 16)
@@ -45,6 +45,7 @@ struct CreateNoteView: View {
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.black)
+                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge) // Cap at xxxLarge for readability
 
                     // Show prompt if provided
                     if let prompt = promptText {
@@ -74,7 +75,7 @@ struct CreateNoteView: View {
                         if content.isEmpty {
                             Text(promptText != nil ? "Write your thoughts..." : "What's on your mind?")
                                 .font(.body)
-                                .foregroundColor(.secondary.opacity(0.5))
+                                .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 12)
                                 .allowsHitTesting(false)
@@ -105,6 +106,7 @@ struct CreateNoteView: View {
                         dismiss()
                     }
                     .foregroundColor(.secondary)
+                    .accessibilityLabel("Cancel creating note")
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
@@ -114,6 +116,8 @@ struct CreateNoteView: View {
                     .fontWeight(.semibold)
                     .foregroundColor(content.isEmpty ? .secondary : .green)
                     .disabled(content.isEmpty)
+                    .accessibilityLabel(content.isEmpty ? "Save note disabled. Enter content to enable" : "Save note")
+                    .accessibilityHint("Tap to save your journal entry")
                 }
             }
             .onAppear {

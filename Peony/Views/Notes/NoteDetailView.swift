@@ -79,6 +79,8 @@ struct NoteDetailView: View {
                         .shadow(color: .green.opacity(0.3), radius: 8, x: 0, y: 4)
                     }
                     .padding(.top, 4)
+                    .accessibilityLabel("Plant this entry as a seed")
+                    .accessibilityHint("Tap to convert this journal entry into a growing seed that will bloom over time")
                 }
                 
                 // Metadata card
@@ -144,6 +146,8 @@ struct NoteDetailView: View {
                     Image(systemName: "ellipsis.circle")
                         .foregroundColor(.green)
                 }
+                .accessibilityLabel("Entry options menu")
+                .accessibilityHint("Tap to edit or delete this entry")
             }
         }
         .sheet(isPresented: $showingEditSheet) {
@@ -215,6 +219,8 @@ struct NoteDetailView: View {
                             .cornerRadius(12)
                     }
                     .disabled(seedTitle.isEmpty)
+                    .accessibilityLabel(seedTitle.isEmpty ? "Plant seed disabled. Enter a title to enable" : "Plant seed")
+                    .accessibilityHint("Tap to convert this entry into a growing seed")
                     
                     Button {
                         showingPlantSeedSheet = false
@@ -224,6 +230,7 @@ struct NoteDetailView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
+                    .accessibilityLabel("Cancel planting seed")
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 40)

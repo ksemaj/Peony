@@ -59,6 +59,8 @@ struct NotesView: View {
                                         NoteRowView(note: note)
                                     }
                                     .buttonStyle(.plain)
+                                    .accessibilityLabel("Journal entry from \(note.createdDate, style: .date), \(note.wordCount) words")
+                                    .accessibilityHint("Tap to view full entry details")
                                 }
                             }
                             .padding(.horizontal)
@@ -70,6 +72,7 @@ struct NotesView: View {
             }
             .navigationTitle("Journal")
             .navigationBarTitleDisplayMode(.large)
+            .toolbarColorScheme(.light, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
@@ -78,6 +81,8 @@ struct NotesView: View {
                         Image(systemName: "chart.bar")
                             .foregroundColor(.green)
                     }
+                    .accessibilityLabel("View statistics")
+                    .accessibilityHint("Tap to view journal statistics and insights")
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -135,7 +140,7 @@ struct NotesView: View {
 
                         Text("Express your thoughts freely")
                             .font(.subheadline)
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
                     }
 
                     Spacer()
@@ -148,6 +153,8 @@ struct NotesView: View {
                 .cornerRadius(16)
                 .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
             }
+            .accessibilityLabel("Free Write")
+            .accessibilityHint("Tap to create a new journal entry without a prompt")
 
             // Prompt Card
             if let prompt = dailyPrompt,
@@ -170,7 +177,7 @@ struct NotesView: View {
 
                             Text(prompt.text)
                                 .font(.subheadline)
-                                .foregroundColor(.gray)
+                                .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
                                 .lineLimit(2)
                         }
 
@@ -187,8 +194,10 @@ struct NotesView: View {
                             } label: {
                                 Text("Skip")
                                     .font(.caption)
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
                             }
+                            .accessibilityLabel("Skip prompt")
+                            .accessibilityHint("Tap to get a different writing prompt")
                         }
                     }
                     .padding()
@@ -196,6 +205,8 @@ struct NotesView: View {
                     .cornerRadius(16)
                     .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
                 }
+                .accessibilityLabel("Today's Prompt: \(prompt.text)")
+                .accessibilityHint("Tap to create a journal entry using today's writing prompt")
             }
         }
         .padding(.horizontal)
@@ -220,7 +231,7 @@ struct NotesView: View {
 
                 Text("Choose free writing or a guided prompt\nto begin your reflection")
                     .font(.body)
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color(red: 0.4, green: 0.4, blue: 0.4))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
             }
@@ -244,6 +255,8 @@ struct NotesView: View {
                         .cornerRadius(12)
                         .shadow(color: .green.opacity(0.3), radius: 5, x: 0, y: 2)
                 }
+                .accessibilityLabel("Free Write")
+                .accessibilityHint("Tap to create a new journal entry without a prompt")
 
                 if let prompt = dailyPrompt,
                    AppSettings.aiPromptFrequency != "off" {
@@ -267,6 +280,8 @@ struct NotesView: View {
                         .cornerRadius(12)
                         .shadow(color: .purple.opacity(0.3), radius: 5, x: 0, y: 2)
                     }
+                    .accessibilityLabel("Use Today's Prompt: \(prompt.text)")
+                    .accessibilityHint("Tap to create a journal entry using today's writing prompt")
                 }
             }
             .padding(.horizontal, 32)

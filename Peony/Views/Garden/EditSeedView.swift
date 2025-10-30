@@ -102,6 +102,8 @@ struct EditSeedView: View {
                                                 .background(Circle().fill(Color.black.opacity(0.6)))
                                         }
                                         .padding(8)
+                                        .accessibilityLabel("Remove photo")
+                                        .accessibilityHint("Tap to remove the selected image")
                                     }
                                 } else {
                                     HStack {
@@ -122,6 +124,8 @@ struct EditSeedView: View {
                                 }
                             }
                             .buttonStyle(.plain)
+                            .accessibilityLabel("Change photo")
+                            .accessibilityHint("Tap to select a new image from your photo library")
                         }
                         .padding(.horizontal, 20)
                         
@@ -174,6 +178,7 @@ struct EditSeedView: View {
                     Button("Cancel") {
                         dismiss()
                     }
+                    .accessibilityLabel("Cancel editing seed")
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
@@ -181,6 +186,8 @@ struct EditSeedView: View {
                     }
                     .fontWeight(.semibold)
                     .disabled(title.isEmpty || content.isEmpty)
+                    .accessibilityLabel(title.isEmpty || content.isEmpty ? "Save disabled. Enter title and content to enable" : "Save changes")
+                    .accessibilityHint("Tap to save your edited seed")
                 }
             }
             .onChange(of: selectedPhoto) { oldValue, newValue in
@@ -208,6 +215,7 @@ struct EditSeedView: View {
     EditSeedView(seed: JournalSeed(content: "Test content", title: "My Seed"))
         .modelContainer(for: JournalSeed.self, inMemory: true)
 }
+
 
 
 

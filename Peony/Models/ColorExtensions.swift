@@ -80,18 +80,45 @@ extension Font {
     }
 
     // Dynamic Type friendly convenience methods
-    // These will scale automatically with user's accessibility settings
+    // These use system text styles that automatically scale with accessibility settings
     static var serifTitle: Font {
-        serifDisplayBold(36)
+        // Map to system title size, but use serif font
+        serifDisplayBold(UIFont.preferredFont(forTextStyle: .title1).pointSize)
     }
     static var serifLargeTitle: Font {
-        serifDisplayBold(42)
+        serifDisplayBold(UIFont.preferredFont(forTextStyle: .largeTitle).pointSize)
     }
     static var serifHeadline: Font {
-        serifDisplayBold(24)
+        serifDisplayBold(UIFont.preferredFont(forTextStyle: .headline).pointSize)
     }
     static var serifSubheadline: Font {
-        serifDisplay(20, weight: .semibold)
+        serifDisplay(UIFont.preferredFont(forTextStyle: .subheadline).pointSize, weight: .semibold)
+    }
+    
+    // Dynamic Type-friendly serif font based on system text style
+    static func serif(_ textStyle: TextStyle, weight: Font.Weight = .regular) -> Font {
+        let size = UIFont.preferredFont(forTextStyle: textStyle.uiTextStyle).pointSize
+        return serifDisplay(size, weight: weight)
+    }
+}
+
+// MARK: - UIKit TextStyle mapping for Dynamic Type
+private extension Font.TextStyle {
+    var uiTextStyle: UIFont.TextStyle {
+        switch self {
+        case .largeTitle: return .largeTitle
+        case .title: return .title1
+        case .title2: return .title2
+        case .title3: return .title3
+        case .headline: return .headline
+        case .subheadline: return .subheadline
+        case .body: return .body
+        case .callout: return .callout
+        case .footnote: return .footnote
+        case .caption: return .caption1
+        case .caption2: return .caption2
+        @unknown default: return .body
+        }
     }
 }
 

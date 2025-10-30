@@ -34,10 +34,10 @@ struct ContentView: View {
                 VStack {
                     HStack(spacing: 4) {
                         Text("my")
-                            .font(.serifDisplay(24, weight: .medium))
+                            .font(.serif(.title2, weight: .medium))
                             .foregroundColor(.white)
                         Text("garden")
-                            .font(.serifDisplay(24, weight: .semibold))
+                            .font(.serif(.title2, weight: .semibold))
                             .italic()
                             .foregroundColor(Color(red: 0.7, green: 0.9, blue: 0.7))
                     }
