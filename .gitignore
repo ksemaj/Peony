@@ -42,3 +42,6 @@ fastlane/test_output
 # Backup files
 *.backup
 *~
+
+# Archived files
+ARCHIVED_ISSUES_TO_CREATE.md
